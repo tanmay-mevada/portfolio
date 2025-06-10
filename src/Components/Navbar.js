@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Home, Code, Info, Mail, Github, Instagram } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
-  const [show, setShow] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+  const [show, setShow] = useState(!isHome);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShow(true);
-    }, 6000); // 5s matrix + 1s gap
-
-    return () => clearTimeout(timer);
-  }, []);
+    if (isHome) {
+      const timer = setTimeout(() => setShow(true), 6000); // Delay for matrix effect
+      return () => clearTimeout(timer);
+    } else {
+      setShow(true); // Instantly show on other pages
+    }
+  }, [isHome]);
 
   const iconWrapper =
     "w-12 h-12 flex items-center justify-center group relative rounded-full text-blue transition-all duration-300 transform will-change-transform hover:scale-110 hover:shadow-sm hover:shadow-blue hover:bg-blue hover:text-black";
@@ -23,7 +27,7 @@ function Navbar() {
     <AnimatePresence>
       {show && (
         <motion.nav
-          initial={{ x: -100, opacity: 0 }}
+          initial={isHome ? { x: -100, opacity: 0 } : false}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -100, opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -35,10 +39,10 @@ function Navbar() {
               <Home size={28} />
               <span className={label}>Home</span>
             </a>
-            <a href="#projects" className={iconWrapper}>
+            <Link to="/projects" className={iconWrapper}>
               <Code size={28} />
               <span className={label}>Projects</span>
-            </a>
+            </Link>
             <a href="#about" className={iconWrapper}>
               <Info size={28} />
               <span className={label}>About Me</span>

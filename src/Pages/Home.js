@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import myPic from "../Assets/myPic.png";
 import { Typewriter } from "react-simple-typewriter";
-import MatrixBackground from "./MatrixBackground";
-
+import MatrixBackground from "../Components/MatrixBG";
+import Navbar from "../Components/Navbar"
 function Home() {
     const [fadeMatrix, setFadeMatrix] = useState(false);
     const [showHelloWorld, setShowHelloWorld] = useState(true);
     const [showTypewriter, setShowTypewriter] = useState(false);
-    const [showProfileImage, setShowProfileImage] = useState(false); // 👈 NEW
+    const [showProfileImage, setShowProfileImage] = useState(false);
 
     useEffect(() => {
         const matrixDuration = 5000;
@@ -22,7 +22,7 @@ function Home() {
 
             const typewriterTimeout = setTimeout(() => {
                 setShowTypewriter(true);
-                setShowProfileImage(true); // 👈 Show image AFTER delay
+                setShowProfileImage(true);
             }, 600);
 
             return () => clearTimeout(typewriterTimeout);
@@ -35,12 +35,16 @@ function Home() {
     }, []);
 
     return (
+
         <section
             id="home"
             className="min-h-screen flex flex-col justify-center items-center text-center px-6 bg-gradient-to-br from-dark1 via-black-900 to-dark2 text-white relative overflow-hidden"
         >
             <MatrixBackground fadeOut={fadeMatrix} className="z-1 absolute inset-0 pointer-events-none" />
-
+            <Navbar delay={true} />
+            <section id="home" className="...">
+                {/* your content */}
+            </section>
             {/* Profile Image */}
             {showProfileImage && ( // 👈 Only render when ready
                 <motion.img

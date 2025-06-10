@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: white;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.swiper-button-prev {
+  left: 10px;
+}
+
+.swiper-button-next {
+  right: 10px;
+}
+
+.swiper-pagination-bullet {
+  background-color: white;
+}
