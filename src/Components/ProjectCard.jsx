@@ -1,7 +1,7 @@
 import React from "react";
 import { Github, ExternalLink } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
 
 // Swiper styles
@@ -11,12 +11,12 @@ import "swiper/css/pagination";
 function ProjectCard({ title, description, tech, images, github, live, date }) {
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.98 }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="bg-dark2 border border-blue/20 rounded-xl overflow-hidden shadow-md hover:shadow-blue/50 transition-all"
+      transition={{ duration: 0.2 }}
+      className="bg-dark2 border border-blue/20 rounded-xl overflow-hidden transition-all hover:glow"
     >
       {/* Title + Date */}
       <div className="flex justify-between items-center p-4 pb-2">
@@ -26,11 +26,10 @@ function ProjectCard({ title, description, tech, images, github, live, date }) {
 
       {/* Swiper Carousel */}
       <Swiper
-        modules={[Autoplay, Pagination]}
+        modules={[Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
         autoplay={{ delay: 3000, disableOnInteraction: true }}
-        pagination={{ clickable: true }}
       >
         {images.map((img, i) => (
           <SwiperSlide key={i}>

@@ -16,7 +16,7 @@ module.exports = {
       keyframes: {
         glowPulse: {
           "0%, 100%": {
-            boxShadow: "0 0 50px rgba(59,130,246,0.4)",
+            boxShadow: "0px 0px 50px rgba(59,130,246,0.4)",
           },
           "50%": {
             boxShadow: "0 0 40px rgba(59,130,246,0.8)",

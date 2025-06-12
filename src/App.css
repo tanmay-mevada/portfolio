@@ -39,20 +39,17 @@
 
 .swiper-button-prev,
 .swiper-button-next {
-  color: white;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
+  display: none;
 }
 
 .swiper-button-prev {
-  left: 10px;
+  display: none;
 }
 
 .swiper-button-next {
-  right: 10px;
+  display: none;
 }
 
 .swiper-pagination-bullet {
-  background-color: white;
+  display: none;
 }

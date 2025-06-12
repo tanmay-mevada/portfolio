@@ -35,7 +35,7 @@ function Navbar() {
         >
           {/* Main Nav Icons */}
           <div className="flex flex-col items-center gap-y-6">
-            <a href="#home" className={iconWrapper}>
+            <a href="/home" className={iconWrapper}>
               <Home size={28} />
               <span className={label}>Home</span>
             </a>
@@ -43,7 +43,7 @@ function Navbar() {
               <Code size={28} />
               <span className={label}>Projects</span>
             </Link>
-            <a href="#about" className={iconWrapper}>
+            <a href="/about" className={iconWrapper}>
               <Info size={28} />
               <span className={label}>About Me</span>
             </a>
