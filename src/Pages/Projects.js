@@ -6,7 +6,7 @@ function Projects() {
   return (
     <section
       id="projects"
-      className="min-h-screen px-10 md:px-40 py-16 bg-dark text-white text-center"
+      className="min-h-screen w-full px-4 sm:px-10 lg:px-20 xl:px-32 2xl:px-48 py-16 bg-dark text-white text-center"
     >
       <h2 className="text-4xl font-bold mb-12 text-blue">Projects</h2>
       <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 xl:grid-cols-2">
