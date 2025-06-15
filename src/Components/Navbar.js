@@ -51,7 +51,7 @@ function Navbar() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -100, opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="fixed top-20 left-6 h-[670px] w-[68px] bg-dark text-white flex-col items-center py-8 shadow-lg z-50 rounded-xl border-2 border-blue transition-all duration-500 hover:shadow-blue/80 hover:scale-[1.009] hover:brightness-110 hidden sm:flex"
+            className="fixed top-20 left-6 h-[600px] w-[68px] bg-dark text-white flex-col items-center py-8 shadow-lg z-50 rounded-xl border-2 border-blue transition-all duration-500 hover:shadow-blue/80 hover:scale-[1.009] hover:brightness-110 hidden sm:flex"
           >
             <div className="flex flex-col items-center gap-y-6">
               <a href="/home" className={iconWrapper}>
