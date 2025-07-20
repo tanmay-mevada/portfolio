@@ -2,6 +2,28 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export default function Contact() {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch("https://getform.io/f/adrgqnqa", {
+        method: "POST",
+        body: data,
+      });
+
+      if (res.ok) {
+        alert("✅ Message sent successfully!");
+        form.reset();
+      } else {
+        alert("❌ Failed to send the message.");
+      }
+    } catch (err) {
+      alert("❌ Error: Please check your internet connection.");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -11,7 +33,6 @@ export default function Contact() {
     >
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-8 items-stretch">
-
           {/* Contact Form */}
           <motion.div
             initial={{ x: -30, opacity: 0 }}
@@ -20,25 +41,48 @@ export default function Contact() {
             className="w-full lg:w-2/3 backdrop-blur-sm border border-blue/10 rounded-3xl shadow-xl p-6 sm:p-10 md:p-12 space-y-10"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-center text-blue-400">Send me a message</h2>
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {["Your Name", "Phone Number (Optional)", "Your Email", "Subject"].map((placeholder, i) => (
-                  <input
-                    key={i}
-                    type={i === 2 ? "email" : i === 1 ? "tel" : "text"}
-                    placeholder={placeholder}
-                    className={`w-full p-3 bg-white/5 text-white placeholder-white/40 border border-white/10 rounded-lg transition 
-                      hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none 
-                      ${i >= 2 ? "col-span-1 sm:col-span-2" : ""}`}
-                  />
-                ))}
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  required
+                  className="w-full p-3 bg-white/5 text-white placeholder-white/40 border border-white/10 rounded-lg transition 
+                    hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone Number (Optional)"
+                  className="w-full p-3 bg-white/5 text-white placeholder-white/40 border border-white/10 rounded-lg transition 
+                    hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  required
+                  className="w-full col-span-1 sm:col-span-2 p-3 bg-white/5 text-white placeholder-white/40 border border-white/10 rounded-lg transition 
+                    hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                />
+                <input
+                  type="text"
+                  name="subject"
+                  placeholder="Subject"
+                  required
+                  className="w-full col-span-1 sm:col-span-2 p-3 bg-white/5 text-white placeholder-white/40 border border-white/10 rounded-lg transition 
+                    hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none"
+                />
               </div>
 
               <textarea
+                name="message"
                 rows="5"
                 placeholder="Yap here..."
+                required
                 className="w-full p-3 bg-white/5 text-white placeholder-white/40 border border-white/10 rounded-lg transition 
-                hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none resize-none"
+                  hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none resize-none"
               ></textarea>
 
               <div className="flex justify-center">
@@ -77,8 +121,8 @@ export default function Contact() {
                 <p><span className="text-white font-medium">Phone:</span> you ain't getting ts</p>
                 {[
                   ["GitHub", "https://github.com/tanmay-mevada"],
-                  ["Reddit", "https://reddit.com/u/Veg-Vagina-Eater"],
-                  ["Twitter", "https://x.com/Youcanseeme_x"],
+                  ["Reddit", "https://reddit.com/u/"],
+                  ["Twitter", "https://x.com/"],
                   ["Instagram", "https://instagram.com/tanmay.mevada"],
                   ["Chess", "https://chess.com/member/tanmaymevada"]
                 ].map(([label, link], idx) => (
@@ -97,7 +141,6 @@ export default function Contact() {
               </div>
             </div>
           </motion.div>
-
         </div>
       </div>
     </motion.div>

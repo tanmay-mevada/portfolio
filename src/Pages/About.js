@@ -46,10 +46,10 @@ const steps = [
           >
             BBIT
           </a>{" "}
-          Vallabh Vidhyangar with 9.57 CGPA
+          Vallabh Vidhyangar with 9.42 CGPA
         </>
       ), <br />,
-      withIcon("Currently pursuing BE/BTech. in CSE at  ")
+      withIcon("Currently pursuing BE/BTech. in CSE at Nirma University, Ahmedabad"),
     ]
   },
   {
@@ -60,11 +60,12 @@ const steps = [
     ),
     content: [
       <br />,
-      withIcon("Languages: C, C++, Java, HTML, CSS, JavaScript, Python, PHP"), <br />,
+      withIcon("Languages: C, C++, Java, HTML, CSS, TailwindCSS, JavaScript, Python, PHP"), <br />,
       withIcon("Databases: MySQL, Oracle, MongoDB, FireBase, SQLite"), <br />,
-      withIcon("Frameworks: React, Angular, Node JS, Tailwind CSS, Bootstrap, Flask, Scikit-learn"), <br />,
+      withIcon("Frameworks: NextJS, React Hooks, Angular, Node JS, Tailwind CSS, Bootstrap, Flask, Scikit-learn","Auth"), <br />,
       withIcon("Version Control: Git & GitHub"), <br />,
       withIcon("Tools: VS Code, Android Studio, Eclipse IDE, Eclipse EE, XAMPP, Arduino IDE, Unity Engine")
+
     ]
   },
   {
@@ -80,14 +81,14 @@ const steps = [
       withIcon("Badminton, Cricket"), <br />,
       withIcon("Listening to music -Spotify"), <br />,
       withIcon("Youtubing -fav: slayypoint"), <br />,
-      withIcon("Wathcing Movies -fav-movie: GotG Vol-3"), <br />,
+      withIcon("Wathcing Movies -fav: GotG Vol-3"), <br />,
       withIcon("Storing Memes -weird isn't it?")
     ]
   },
   {
     title: (
       <span className="inline-flex items-center gap-2">
-        <Gamepad2 size={22} /> Games I've played
+        <Gamepad2 size={22} /> Few games that I've played
       </span>
     ),
     content: [

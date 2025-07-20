@@ -33,6 +33,17 @@ import proj11x3 from "../Assets/proj11(3).png"
 import proj12x1 from "../Assets/proj12(1).png"
 import proj12x2 from "../Assets/proj12(2).png"
 import proj12x3 from "../Assets/proj12(3).png"
+import proj13x1 from "../Assets/proj13(1).png"
+import proj13x2 from "../Assets/proj13(2).png"
+import proj13x3 from "../Assets/proj13(3).png"
+import proj14x1 from "../Assets/proj14(1).png"
+import proj14x2 from "../Assets/proj14(2).png"
+import proj14x3 from "../Assets/proj14(3).png";
+import proj14x4 from "../Assets/proj14(4).png";
+import proj14x5 from "../Assets/proj14(5).png";
+import proj14x6 from "../Assets/proj14(6).png";
+import proj14x7 from "../Assets/proj14(7).png";
+
 export const projects = [
   {
     //proj1
@@ -54,16 +65,16 @@ export const projects = [
     github: "https://github.com/tanmay-mevada/Marksheet-Generator-CPP",
     live: "",
   },
-  {
-    //proj3
-    title: "Word Reader",
-    date: "October, 2023",
-    description: "Just a 'shame on me', lazy ahh project.",
-    tech: ["Python"],
-    images: [proj3],
-    github: "",
-    live: "",
-  },
+  // {
+  //   //proj3
+  //   title: "Word Reader",
+  //   date: "October, 2023",
+  //   description: "Just a 'shame on me', lazy ahh project.",
+  //   tech: ["Python"],
+  //   images: [proj3],
+  //   github: "",
+  //   live: "",
+  // },
   {
     //proj4
     title: "BMI Calculator",
@@ -153,5 +164,25 @@ export const projects = [
     images: [proj12x1,proj12x2,proj12x3],
     github: "https://github.com/tanmay-mevada/Login-Application-2",
     live: "",
+  },
+  {
+    //proj13
+    title: "Portfolio Website",
+    date: "June, 2025",
+    description: "The one you're surfing right now.",
+    tech: ["React JS","TailwindCSS","Framer Motion","Swiper JS"],
+    images: [proj13x1,proj13x2,proj13x3],
+    github: "https://github.com/tanmay-mevada/portfolio",
+    live: "https://myportfolio-nine-eta-17.vercel.app/j",
+  },
+  {
+    //proj14
+    title: "DStrA - A Learning Platform",
+    date: "July, 2025",
+    description: "A learning platform that helps diploma students learning DSA with interactive content.",
+    tech: ["NextJS","TypeScript","MongoDB","GoogleAuth","Judge0 API","Nodemailer","TailwindCSS","React Hooks"],
+    images: [proj14x1,proj14x2,proj14x3,proj14x4,proj14x5,proj14x6,proj14x7],
+    github: "https://github.com/tanmay-mevada/DStrA",
+    live: "https://d-str-a.vercel.app/",
   },
 ];
