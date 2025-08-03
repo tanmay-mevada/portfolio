@@ -42,7 +42,7 @@ const steps = [
             href="http://www.bbit.ac.in/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-300 font-semibold underline hover:text-blue-500"
+            className="font-semibold text-blue-300 underline hover:text-blue-500"
           >
             BBIT
           </a>{" "}
@@ -139,7 +139,7 @@ function About() {
 
   return (
     <section
-      className="min-h-screen bg-dark text-white relative px-4 sm:px-8 md:px-16 lg:px-40 py-20 overflow-hidden"
+      className="relative min-h-screen px-4 py-20 overflow-hidden text-white bg-dark sm:px-8 md:px-16 lg:px-40"
       ref={containerRef}
     >
       <Navbar />
@@ -183,11 +183,11 @@ function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.3 }}
             >
-              <div className="bg-dark2/20 backdrop-blur-md p-6 sm:p-8 md:p-10 w-full sm:w-11/12 md:w-4/5 lg:w-1/2 rounded-3xl border border-blue/30 shadow shadow-blue/20">
-                <h2 className="text-2xl font-bold text-blue mb-4 flex items-center justify-center text-center">
+              <div className="w-full p-6 border shadow bg-dark2/20 backdrop-blur-md sm:p-8 md:p-10 sm:w-11/12 md:w-4/5 lg:w-1/2 rounded-3xl border-blue/30 shadow-blue/20">
+                <h2 className="flex items-center justify-center mb-4 text-2xl font-bold text-center text-blue">
                   {step.title}
                 </h2>
-                <div className="text-gray-300 text-base">
+                <div className="text-base text-gray-300">
                   {step.content.map((line, idx) => (
                     <div key={idx}>{line}</div>
                   ))}
