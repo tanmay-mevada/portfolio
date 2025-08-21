@@ -23,8 +23,8 @@ export default function Contact() {
     const data = { name, email, phone, subject, message };
 
     try {
-      // Replace with your backend URL - make sure this matches your setup
-      const res = await fetch("http://localhost:3001/send-email", {
+      // Use the correct API endpoint
+      const res = await fetch("/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
