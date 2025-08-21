@@ -1,7 +1,7 @@
 import proj1 from "../Assets/proj1.png";
 import proj2x1 from "../Assets/proj2(1).png";
 import proj2x2 from "../Assets/proj2(2).png";
-import proj3 from "../Assets/proj3.png"
+// import proj3 from "../Assets/proj3.png"
 import proj4 from "../Assets/proj4.png"
 import proj5x1 from "../Assets/proj5(1).png"
 import proj5x2 from "../Assets/proj5(2).png"

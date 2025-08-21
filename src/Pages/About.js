@@ -79,9 +79,9 @@ const steps = [
       withIcon("Gaming -scroll down"), <br />,
       withIcon("Chess –to watch and play ,1000elo btw"), <br />,
       withIcon("Badminton, Cricket"), <br />,
-      withIcon("Listening to music -Spotify"), <br />,
+      withIcon("Listening to music -let it happen"), <br />,
       withIcon("Youtubing -fav: slayypoint"), <br />,
-      withIcon("Wathcing Movies -fav: GotG Vol-3"), <br />,
+      withIcon("Watching Movies -fav: GotG Vol-3"), <br />,
       withIcon("Storing Memes -weird isn't it?")
     ]
   },
