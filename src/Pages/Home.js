@@ -49,20 +49,19 @@ function Home() {
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-6 py-10 bg-gradient-to-br from-dark1 via-black-900 to-dark2 text-white relative overflow-hidden"
+      className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6 bg-gradient-to-br from-dark1 via-black-900 to-dark2"
     >
       {/* Matrix BG */}
       <MatrixBackground
         fadeOut={fadeMatrix}
-        className="absolute inset-0 pointer-events-none z-0"
+        className="absolute inset-0 z-0 pointer-events-none"
       />
 
       {/* Navbar */}
       <Navbar delay={true} />
 
       {/* Main Content */}
-      <div className="flex flex-col justify-center items-center z-10 max-w-screen-sm w-full space-y-6">
-        {/* Profile Image */}
+      <div className="z-10 flex flex-col items-center justify-center w-full max-w-screen-sm space-y-6">
         {showProfileImage && (
           <motion.img
             src={myPic}
@@ -70,11 +69,10 @@ function Home() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
-            className="w-32 h-32 xs:w-40 xs:h-40 sm:w-60 sm:h-60 rounded-full mb-4 border-2 border-blue object-cover animate-glow"
+            className="object-cover w-32 h-32 mb-4 border-2 rounded-full xs:w-40 xs:h-40 sm:w-60 sm:h-60 border-blue animate-glow"
           />
         )}
 
-        {/* Animated Heading */}
         <AnimatePresence mode="wait">
           {showHelloWorld ? (
             <motion.h1
@@ -83,7 +81,7 @@ function Home() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.6, y: -50 }}
               transition={{ duration: 0.8 }}
-              className="text-2xl xs:text-3xl sm:text-6xl mb-3 font-mono"
+              className="mb-3 font-mono text-2xl xs:text-3xl sm:text-6xl"
             >
               <span className="text-gr">
                 <Typewriter
@@ -101,14 +99,13 @@ function Home() {
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-3xl xs:text-4xl sm:text-6xl font-bold mb-3"
+              className="mb-3 text-3xl font-bold xs:text-4xl sm:text-6xl"
             >
               I'm <span className="text-blue">Tanmay</span>
             </motion.h1>
           )}
         </AnimatePresence>
 
-        {/* Typewriter Caption */}
         {showTypewriter && (
           <motion.p
             initial={{ opacity: 0, y: 20 }}

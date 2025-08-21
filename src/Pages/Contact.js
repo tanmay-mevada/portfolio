@@ -55,7 +55,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen px-4 py-20 text-white bg-slate-900 sm:px-8 md:px-12">
+    <div className="min-h-screen px-4 py-20 text-white bg-dark sm:px-8 md:px-12">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col items-stretch gap-8 lg:flex-row">
           {/* Contact Form */}

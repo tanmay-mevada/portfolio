@@ -20,8 +20,7 @@ function Navbar() {
       setShowSidebar(true);
     }
   }, [isHome, isInitialLoad]);
-
-  // Hide mobile navbar on scroll down, show on scroll up
+  
   useEffect(() => {
     let lastScrollY = window.scrollY;
 
@@ -43,7 +42,6 @@ function Navbar() {
 
   return (
     <>
-      {/* Desktop Sidebar Nav */}
       <AnimatePresence>
         {showSidebar && (
           <motion.nav
@@ -98,7 +96,6 @@ function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Mobile Bottom Navbar */}
       <AnimatePresence>
         {showMobileNav && (
           <motion.div
@@ -110,25 +107,25 @@ function Navbar() {
           >
             <a
               href="/home"
-              className="group flex flex-col items-center text-blue hover:text-black hover:bg-blue p-2 rounded-full transition-all duration-300"
+              className="flex flex-col items-center p-2 transition-all duration-300 rounded-full group text-blue hover:text-black hover:bg-blue"
             >
               <Home size={24} />
             </a>
             <Link
               to="/projects"
-              className="group flex flex-col items-center text-blue hover:text-black hover:bg-blue p-2 rounded-full transition-all duration-300"
+              className="flex flex-col items-center p-2 transition-all duration-300 rounded-full group text-blue hover:text-black hover:bg-blue"
             >
               <Code size={24} />
             </Link>
             <a
               href="/about"
-              className="group flex flex-col items-center text-blue hover:text-black hover:bg-blue p-2 rounded-full transition-all duration-300"
+              className="flex flex-col items-center p-2 transition-all duration-300 rounded-full group text-blue hover:text-black hover:bg-blue"
             >
               <Info size={24} />
             </a>
             <a
               href="/contact"
-              className="group flex flex-col items-center text-blue hover:text-black hover:bg-blue p-2 rounded-full transition-all duration-300"
+              className="flex flex-col items-center p-2 transition-all duration-300 rounded-full group text-blue hover:text-black hover:bg-blue"
             >
               <Mail size={24} />
             </a>

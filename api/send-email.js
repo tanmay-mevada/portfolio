@@ -53,7 +53,6 @@ export default async function handler(req, res) {
       replyTo: email
     };
 
-    // Send email
     await transporter.sendMail(mailOptions);
 
     res.status(200).json({ 
@@ -69,18 +68,3 @@ export default async function handler(req, res) {
     });
   }
 }
-
-/*
-File Structure for your project:
-
-your-portfolio/
-├── api/
-│   └── send-email.js          ← This file
-├── src/
-│   └── components/
-│       └── Contact.jsx        ← Your React component
-├── public/
-├── package.json
-├── vercel.json               ← Configuration file
-└── .env.local                ← Environment variables
-*/
