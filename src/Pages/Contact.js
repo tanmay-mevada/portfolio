@@ -6,14 +6,12 @@ export default function Contact() {
   const handleSubmit = async () => {
     setIsLoading(true);
     
-    // Get form values
     const name = document.querySelector('input[name="name"]').value;
     const email = document.querySelector('input[name="email"]').value;
     const phone = document.querySelector('input[name="phone"]').value;
     const subject = document.querySelector('input[name="subject"]').value;
     const message = document.querySelector('textarea[name="message"]').value;
     
-    // Basic validation
     if (!name || !email || !subject || !message) {
       alert('Please fill in all required fields');
       setIsLoading(false);
@@ -23,7 +21,6 @@ export default function Contact() {
     const data = { name, email, phone, subject, message };
 
     try {
-      // Use the correct API endpoint
       const res = await fetch("/api/send-email", {
         method: "POST",
         headers: {
@@ -39,7 +36,7 @@ export default function Contact() {
       const result = await res.json();
 
       if (result.success) {
-        alert("✅ Message sent successfully!");
+        alert("Message sent successfully!");
         // Clear form
         document.querySelector('input[name="name"]').value = '';
         document.querySelector('input[name="email"]').value = '';
@@ -47,11 +44,11 @@ export default function Contact() {
         document.querySelector('input[name="subject"]').value = '';
         document.querySelector('textarea[name="message"]').value = '';
       } else {
-        alert(`❌ ${result.message}`);
+        alert(`${result.message}`);
       }
     } catch (err) {
       console.error('Error:', err);
-      alert("❌ Error: Please check your internet connection.");
+      alert("Error: Please check your internet connection.");
     } finally {
       setIsLoading(false);
     }

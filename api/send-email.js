@@ -1,4 +1,3 @@
-// api/send-email.js (create this file in your project)
 const nodemailer = require('nodemailer');
 
 export default async function handler(req, res) {
@@ -40,7 +39,7 @@ export default async function handler(req, res) {
     // Email options
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER, // Send to yourself
+      to: "tanmaymevada24@gmail.com", 
       subject: `Portfolio Contact: ${subject}`,
       html: `
         <h2>New Contact Form Submission</h2>
