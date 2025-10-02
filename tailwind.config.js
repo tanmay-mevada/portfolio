@@ -12,6 +12,8 @@ module.exports = {
       animation: {
         "slow-pulse": "pulse 6s ease-in-out infinite",
         glow: "glowPulse 8s ease-in-out infinite",
+        "float": "float 3s ease-in-out infinite",
+        "glass-shimmer": "glassShimmer 2s ease-in-out infinite",
       },
       keyframes: {
         glowPulse: {
@@ -20,6 +22,21 @@ module.exports = {
           },
           "50%": {
             boxShadow: "0 0 40px rgba(59,130,246,0.8)",
+          },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-2px)" },
+        },
+        glassShimmer: {
+          "0%": { 
+            background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)"
+          },
+          "50%": { 
+            background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%)"
+          },
+          "100%": { 
+            background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)"
           },
         },
       },

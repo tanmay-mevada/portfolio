@@ -34,7 +34,7 @@ const steps = [
     content: [
       <br />,
       withIcon("I have completed nursery and primary school with A+ grade, "), <br />,
-      withIcon("Obv I have completed 10th; from JMC Highschool, Mehsana with xx percentile in gujarat board exam"), <br />,
+      withIcon("Obv I have completed 10th; from JMC Highschool, Mehsana with umm idk maybe ~90 percentile in GSEB exam."), <br />,
       withIcon(
         <>
           I have completed Diploma In Computer Engineering from{" "}
@@ -49,7 +49,19 @@ const steps = [
           Vallabh Vidhyangar with 9.42 CGPA
         </>
       ), <br />,
-      withIcon("Currently pursuing BE/BTech. in CSE at Nirma University, Ahmedabad"),
+      withIcon(
+        <>
+        Currently pursuing BE/BTech. in CSE at{" "}
+          <a
+            href="https://www.nirmauni.ac.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-blue-300 underline hover:text-blue-500"
+          >
+            Nirma University
+          </a>{" "}, Ahmedabad
+        </>
+      )
     ]
   },
   {

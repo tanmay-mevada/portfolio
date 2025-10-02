@@ -173,7 +173,7 @@ export const projects = [
     tech: ["React JS","TailwindCSS","Framer Motion","Swiper JS"],
     images: [proj13x1,proj13x2,proj13x3],
     github: "https://github.com/tanmay-mevada/portfolio",
-    live: "https://myportfolio-nine-eta-17.vercel.app/j",
+    live: "https://tanmaymevada.vercel.app",
   },
   {
     //proj14
