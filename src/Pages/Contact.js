@@ -59,7 +59,7 @@ export default function Contact() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col items-stretch gap-8 lg:flex-row">
           {/* Contact Form */}
-          <div className="w-full p-6 space-y-10 border shadow-xl lg:w-2/3 backdrop-blur-sm border-blue-500/10 rounded-3xl sm:p-10 md:p-12">
+          <div className="w-full p-6 space-y-10 border shadow-xl lg:w-2/3 backdrop-blur-sm border-blue/30 rounded-3xl sm:p-10 md:p-12">
             <h2 className="text-3xl font-bold text-center text-blue-400 sm:text-4xl">Send me a message</h2>
             <div className="space-y-6">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -137,7 +137,7 @@ export default function Contact() {
           </div>
 
           {/* Social Links Sidebar */}
-          <div className="flex flex-col justify-between w-full p-6 border shadow-lg lg:w-1/3 backdrop-blur-md border-blue-500/10 rounded-3xl sm:p-8 md:p-10 text-white/80">
+          <div className="flex flex-col justify-between w-full p-6 border shadow-lg lg:w-1/3 backdrop-blur-md border-blue/30 rounded-3xl sm:p-8 md:p-10 text-white/80">
             <div>
               <h2 className="mb-6 text-3xl font-bold text-center text-blue-400 sm:text-4xl">Connect With Me</h2>
               <div className="space-y-5 text-sm sm:text-base">
