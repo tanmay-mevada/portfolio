@@ -60,7 +60,7 @@ export default function Contact() {
         <div className="flex flex-col items-stretch gap-8 lg:flex-row">
           {/* Contact Form */}
           <div className="w-full p-6 space-y-10 border shadow-xl lg:w-2/3 backdrop-blur-sm border-blue/30 rounded-3xl sm:p-10 md:p-12">
-            <h2 className="text-3xl font-bold text-center text-blue-400 sm:text-4xl">Send me a message</h2>
+            <h2 className="text-3xl font-bold text-center text-blue sm:text-4xl">Send me a message</h2>
             <div className="space-y-6">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <input

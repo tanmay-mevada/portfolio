@@ -38,11 +38,14 @@ import proj13x2 from "../Assets/proj13(2).png"
 import proj13x3 from "../Assets/proj13(3).png"
 import proj14x1 from "../Assets/proj14(1).png"
 import proj14x2 from "../Assets/proj14(2).png"
-import proj14x3 from "../Assets/proj14(3).png";
-import proj14x4 from "../Assets/proj14(4).png";
-import proj14x5 from "../Assets/proj14(5).png";
-import proj14x6 from "../Assets/proj14(6).png";
-import proj14x7 from "../Assets/proj14(7).png";
+import proj14x3 from "../Assets/proj14(3).png"
+import proj14x4 from "../Assets/proj14(4).png"
+import proj14x5 from "../Assets/proj14(5).png"
+import proj14x6 from "../Assets/proj14(6).png"
+import proj14x7 from "../Assets/proj14(7).png"
+import proj15x1 from "../Assets/proj15(1).png"
+import proj15x2 from "../Assets/proj15(2).png"
+import proj15x3 from "../Assets/proj15(3).png"
 
 export const projects = [
   {
@@ -185,4 +188,24 @@ export const projects = [
     github: "https://github.com/tanmay-mevada/DStrA",
     live: "https://d-str-a.vercel.app/",
   },
+  {
+    //proj15
+    title: "OTP Generator and Verification (Logisim)",
+    date: "October, 2025",
+    description: "A hardware-only OTP generator and verifier in Logisim using LFSR-based pseudo-random logic.",
+    tech: ["Digital Electronics","Logisim","Flip Flops","Logic Gates"],
+    images: [proj15x1,proj15x2,proj15x3],
+    github: "https://github.com/tanmay-mevada/OTP-DE",
+    live: "",
+  },
+  // {
+  //   //proj16
+  //   title: "TautologyAI - Legal Document Analysis",
+  //   date: "October, 2025",
+  //   description: "A hardware-only OTP generator and verifier in Logisim using LFSR-based pseudo-random logic.",
+  //   tech: ["Digital Electronics","Logisim","Flip Flops","Logic Gates"],
+  //   images: [proj15x1,proj15x2,proj15x3],
+  //   github: "https://github.com/tanmay-mevada/OTP-DE",
+  //   live: "https://legal-ai-f8b0b.web.app/",
+  // },
 ];
