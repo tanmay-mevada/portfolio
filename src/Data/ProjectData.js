@@ -1,7 +1,6 @@
 import proj1 from "../Assets/proj1.png";
 import proj2x1 from "../Assets/proj2(1).png";
 import proj2x2 from "../Assets/proj2(2).png";
-// import proj3 from "../Assets/proj3.png"
 import proj4 from "../Assets/proj4.png"
 import proj5x1 from "../Assets/proj5(1).png"
 import proj5x2 from "../Assets/proj5(2).png"
@@ -24,11 +23,9 @@ import proj9x1 from "../Assets/proj9(1).png"
 import proj9x2 from "../Assets/proj9(2).png"
 import proj9x3 from "../Assets/proj9(3).png"
 import proj9x4 from "../Assets/proj9(4).png"
-// import proj10x1 from "../Assets/proj10(1).png"
 import proj10x2 from "../Assets/proj10(2).png"
 import proj10x3 from "../Assets/proj10(3).png"
 import proj11x1 from "../Assets/proj11(1).png"
-// import proj11x2 from "../Assets/proj11(2).png"
 import proj11x3 from "../Assets/proj11(3).png"
 import proj12x1 from "../Assets/proj12(1).png"
 import proj12x2 from "../Assets/proj12(2).png"
@@ -46,6 +43,10 @@ import proj14x7 from "../Assets/proj14(7).png"
 import proj15x1 from "../Assets/proj15(1).png"
 import proj15x2 from "../Assets/proj15(2).png"
 import proj15x3 from "../Assets/proj15(3).png"
+import proj16x1 from "../Assets/proj16(1).png"
+import proj16x2 from "../Assets/proj16(2).png"
+import proj16x3 from "../Assets/proj16(3).png"
+import proj16x4 from "../Assets/proj16(4).png"
 
 export const projects = [
   {
@@ -57,6 +58,17 @@ export const projects = [
     images: [proj1],
     github: "",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["Console output", "Basic syntax"],
+    category: "Learning",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
   {
     //proj2
@@ -67,17 +79,18 @@ export const projects = [
     images: [proj2x1, proj2x2],
     github: "https://github.com/tanmay-mevada/Marksheet-Generator-CPP",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["Data input", "Text-based output", "Grade calculation"],
+    category: "CLI Tool",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
-  // {
-  //   //proj3
-  //   title: "Word Reader",
-  //   date: "October, 2023",
-  //   description: "Just a 'shame on me', lazy ahh project.",
-  //   tech: ["Python"],
-  //   images: [proj3],
-  //   github: "",
-  //   live: "",
-  // },
   {
     //proj4
     title: "BMI Calculator",
@@ -87,6 +100,17 @@ export const projects = [
     images: [proj4],
     github: "https://github.com/tanmay-mevada/Marksheet-BMI-Calculator",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["BMI calculation", "User data management", "Health categorization", "Linked list implementation"],
+    category: "CLI Tool",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
   {
     //proj5
@@ -97,6 +121,17 @@ export const projects = [
     images: [proj5x1, proj5x2,proj5x3],
     github: "https://github.com/tanmay-mevada/Responsive-Static-Hostel-Website",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["Responsive design", "Contact form", "Image carousel", "Sidebar navigation"],
+    category: "Web Development",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
   {
     //proj6
@@ -107,6 +142,17 @@ export const projects = [
     images: [proj6x1, proj6x2,proj6x3],
     github: "https://github.com/tanmay-mevada/Responsive-Static-Cycle-Website",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["User authentication", "Product cards", "Responsive layout", "Sidebar menu"],
+    category: "Web Development",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
   {
     //proj7
@@ -117,6 +163,17 @@ export const projects = [
     images: [proj7x1, proj7x2,proj7x3,proj7x4],
     github: "https://github.com/tanmay-mevada/Electricity-Management-System-Basic",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["Database management", "Bill generation", "PDF export", "Customer data handling", "Command-line interface"],
+    category: "Desktop Application",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
   {
     //proj8
@@ -127,6 +184,17 @@ export const projects = [
     images: [proj8x1,proj8x2,proj8x3,proj8x4,proj8x5,proj8x6,proj8x7],
     github: "https://github.com/tanmay-mevada/Hostel-Management-Website",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["CRUD operations", "User authentication", "Room management", "Student records", "Admin dashboard"],
+    category: "Web Development",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v2.0",
+    isStarred: false,
+    isFeatured: false,
   },
   {
     //proj9
@@ -137,6 +205,17 @@ export const projects = [
     images: [proj9x1,proj9x2,proj9x3,proj9x4],
     github: "https://github.com/tanmay-mevada/Electricity-Management-System-Enhanced",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["Web interface", "Enhanced UI", "Bill generation", "Database integration", "PDF export", "User management"],
+    category: "Web Development",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v2.0",
+    isStarred: true,
+    isFeatured: false,
   },
   {
     //proj10
@@ -147,6 +226,17 @@ export const projects = [
     images: [proj10x2,proj10x3],
     github: "https://github.com/tanmay-mevada/Basic-Trip-Cost-Estimator",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["ML prediction", "Cost breakdown", "Data visualization", "Flask web interface", "CSV data processing"],
+    category: "Machine Learning",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: true,
+    isFeatured: false,
   },
   {
     //proj11
@@ -157,6 +247,17 @@ export const projects = [
     images: [proj11x1,proj11x3],
     github: "https://github.com/tanmay-mevada/Login-Application-1",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["User authentication", "Local database", "Sign up/Login", "SQLite integration"],
+    category: "Mobile Development",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
   {
     //proj12
@@ -167,6 +268,17 @@ export const projects = [
     images: [proj12x1,proj12x2,proj12x3],
     github: "https://github.com/tanmay-mevada/Login-Application-2",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["Firebase authentication", "Cloud database", "Real-time sync", "Sign up/Login"],
+    category: "Mobile Development",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
   {
     //proj13
@@ -177,6 +289,17 @@ export const projects = [
     images: [proj13x1,proj13x2,proj13x3],
     github: "https://github.com/tanmay-mevada/portfolio",
     live: "https://tanmaymevada.vercel.app",
+    status: "maintained",
+    projectType: "solo",
+    features: ["Responsive design", "Smooth animations", "Project showcase", "Contact form", "Dark theme"],
+    category: "Web Development",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: true,
+    isFeatured: true,
   },
   {
     //proj14
@@ -187,25 +310,58 @@ export const projects = [
     images: [proj14x1,proj14x2,proj14x3,proj14x4,proj14x5,proj14x6,proj14x7],
     github: "https://github.com/tanmay-mevada/DStrA",
     live: "https://d-str-a.vercel.app/",
+    status: "maintained",
+    projectType: "solo",
+    features: ["Interactive DSA problems", "Real-time code execution", "Google OAuth", "Progress tracking", "Email notifications", "Admin dashboard"],
+    category: "Web Development",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.2.0",
+    isStarred: true,
+    isFeatured: true,
   },
   {
     //proj15
     title: "OTP Generator and Verification (Logisim)",
-    date: "October, 2025",
+    date: "September, 2025",
     description: "A hardware-only OTP generator and verifier in Logisim using LFSR-based pseudo-random logic.",
     tech: ["Digital Electronics","Logisim","Flip Flops","Logic Gates"],
     images: [proj15x1,proj15x2,proj15x3],
     github: "https://github.com/tanmay-mevada/OTP-DE",
     live: "",
+    status: "completed",
+    projectType: "solo",
+    features: ["LFSR implementation", "OTP generation", "Verification logic", "Hardware simulation"],
+    category: "Hardware Design",
+    documentation: "",
+    demo: "",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: false,
+    isFeatured: false,
   },
-  // {
-  //   //proj16
-  //   title: "TautologyAI - Legal Document Analysis",
-  //   date: "October, 2025",
-  //   description: "A hardware-only OTP generator and verifier in Logisim using LFSR-based pseudo-random logic.",
-  //   tech: ["Digital Electronics","Logisim","Flip Flops","Logic Gates"],
-  //   images: [proj15x1,proj15x2,proj15x3],
-  //   github: "https://github.com/tanmay-mevada/OTP-DE",
-  //   live: "https://legal-ai-f8b0b.web.app/",
-  // },
+  {
+    //proj16
+    title: "TautologyAI - Legal Document Analysis",
+    date: "November, 2025",
+    description: "An AI-powered platform that simplifies legal documents with instant summaries, risk detection, and plain-language explanations.",
+    tech: ["NextJS","FastAPI","GCP","Vertex AI","Supabase","OCR","TailwindCSS"],
+    images: [proj16x1,proj16x2,proj16x3,proj16x4],
+    github: "https://github.com/tanmay-mevada/TautologyAI",
+    live: "https://legal-ai-f8b0b.web.app/",
+    status: "maintained",
+    projectType: "team",
+    features: ["AI document analysis", "Risk detection", "Plain-language summaries", "OCR integration", "PDF processing", "User authentication"],
+    category: "AI/ML Application",
+    documentation: "",
+    demo: "https://www.youtube.com/watch?v=8r8_jnx0UBs",
+    blog: "",
+    ppt: "",
+    version: "v1.0",
+    isStarred: true,
+    isFeatured: true,
+  },
 ];

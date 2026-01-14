@@ -1,5 +1,5 @@
 import React from "react";
-import { Github, ExternalLink } from "lucide-react";
+import { Github, ExternalLink, Youtube } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/pagination";
 
-function ProjectCard({ title, description, tech, images, github, live, date }) {
+function ProjectCard({ title, description, tech, images, github, live, date, demo}) {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -15,10 +15,10 @@ function ProjectCard({ title, description, tech, images, github, live, date }) {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
-      className="bg-dark2 border border-blue/20 rounded-xl overflow-hidden transition-all hover:glow"
+      className="overflow-hidden transition-all border bg-dark2 border-blue/20 rounded-xl hover:glow"
     >
       {/* Title + Date */}
-      <div className="flex justify-between items-center p-4 pb-2">
+      <div className="flex items-center justify-between p-4 pb-2">
         <h3 className="text-2xl font-semibold text-blue">{title}</h3>
         <span className="text-sm text-gray-400">{date}</span>
       </div>
@@ -43,12 +43,12 @@ function ProjectCard({ title, description, tech, images, github, live, date }) {
 
       {/* Description + Tech */}
       <div className="p-4">
-        <p className="text-gray-300 mb-3 text-sm">{description}</p>
+        <p className="mb-3 text-sm text-gray-300">{description}</p>
         <div className="flex flex-wrap gap-2 mb-4">
           {tech.map((item, i) => (
             <span
               key={i}
-              className="text-xs px-2 py-1 bg-blue/10 border border-blue/30 text-white rounded"
+              className="px-2 py-1 text-xs text-white border rounded bg-blue/10 border-blue/30"
             >
               {item}
             </span>
@@ -62,7 +62,7 @@ function ProjectCard({ title, description, tech, images, github, live, date }) {
               href={github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue text-sm flex items-center gap-1 hover:underline"
+              className="flex items-center gap-1 text-sm text-blue hover:underline"
             >
               <Github size={16} /> GitHub
             </a>
@@ -72,9 +72,19 @@ function ProjectCard({ title, description, tech, images, github, live, date }) {
               href={live}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue text-sm flex items-center gap-1 hover:underline"
+              className="flex items-center gap-1 text-sm text-blue hover:underline"
             >
               <ExternalLink size={16} /> Live
+            </a>
+          )}
+          {demo && (
+            <a
+              href={demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-sm text-blue hover:underline"
+            >
+              <Youtube size={16} /> Demo
             </a>
           )}
         </div>
