@@ -148,7 +148,8 @@ export default function Contact() {
                   ["Reddit", "https://reddit.com/u/"],
                   ["Twitter", "https://x.com/"],
                   ["Instagram", "https://instagram.com/tanmay.mevada"],
-                  ["Chess", "https://chess.com/member/tanmaymevada"]
+                  ["Chess", "https://chess.com/member/tanmaymevada"],
+                  ["LinkedIn" , "https://www.linkedin.com/in/tanmay-mevada/"]
                 ].map(([label, link], idx) => (
                   <p key={idx} className="transition hover:text-blue-400">
                     <span className="font-medium text-white">{label}:</span>{" "}

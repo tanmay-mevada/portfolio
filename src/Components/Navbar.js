@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Home, Code, Info, Mail, Github, Instagram } from "lucide-react";
+import { Home, Code, Info, Mail, Github, Instagram, Linkedin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 
@@ -81,6 +81,15 @@ function Navbar() {
               >
                 <Github size={26} />
                 <span className={label}>GitHub</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/tanmay-mevada/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={iconWrapper}
+              >
+                <Linkedin size={24} />
+                <span className={label}>LinkedIn</span>
               </a>
               <a
                 href="https://instagram.com/tanmay.mevada"
