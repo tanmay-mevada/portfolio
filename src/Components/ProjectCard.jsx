@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Github, ExternalLink, Youtube, X } from "lucide-react";
+//import React, { useState } from "react";
+import { Github, ExternalLink, Youtube } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+//import { AnimatePresence } from "framer-motion";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -146,8 +147,8 @@ import "swiper/css/pagination";
 // }
 
 function ProjectCard({ title, description, tech, images, github, live, date, demo, ...rest }) {
-  const [showModal, setShowModal] = useState(false);
-  const project = { title, description, tech, images, github, live, date, demo, ...rest };
+  //const [showModal, setShowModal] = useState(false);
+  //const project = { title, description, tech, images, github, live, date, demo, ...rest };
 
   return (
     <>
@@ -157,7 +158,7 @@ function ProjectCard({ title, description, tech, images, github, live, date, dem
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        onClick={() => setShowModal(true)}
+        //onClick={() => setShowModal(true)}
         className="overflow-hidden transition-all border cursor-pointer bg-dark2 border-blue/20 rounded-xl hover:glow"
       >
         {/* Title + Date */}
