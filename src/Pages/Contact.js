@@ -1,24 +1,35 @@
 import React, { useState } from "react";
+import { Mail, Phone, Github, Linkedin, Instagram, Twitter, Send, CheckCircle, XCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Contact() {
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: ""
+  });
+  const [status, setStatus] = useState(null); // 'success', 'error', or null
 
-  const handleSubmit = async () => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
+    setStatus(null);
     
-    const name = document.querySelector('input[name="name"]').value;
-    const email = document.querySelector('input[name="email"]').value;
-    const phone = document.querySelector('input[name="phone"]').value;
-    const subject = document.querySelector('input[name="subject"]').value;
-    const message = document.querySelector('textarea[name="message"]').value;
-    
-    if (!name || !email || !subject || !message) {
-      alert('Please fill in all required fields');
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      setStatus('error');
       setIsLoading(false);
       return;
     }
-    
-    const data = { name, email, phone, subject, message };
 
     try {
       const res = await fetch("/api/send-email", {
@@ -26,7 +37,7 @@ export default function Contact() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formData),
       });
 
       if (!res.ok) {
@@ -36,81 +47,135 @@ export default function Contact() {
       const result = await res.json();
 
       if (result.success) {
-        alert("Message sent successfully!");
-        // Clear form
-        document.querySelector('input[name="name"]').value = '';
-        document.querySelector('input[name="email"]').value = '';
-        document.querySelector('input[name="phone"]').value = '';
-        document.querySelector('input[name="subject"]').value = '';
-        document.querySelector('textarea[name="message"]').value = '';
+        setStatus('success');
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: ""
+        });
       } else {
-        alert(`${result.message}`);
+        setStatus('error');
       }
     } catch (err) {
       console.error('Error:', err);
-      alert("Error: Please check your internet connection.");
+      setStatus('error');
     } finally {
       setIsLoading(false);
     }
   };
 
+  const socialLinks = [
+    { icon: Github, label: "GitHub", link: "https://github.com/tanmay-mevada", color: "hover:text-blue" },
+    { icon: Linkedin, label: "LinkedIn", link: "https://www.linkedin.com/in/tanmay-mevada/", color: "hover:text-blue" },
+    { icon: Instagram, label: "Instagram", link: "https://instagram.com/tanmay.mevada", color: "hover:text-blue" },
+  ];
+
   return (
-    <div className="min-h-screen px-4 py-20 text-white bg-dark sm:px-8 md:px-12">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col items-stretch gap-8 lg:flex-row">
+    <div className="min-h-screen px-4 py-20 text-white bg-dark sm:px-8 md:px-12 lg:px-20">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-6xl mx-auto"
+      >
+
+        <div className="flex flex-col gap-8 lg:flex-row">
           {/* Contact Form */}
-          <div className="w-full p-6 space-y-10 border shadow-xl lg:w-2/3 backdrop-blur-sm border-blue/30 rounded-3xl sm:p-10 md:p-12">
-            <h2 className="text-3xl font-bold text-center text-blue sm:text-4xl">Send me a message</h2>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  required
-                  disabled={isLoading}
-                  className="w-full p-3 text-white transition border rounded-lg bg-white/5 placeholder-white/40 border-white/10 hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number (Optional)"
-                  disabled={isLoading}
-                  className="w-full p-3 text-white transition border rounded-lg bg-white/5 placeholder-white/40 border-white/10 hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  required
-                  disabled={isLoading}
-                  className="w-full col-span-1 p-3 text-white transition border rounded-lg sm:col-span-2 bg-white/5 placeholder-white/40 border-white/10 hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-                <input
-                  type="text"
-                  name="subject"
-                  placeholder="Subject"
-                  required
-                  disabled={isLoading}
-                  className="w-full col-span-1 p-3 text-white transition border rounded-lg sm:col-span-2 bg-white/5 placeholder-white/40 border-white/10 hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                />
-              </div>
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="w-full lg:w-2/3"
+          >
+            <form onSubmit={handleSubmit} className="p-8 border shadow-xl bg-dark2/20 border-blue/20 rounded-2xl">
+              <h2 className="mb-6 text-2xl font-bold text-blue">Send a Message</h2>
+              
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Your Name *"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Your Email *"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                  />
+                </div>
 
-              <textarea
-                name="message"
-                rows="5"
-                placeholder="Yap here..."
-                required
-                disabled={isLoading}
-                className="w-full p-3 text-white transition border rounded-lg resize-none bg-white/5 placeholder-white/40 border-white/10 hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-              ></textarea>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone Number (Optional)"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                  />
+                  <input
+                    type="text"
+                    name="subject"
+                    placeholder="Subject *"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                  />
+                </div>
 
-              <div className="flex justify-center">
+                <textarea
+                  name="message"
+                  rows="7"
+                  placeholder="Your Message *"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg resize-none bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                ></textarea>
+
+                {/* Status Messages */}
+                {status === 'success' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-2 p-3 text-green-400 border rounded-lg border-green-400/30 bg-green-400/10"
+                  >
+                    <CheckCircle size={20} />
+                    <span>Message sent successfully!</span>
+                  </motion.div>
+                )}
+
+                {status === 'error' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-2 p-3 text-red-400 border rounded-lg border-red-400/30 bg-red-400/10"
+                  >
+                    <XCircle size={20} />
+                    <span>Failed to send message. Please try again.</span>
+                  </motion.div>
+                )}
+
                 <button
-                  type="button"
-                  onClick={handleSubmit}
+                  type="submit"
                   disabled={isLoading}
-                  className="flex items-center gap-2 px-6 py-3 font-semibold text-white transition duration-200 bg-blue-600 shadow-lg rounded-xl hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
+                  className="flex items-center justify-center w-full gap-2 px-6 py-3 font-semibold text-white transition rounded-lg bg-blue hover:bg-blue/80 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <>
@@ -119,50 +184,67 @@ export default function Contact() {
                     </>
                   ) : (
                     <>
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                      </svg>
+                      <Send size={18} />
                       Send Message
                     </>
                   )}
                 </button>
               </div>
-            </div>
-          </div>
+            </form>
+          </motion.div>
 
-          {/* Social Links Sidebar */}
-          <div className="flex flex-col justify-between w-full p-6 border shadow-lg lg:w-1/3 backdrop-blur-md border-blue/30 rounded-3xl sm:p-8 md:p-10 text-white/80">
-            <div>
-              <h2 className="mb-6 text-3xl font-bold text-center text-blue-400 sm:text-4xl">Connect With Me</h2>
-              <div className="space-y-5 text-sm sm:text-base">
-                <p><span className="font-medium text-white">Email:</span> tanmaymevada24@gmail.com</p>
-                <p><span className="font-medium text-white">Phone:</span> you ain't getting ts</p>
-                {[
-                  ["GitHub", "https://github.com/tanmay-mevada"],
-                  ["Reddit", "https://reddit.com/u/"],
-                  ["Twitter", "https://x.com/"],
-                  ["Instagram", "https://instagram.com/tanmay.mevada"],
-                  ["Chess", "https://chess.com/member/tanmaymevada"],
-                  ["LinkedIn" , "https://www.linkedin.com/in/tanmay-mevada/"]
-                ].map(([label, link], idx) => (
-                  <p key={idx} className="transition hover:text-blue-400">
-                    <span className="font-medium text-white">{label}:</span>{" "}
-                    <a href={link} className="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">
-                      Click Here
+          {/* Contact Info Sidebar */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="w-full space-y-6 lg:w-1/3"
+          >
+            {/* Contact Details */}
+            <div className="p-6 border shadow-lg bg-dark2 border-blue/20 rounded-2xl">
+              <h2 className="mb-6 text-2xl font-bold text-blue">Contact Info</h2>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <Mail className="mt-1 text-blue" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">Email</p>
+                    <a href="mailto:tanmaymevada24@gmail.com" className="transition-colors hover:text-blue">
+                      tanmaymevada24@gmail.com
                     </a>
-                  </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Phone className="mt-1 text-blue" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">Phone</p>
+                    <p className="text-gray-300">Available on request</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div className="p-6 border shadow-lg bg-dark2 border-blue/20 rounded-2xl">
+              <h2 className="mb-6 text-2xl font-bold text-blue">Connect</h2>
+              <div className="space-y-3">
+                {socialLinks.map((social, idx) => (
+                  <motion.a
+                    key={idx}
+                    href={social.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ x: 5 }}
+                    className={`flex items-center gap-3 p-3 transition border rounded-lg border-blue/20 hover:border-blue/40 ${social.color} group`}
+                  >
+                    <social.icon size={20} className="transition-transform text-blue group-hover:scale-110" />
+                    <span className="font-medium">{social.label}</span>
+                  </motion.a>
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

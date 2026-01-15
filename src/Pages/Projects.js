@@ -79,7 +79,7 @@ function Projects() {
       id="projects"
       className="w-full min-h-screen px-4 py-16 text-center text-white sm:px-10 lg:px-20 xl:px-32 2xl:px-48 bg-dark"
     >
-      <h2 className="mb-8 text-4xl font-bold text-blue">Projects</h2>
+      {/* <h2 className="mb-8 text-4xl font-bold text-blue">Projects</h2> */}
 
       {/* Compact Search and Filter Controls */}
       <div className="max-w-4xl mx-auto mb-8">

@@ -34,8 +34,26 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const iconWrapper =
-    "w-12 h-12 flex items-center justify-center group relative rounded-full text-blue transition-all duration-300 transform will-change-transform hover:scale-110 hover:shadow-sm hover:shadow-blue hover:bg-blue hover:text-black";
+  const isActive = (path) => {
+    if (path === "/home") {
+      return location.pathname === "/" || location.pathname === "/home";
+    }
+    return location.pathname === path;
+  };
+
+  const iconWrapper = (path) =>
+    `w-12 h-12 flex items-center justify-center group relative rounded-full transition-all duration-300 transform will-change-transform hover:scale-110 hover:shadow-sm hover:shadow-blue ${
+      isActive(path)
+        ? "bg-blue text-black shadow-sm shadow-blue"
+        : "text-blue hover:bg-blue hover:text-black"
+    }`;
+
+  const mobileIconWrapper = (path) =>
+    `flex flex-col items-center p-2 transition-all duration-300 rounded-full group ${
+      isActive(path)
+        ? "bg-blue text-black"
+        : "text-blue hover:text-black hover:bg-blue"
+    }`;
 
   const label =
     "absolute left-14 top-1/2 -translate-y-1/2 px-2 py-1 text-sm rounded-md whitespace-nowrap z-50 shadow backdrop-blur-md backdrop-saturate-150 bg-blue/10 border border-blue/20 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300";
@@ -52,19 +70,19 @@ function Navbar() {
             className="fixed top-20 left-6 h-[600px] w-[68px] bg-dark text-white flex-col items-center py-8 shadow-lg z-50 rounded-xl border-2 border-blue transition-all duration-500 hover:shadow-blue/80 hover:scale-[1.009] hover:brightness-110 hidden sm:flex"
           >
             <div className="flex flex-col items-center gap-y-6">
-              <a href="/home" className={iconWrapper}>
+              <a href="/home" className={iconWrapper("/home")}>
                 <Home size={28} />
                 <span className={label}>Home</span>
               </a>
-              <Link to="/projects" className={iconWrapper}>
+              <Link to="/projects" className={iconWrapper("/projects")}>
                 <Code size={28} />
                 <span className={label}>Projects</span>
               </Link>
-              <a href="/about" className={iconWrapper}>
+              <a href="/about" className={iconWrapper("/about")}>
                 <Info size={28} />
                 <span className={label}>About Me</span>
               </a>
-              <a href="/contact" className={iconWrapper}>
+              <a href="/contact" className={iconWrapper("/contact")}>
                 <Mail size={28} />
                 <span className={label}>Contact</span>
               </a>
@@ -77,7 +95,7 @@ function Navbar() {
                 href="https://github.com/tanmay-mevada"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={iconWrapper}
+                className="relative flex items-center justify-center w-12 h-12 transition-all duration-300 transform rounded-full group text-blue will-change-transform hover:scale-110 hover:shadow-sm hover:shadow-blue hover:bg-blue hover:text-black"
               >
                 <Github size={26} />
                 <span className={label}>GitHub</span>
@@ -86,7 +104,7 @@ function Navbar() {
                 href="https://www.linkedin.com/in/tanmay-mevada/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={iconWrapper}
+                className="relative flex items-center justify-center w-12 h-12 transition-all duration-300 transform rounded-full group text-blue will-change-transform hover:scale-110 hover:shadow-sm hover:shadow-blue hover:bg-blue hover:text-black"
               >
                 <Linkedin size={24} />
                 <span className={label}>LinkedIn</span>
@@ -95,7 +113,7 @@ function Navbar() {
                 href="https://instagram.com/tanmay.mevada"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={iconWrapper}
+                className="relative flex items-center justify-center w-12 h-12 transition-all duration-300 transform rounded-full group text-blue will-change-transform hover:scale-110 hover:shadow-sm hover:shadow-blue hover:bg-blue hover:text-black"
               >
                 <Instagram size={26} />
                 <span className={label}>Instagram</span>
@@ -116,25 +134,25 @@ function Navbar() {
           >
             <a
               href="/home"
-              className="flex flex-col items-center p-2 transition-all duration-300 rounded-full group text-blue hover:text-black hover:bg-blue"
+              className={mobileIconWrapper("/home")}
             >
               <Home size={24} />
             </a>
             <Link
               to="/projects"
-              className="flex flex-col items-center p-2 transition-all duration-300 rounded-full group text-blue hover:text-black hover:bg-blue"
+              className={mobileIconWrapper("/projects")}
             >
               <Code size={24} />
             </Link>
             <a
               href="/about"
-              className="flex flex-col items-center p-2 transition-all duration-300 rounded-full group text-blue hover:text-black hover:bg-blue"
+              className={mobileIconWrapper("/about")}
             >
               <Info size={24} />
             </a>
             <a
               href="/contact"
-              className="flex flex-col items-center p-2 transition-all duration-300 rounded-full group text-blue hover:text-black hover:bg-blue"
+              className={mobileIconWrapper("/contact")}
             >
               <Mail size={24} />
             </a>
