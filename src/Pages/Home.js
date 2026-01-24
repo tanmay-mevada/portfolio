@@ -89,7 +89,7 @@ function Home() {
                   cursor
                   cursorStyle="|"
                   typeSpeed={100}
-                  delaySpeed={2000}
+                  delaySpeed={3000}
                 />
               </span>
             </motion.h1>
@@ -115,11 +115,11 @@ function Home() {
           >
             <Typewriter
               words={[
-                "A Computer Science & Engineering student with some minimal and basic skills.",
+                "A CS major with some minimal and basic skills.",
               ]}
               cursor
               cursorStyle="▌"
-              typeSpeed={75}
+              typeSpeed={70}
               delaySpeed={5000}
             />
           </motion.p>
