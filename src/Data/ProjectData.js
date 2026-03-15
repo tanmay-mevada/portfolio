@@ -47,10 +47,14 @@ import proj16x1 from "../Assets/proj16(1).png";
 import proj16x2 from "../Assets/proj16(2).png";
 import proj16x3 from "../Assets/proj16(3).png";
 import proj16x4 from "../Assets/proj16(4).png";
-import proj17x1 from "../Assets/proj17(1).png";
-import proj17x2 from "../Assets/proj17(2).png";
-import proj17x3 from "../Assets/proj17(3).png";
-import proj17x4 from "../Assets/proj17(4).png";
+// import proj17x1 from "../Assets/proj17(1).png";
+// import proj17x2 from "../Assets/proj17(2).png";
+// import proj17x3 from "../Assets/proj17(3).png";
+// import proj17x4 from "../Assets/proj17(4).png";
+// import proj18x1 from "../Assets/proj18(1).png";
+// import proj18x2 from "../Assets/proj18(2).png";
+// import proj18x3 from "../Assets/proj18(3).png";
+// import proj18x4 from "../Assets/proj18(4).png";
 
 export const projects = [
   {
@@ -525,5 +529,40 @@ export const projects = [
   //   isStarred: false,
   //   isFeatured: false,
   // },
-  
+  // {
+  //   // proj18
+  //   title: "PrintIt - Smart Remote Printing Platform",
+  //   date: "January, 2026",
+  //   description:
+  //     "An early-stage remote printing platform connecting students with print shops. The concept and workflow laid the foundation for PrintStack — a significantly more advanced version built with a richer feature set, better architecture, and production-grade reliability.",
+  //   tech: [
+  //     "Next.js",
+  //     "TypeScript",
+  //     "Supabase",
+  //     "Tailwind CSS",
+  //     "PayU",
+  //     "pdfjs-dist",
+  //     "jszip",
+  //   ],
+  //   images: [proj18x1, proj18x2, proj18x3, proj18x4],
+  //   github: "https://github.com/tanmay-mevada/Print-It",
+  //   live: "https://print-it-ten.vercel.app",
+  //   status: "archived",
+  //   projectType: "team",
+  //   features: [
+  //     "PDF & DOCX file parsing",
+  //     "Basic cost estimation",
+  //     "Shop discovery",
+  //     "UPI payments via PayU",
+  //     "OTP-based document pickup",
+  //   ],
+  //   category: "Web Application",
+  //   documentation: "",
+  //   demo: "",
+  //   blog: "",
+  //   ppt: "",
+  //   version: "v1.0",
+  //   isStarred: false,
+  //   isFeatured: false,
+  // },
 ];
