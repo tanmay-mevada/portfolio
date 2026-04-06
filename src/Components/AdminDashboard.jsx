@@ -223,50 +223,57 @@ const AdminDashboard = () => {
              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <label className="block mb-2 text-sm text-gray-400">Project Title *</label>
-                <input required type="text" name="title" value={formData.title} onChange={handleChange} className="w-full px-4 py-2 text-white transition-colors border rounded-lg outline-none bg-dark border-blue/20 focus:border-blue" />
+                <input required type="text" name="title" value={formData.title} onChange={handleChange} 
+                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" />
               </div>
               <div>
                 <label className="block mb-2 text-sm text-gray-400">Date (Display) *</label>
-                <input required type="text" name="date_display" value={formData.date_display} onChange={handleChange} className="w-full px-4 py-2 text-white transition-colors border rounded-lg outline-none bg-dark border-blue/20 focus:border-blue" placeholder="e.g. July, 2025" />
+                <input required type="text" name="date_display" value={formData.date_display} onChange={handleChange} 
+                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" placeholder="e.g. July, 2025" />
               </div>
             </div>
 
             <div>
               <label className="block mb-2 text-sm text-gray-400">Description *</label>
-              <textarea required name="description" value={formData.description} onChange={handleChange} rows="4" className="w-full px-4 py-2 text-white transition-colors border rounded-lg outline-none bg-dark border-blue/20 focus:border-blue"></textarea>
+              <textarea required name="description" value={formData.description} onChange={handleChange} rows="4" 
+                className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]"></textarea>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <label className="block mb-2 text-sm text-gray-400">Category</label>
-                <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-2 text-white transition-colors border rounded-lg outline-none bg-dark border-blue/20 focus:border-blue">
-                  <option value="Web Development">Web Development</option>
-                  <option value="Mobile Development">Mobile Development</option>
-                  <option value="Machine Learning">Machine Learning</option>
-                  <option value="Hardware Design">Hardware Design</option>
-                  <option value="Desktop Application">Desktop Application</option>
-                  <option value="CLI Tool">CLI Tool</option>
-                  <option value="Learning">Learning</option>
+                <select name="category" value={formData.category} onChange={handleChange} 
+                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]">
+                  <option className="bg-gray-900" value="Web Development">Web Development</option>
+                  <option className="bg-gray-900" value="Mobile Development">Mobile Development</option>
+                  <option className="bg-gray-900" value="Machine Learning">Machine Learning</option>
+                  <option className="bg-gray-900" value="Hardware Design">Hardware Design</option>
+                  <option className="bg-gray-900" value="Desktop Application">Desktop Application</option>
+                  <option className="bg-gray-900" value="CLI Tool">CLI Tool</option>
+                  <option className="bg-gray-900" value="Learning">Learning</option>
                 </select>
               </div>
               <div>
                 <label className="block mb-2 text-sm text-gray-400">Tech Stack (comma separated) *</label>
-                <input required type="text" name="tech" value={formData.tech} onChange={handleChange} className="w-full px-4 py-2 text-white transition-colors border rounded-lg outline-none bg-dark border-blue/20 focus:border-blue" placeholder="React, Next.js, Node" />
+                <input required type="text" name="tech" value={formData.tech} onChange={handleChange} 
+                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" placeholder="React, Next.js, Node" />
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <label className="block mb-2 text-sm text-gray-400">GitHub Repo URL</label>
-                <input type="url" name="github" value={formData.github} onChange={handleChange} className="w-full px-4 py-2 text-white transition-colors border rounded-lg outline-none bg-dark border-blue/20 focus:border-blue" />
+                <input type="url" name="github" value={formData.github} onChange={handleChange} 
+                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" />
               </div>
               <div>
                 <label className="block mb-2 text-sm text-gray-400">Live Site URL</label>
-                <input type="url" name="live" value={formData.live} onChange={handleChange} className="w-full px-4 py-2 text-white transition-colors border rounded-lg outline-none bg-dark border-blue/20 focus:border-blue" />
+                <input type="url" name="live" value={formData.live} onChange={handleChange} 
+                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" />
               </div>
             </div>
 
-            <div className="p-8 text-center transition-colors border-2 border-dashed rounded-xl border-blue/30 hover:border-blue/50 bg-dark">
+            <div className="p-8 text-center transition-colors bg-transparent border-2 border-dashed rounded-xl border-blue/30 hover:border-blue/50">
               <UploadCloud className="mx-auto mb-4 text-blue" size={40} />
               <p className="mb-2 text-sm font-medium text-gray-300">
                 {editingId ? "Upload new images to overwrite existing ones (or leave blank to keep current)" : "Select project images"}
@@ -280,7 +287,7 @@ const AdminDashboard = () => {
                 {loading ? <><Loader2 className="animate-spin" size={20} /> Saving...</> : (editingId ? 'Update Project' : 'Publish Project')}
               </button>
               {editingId && (
-                <button type="button" onClick={resetForm} className="px-6 py-3 text-gray-300 transition-colors border border-gray-600 rounded-lg hover:bg-gray-800">
+                <button type="button" onClick={resetForm} className="px-6 py-3 text-gray-300 transition-colors bg-transparent border border-gray-600 rounded-lg hover:bg-gray-800">
                   Cancel
                 </button>
               )}
