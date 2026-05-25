@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Github, LogOut, ShieldAlert } from "lucide-react";
-import AdminDashboard from "../Components/AdminDashboard"; // Adjust path if needed
+import AdminDashboard from "../Components/AdminDashboard";
 
 function AdminLogin() {
   const [session, setSession] = useState(null);

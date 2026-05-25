@@ -1,33 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
-import ProjectCard from "../Components/ProjectCard"; // Make sure path is correct
-import { supabase } from "../supabaseClient"; // Import Supabase!
+import ProjectCard from "../Components/ProjectCard";
+import { supabase } from "../supabaseClient";
 import { Search, X, ChevronDown, Loader2 } from "lucide-react";
 
 function Projects() {
-  // 1. New State for Cloud Data
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // 2. Your Existing Filter State
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("date-desc");
   const [filteredProjects, setFilteredProjects] = useState([]);
   const searchInputRef = useRef(null);
 
-  // --- FETCH FROM CLOUD ---
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const { data, error } = await supabase
           .from('projects')
           .select('*')
-          .order('created_at', { ascending: false });
+          .order('date', { ascending: false, nullsFirst: false }); // Primary sort by our new date column
 
         if (error) throw error;
         
         setProjects(data);
-        setFilteredProjects(data); // Set initial filtered view
+        setFilteredProjects(data);
       } catch (error) {
         console.error("Error fetching projects:", error.message);
       } finally {
@@ -38,10 +35,8 @@ function Projects() {
     fetchProjects();
   }, []);
 
-  // Dynamically generate categories based on what's in the DB
   const categories = ["All", ...new Set(projects.map((p) => p.category).filter(Boolean))];
 
-  // Keyboard shortcut for search
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === "/" && document.activeElement !== searchInputRef.current) {
@@ -57,36 +52,39 @@ function Projects() {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, []);
 
-  // Filter and sort logic
   useEffect(() => {
     let filtered = projects;
 
-    // Search filter
+    // Updated Search filter referencing the new schema
     if (searchQuery) {
+      const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
-          p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (p.tech && p.tech.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())))
+          (p.title_disp && p.title_disp.toLowerCase().includes(query)) ||
+          (p.desc_concise && p.desc_concise.toLowerCase().includes(query)) ||
+          (p.tech_stack && p.tech_stack.some((t) => t.toLowerCase().includes(query)))
       );
     }
 
-    // Category filter
     if (selectedCategory !== "All") {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
-    // Sort
+    // Updated Sort logic referencing the new schema
     filtered = [...filtered].sort((a, b) => {
+      // Fallback to created_at if date is empty
+      const dateA = new Date(a.date || a.created_at);
+      const dateB = new Date(b.date || b.created_at);
+
       switch (sortBy) {
         case "date-desc":
-          return new Date(b.created_at) - new Date(a.created_at);
+          return dateB - dateA;
         case "date-asc":
-          return new Date(a.created_at) - new Date(b.created_at);
+          return dateA - dateB;
         case "title-asc":
-          return a.title.localeCompare(b.title);
+          return (a.title_disp || "").localeCompare(b.title_disp || "");
         case "title-desc":
-          return b.title.localeCompare(a.title);
+          return (b.title_disp || "").localeCompare(a.title_disp || "");
         default:
           return 0;
       }
@@ -103,12 +101,11 @@ function Projects() {
 
   const hasActiveFilters = searchQuery || selectedCategory !== "All" || sortBy !== "date-desc";
 
-  // Loading State
   if (loading) {
     return (
       <section id="projects" className="flex flex-col items-center justify-center w-full min-h-screen py-16 text-white bg-dark">
         <Loader2 className="w-10 h-10 mb-4 animate-spin text-blue" />
-        <p className="text-gray-400">Loading your awesome projects...</p>
+        <p className="text-gray-400">Loading projects...</p>
       </section>
     );
   }
@@ -118,11 +115,9 @@ function Projects() {
       id="projects"
       className="w-full min-h-screen px-4 py-16 text-center text-white sm:px-10 lg:px-20 xl:px-32 2xl:px-48 bg-dark"
     >
-      {/* Compact Search and Filter Controls */}
       <div className="max-w-4xl mx-auto mb-8">
         <div className="flex flex-col gap-3 mb-1 sm:flex-row">
           
-          {/* Search Bar */}
           <div className="relative flex-1">
             <Search className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2" size={18} />
             <input
@@ -135,7 +130,6 @@ function Projects() {
             />
           </div>
 
-          {/* Category Filter */}
           <div className="relative sm:w-48">
             <select
               value={selectedCategory}
@@ -151,7 +145,6 @@ function Projects() {
             <ChevronDown className="absolute text-gray-400 transform -translate-y-1/2 pointer-events-none right-2 top-1/2" size={16} />
           </div>
 
-          {/* Sort Filter */}
           <div className="relative sm:w-48">
             <select
               value={sortBy}
@@ -167,7 +160,6 @@ function Projects() {
           </div>
         </div>
 
-        {/* Clear Filters + Count */}
         <div className="flex items-center justify-between text-xs text-gray-400">
           <span>
             {filteredProjects.length} of {projects.length} projects
@@ -183,7 +175,6 @@ function Projects() {
         </div>
       </div>
 
-      {/* Projects Grid or Empty State */}
       {filteredProjects.length === 0 ? (
         <div className="py-20 text-center">
           <p className="text-lg text-gray-400">No projects found matching your criteria.</p>
