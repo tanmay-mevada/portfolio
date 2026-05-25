@@ -1,5 +1,6 @@
 import React from "react";
 import { Github, ExternalLink, Youtube } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
@@ -8,7 +9,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 function ProjectCard({ 
-  title_disp, 
+  title_disp,
+  slug,
   desc_concise, 
   tech_stack, 
   images, 
@@ -47,9 +49,11 @@ function ProjectCard({
     >
       {/* Title + Date */}
       <div className="flex items-center justify-between gap-4 p-5 pb-4 sm:p-6 sm:pb-4">
-        <h3 className="text-lg font-bold tracking-tight text-white transition-colors duration-300 sm:text-xl lg:text-2xl line-clamp-1 group-hover:text-blue-400">
-          {title_disp}
-        </h3>
+        <Link to={`/projects/${slug}`} className="flex-1 min-w-0">
+          <h3 className="text-lg font-bold tracking-tight text-white transition-colors duration-300 sm:text-xl lg:text-2xl line-clamp-1 group-hover:text-blue-400">
+            {title_disp}
+          </h3>
+        </Link>
         <span className="text-[10px] sm:text-xs font-semibold tracking-widest text-slate-500 uppercase shrink-0 px-2 py-0.5 rounded-md"
           style={{ background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.12)" }}
         >
@@ -61,7 +65,6 @@ function ProjectCard({
       <div className="w-full overflow-hidden h-[200px] sm:h-[240px] lg:h-[280px] relative"
         style={{ borderTop: "1px solid rgba(59,130,246,0.1)", borderBottom: "1px solid rgba(59,130,246,0.1)", background: "#060d18" }}
       >
-        {/* Subtle top glow on hover */}
         <div className="absolute inset-x-0 top-0 z-10 h-px transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100"
           style={{ background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.6), transparent)" }}
         />
