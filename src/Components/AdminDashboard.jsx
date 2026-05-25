@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { UploadCloud, Plus, Loader2, Edit3, Trash2, ExternalLink, X, UserPlus, Trash, CheckCircle2 } from 'lucide-react';
+import { UploadCloud, Plus, Loader2, Edit3, Trash2, X, UserPlus, Trash, CheckCircle2 } from 'lucide-react';
+import MDEditor from '@uiw/react-md-editor';
 
 const AdminDashboard = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
-  const [view, setView] = useState('list'); 
+  const [view, setView] = useState('list');
   const [successMsg, setSuccessMsg] = useState('');
-  
+
   const [editingId, setEditingId] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
-  
-  // Custom Category State
+
   const defaultCategories = ["Web Development", "Machine Learning", "Hardware Design", "App Development"];
   const [showCustomCategory, setShowCustomCategory] = useState(false);
-
-  // Dynamic Contributors State
   const [contributors, setContributors] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -45,9 +43,7 @@ const AdminDashboard = () => {
     }
   }, [formData.title_disp, editingId]);
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  useEffect(() => { fetchProjects(); }, []);
 
   const fetchProjects = async () => {
     setFetchLoading(true);
@@ -55,7 +51,6 @@ const AdminDashboard = () => {
       .from('projects')
       .select('*')
       .order('created_at', { ascending: false });
-
     if (error) console.error("Error fetching projects:", error.message);
     else setProjects(data);
     setFetchLoading(false);
@@ -65,32 +60,27 @@ const AdminDashboard = () => {
     e.preventDefault();
     setLoading(true);
     setSuccessMsg('');
-
     try {
       let imageUrls = [];
-
       if (imageFiles.length > 0) {
         for (const file of imageFiles) {
           const fileExt = file.name.split('.').pop();
           const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
           const filePath = `portfolio/${fileName}`;
-
           const { error: uploadError } = await supabase.storage.from('project-images').upload(filePath, file);
           if (uploadError) throw uploadError;
-
           const { data: publicUrlData } = supabase.storage.from('project-images').getPublicUrl(filePath);
           imageUrls.push(publicUrlData.publicUrl);
         }
       }
 
-      const techArray = formData.tech_stack ? formData.tech_stack.split(',').map((item) => item.trim()).filter(Boolean) : [];
-      const validDate = formData.date ? formData.date : null; 
-      const validContributors = contributors.filter(c => c.name.trim() !== ''); 
+      const techArray = formData.tech_stack ? formData.tech_stack.split(',').map(i => i.trim()).filter(Boolean) : [];
+      const validContributors = contributors.filter(c => c.name.trim() !== '');
 
       const projectPayload = {
         title_disp: formData.title_disp,
         slug: formData.slug,
-        date: validDate,
+        date: formData.date || null,
         type: formData.type,
         category: formData.category,
         desc_concise: formData.desc_concise,
@@ -144,14 +134,7 @@ const AdminDashboard = () => {
 
   const handleEditInit = (project) => {
     const projCategory = project.category || 'Web Development';
-    
-    // Check if the loaded project has a category outside the default 4
-    if (!defaultCategories.includes(projCategory)) {
-      setShowCustomCategory(true);
-    } else {
-      setShowCustomCategory(false);
-    }
-
+    setShowCustomCategory(!defaultCategories.includes(projCategory));
     setFormData({
       title_disp: project.title_disp || '',
       slug: project.slug || '',
@@ -174,10 +157,10 @@ const AdminDashboard = () => {
   };
 
   const resetForm = () => {
-    setFormData({ 
-      title_disp: '', slug: '', date: '', type: 'Personal Project', category: 'Web Development', 
-      desc_concise: '', desc_detailed: '', status: 'completed', status_info: '', tech_stack: '', 
-      git_link: '', live_link: '', demo_link: '' 
+    setFormData({
+      title_disp: '', slug: '', date: '', type: 'Personal Project', category: 'Web Development',
+      desc_concise: '', desc_detailed: '', status: 'completed', status_info: '', tech_stack: '',
+      git_link: '', live_link: '', demo_link: ''
     });
     setShowCustomCategory(false);
     setContributors([]);
@@ -192,23 +175,27 @@ const AdminDashboard = () => {
 
   const addContributor = () => setContributors([...contributors, { name: '', github: '' }]);
   const updateContributor = (index, field, value) => {
-    const newContributors = [...contributors];
-    newContributors[index][field] = value;
-    setContributors(newContributors);
+    const updated = [...contributors];
+    updated[index][field] = value;
+    setContributors(updated);
   };
   const removeContributor = (index) => setContributors(contributors.filter((_, i) => i !== index));
 
   return (
-    <div className="w-full">
+    <div className="w-full" data-color-mode="dark">
       {/* Top Action Bar */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex gap-4">
-          <button onClick={() => { resetForm(); setView('list'); }}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors ${view === 'list' ? 'bg-blue text-dark' : 'text-gray-400 hover:text-white border border-transparent hover:border-gray-700'}`}>
+          <button
+            onClick={() => { resetForm(); setView('list'); }}
+            className={`px-4 py-2 rounded-lg font-semibold transition-colors ${view === 'list' ? 'bg-blue text-dark' : 'text-gray-400 hover:text-white border border-transparent hover:border-gray-700'}`}
+          >
             All Projects
           </button>
-          <button onClick={() => { resetForm(); setView('form'); }}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors flex items-center gap-2 ${view === 'form' ? 'bg-blue text-dark' : 'text-gray-400 hover:text-white border border-transparent hover:border-gray-700'}`}>
+          <button
+            onClick={() => { resetForm(); setView('form'); }}
+            className={`px-4 py-2 rounded-lg font-semibold transition-colors flex items-center gap-2 ${view === 'form' ? 'bg-blue text-dark' : 'text-gray-400 hover:text-white border border-transparent hover:border-gray-700'}`}
+          >
             <Plus size={18} /> Add New
           </button>
         </div>
@@ -216,12 +203,12 @@ const AdminDashboard = () => {
 
       {successMsg && (
         <div className="flex items-center justify-between p-4 mb-6 text-green-400 border rounded-lg bg-green-500/10 border-green-500/30">
-          <span className="flex items-center gap-2"><CheckCircle2 size={18}/> {successMsg}</span>
+          <span className="flex items-center gap-2"><CheckCircle2 size={18} /> {successMsg}</span>
           <button onClick={() => setSuccessMsg('')} className="hover:text-green-300"><X size={18} /></button>
         </div>
       )}
 
-      {/* VIEW: PROJECT LIST */}
+      {/* VIEW: LIST */}
       {view === 'list' && (
         <div className="overflow-hidden border shadow-xl bg-dark2 rounded-xl border-blue/20">
           {fetchLoading ? (
@@ -229,9 +216,7 @@ const AdminDashboard = () => {
               <Loader2 className="mb-2 text-blue animate-spin" size={32} /> Loading projects...
             </div>
           ) : projects.length === 0 ? (
-            <div className="p-10 text-center text-gray-400">
-              No projects found. Click "Add New" to get started!
-            </div>
+            <div className="p-10 text-center text-gray-400">No projects found. Click "Add New" to get started!</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -276,7 +261,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* VIEW: FORM (Create & Edit) */}
+      {/* VIEW: FORM */}
       {view === 'form' && (
         <div className="max-w-4xl p-6 mx-auto border shadow-xl md:p-8 bg-dark2 rounded-xl border-blue/20">
           <div className="flex items-center justify-between mb-8">
@@ -287,20 +272,20 @@ const AdminDashboard = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
-            
+
             {/* SECTION 1: Core Info */}
             <div className="p-6 space-y-6 border rounded-xl border-blue/10 bg-dark/50">
               <h3 className="pb-2 text-sm font-bold tracking-wider uppercase border-b text-blue border-blue/10">Core Identity</h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                   <label className="block mb-2 text-sm text-gray-400">Display Title *</label>
-                  <input required type="text" name="title_disp" value={formData.title_disp} onChange={handleChange} 
+                  <input required type="text" name="title_disp" value={formData.title_disp} onChange={handleChange}
                     className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" placeholder="e.g. DStrA Learning Platform" />
                 </div>
                 <div>
                   <label className="block mb-2 text-sm text-gray-400">URL Slug * <span className="text-xs text-gray-500">(Must be unique)</span></label>
-                  <input required type="text" name="slug" value={formData.slug} onChange={handleChange} 
-                    className="w-full px-4 py-2 text-white font-mono transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" placeholder="e.g. dstra-platform" />
+                  <input required type="text" name="slug" value={formData.slug} onChange={handleChange}
+                    className="w-full px-4 py-2 font-mono text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" placeholder="e.g. dstra-platform" />
                 </div>
               </div>
 
@@ -309,50 +294,29 @@ const AdminDashboard = () => {
                   <label className="block mb-2 text-sm text-gray-400">Category</label>
                   {showCustomCategory ? (
                     <div className="relative">
-                      <input 
-                        required 
-                        type="text" 
-                        name="category" 
-                        value={formData.category} 
-                        onChange={handleChange}
+                      <input required type="text" name="category" value={formData.category} onChange={handleChange}
                         placeholder="Type custom category..."
-                        className="w-full px-4 py-2 pr-10 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" 
-                      />
-                      <button 
-                        type="button" 
-                        onClick={() => {
-                          setShowCustomCategory(false);
-                          setFormData(prev => ({ ...prev, category: defaultCategories[0] }));
-                        }}
-                        className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-white"
-                      >
+                        className="w-full px-4 py-2 pr-10 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" />
+                      <button type="button" onClick={() => { setShowCustomCategory(false); setFormData(prev => ({ ...prev, category: defaultCategories[0] })); }}
+                        className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-white">
                         <X size={16} />
                       </button>
                     </div>
                   ) : (
-                    <select 
-                      name="category" 
-                      value={formData.category} 
+                    <select name="category" value={formData.category}
                       onChange={(e) => {
-                        if (e.target.value === 'custom_entry') {
-                          setShowCustomCategory(true);
-                          setFormData(prev => ({ ...prev, category: '' }));
-                        } else {
-                          handleChange(e);
-                        }
-                      }} 
-                      className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]"
-                    >
-                      {defaultCategories.map(cat => (
-                        <option key={cat} className="bg-gray-900" value={cat}>{cat}</option>
-                      ))}
+                        if (e.target.value === 'custom_entry') { setShowCustomCategory(true); setFormData(prev => ({ ...prev, category: '' })); }
+                        else { handleChange(e); }
+                      }}
+                      className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]">
+                      {defaultCategories.map(cat => <option key={cat} className="bg-gray-900" value={cat}>{cat}</option>)}
                       <option className="font-bold bg-gray-900" value="custom_entry">Other (Custom...)</option>
                     </select>
                   )}
                 </div>
                 <div>
                   <label className="block mb-2 text-sm text-gray-400">Project Type</label>
-                  <select name="type" value={formData.type} onChange={handleChange} 
+                  <select name="type" value={formData.type} onChange={handleChange}
                     className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]">
                     <option className="bg-gray-900" value="Personal Project">Personal Project</option>
                     <option className="bg-gray-900" value="Team Project">Team Project</option>
@@ -362,7 +326,7 @@ const AdminDashboard = () => {
                 </div>
                 <div>
                   <label className="block mb-2 text-sm text-gray-400">Date Completed</label>
-                  <input type="date" name="date" value={formData.date} onChange={handleChange} 
+                  <input type="date" name="date" value={formData.date} onChange={handleChange}
                     className="w-full px-4 py-2 text-gray-300 transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" />
                 </div>
               </div>
@@ -374,7 +338,7 @@ const AdminDashboard = () => {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                   <label className="block mb-2 text-sm text-gray-400">Current Status</label>
-                  <select name="status" value={formData.status} onChange={handleChange} 
+                  <select name="status" value={formData.status} onChange={handleChange}
                     className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]">
                     <option className="bg-gray-900" value="completed">Completed</option>
                     <option className="bg-gray-900" value="ongoing">Ongoing</option>
@@ -384,13 +348,13 @@ const AdminDashboard = () => {
                 </div>
                 <div>
                   <label className="block mb-2 text-sm text-gray-400">Status Info <span className="text-xs text-gray-500">(Optional Context)</span></label>
-                  <input type="text" name="status_info" value={formData.status_info} onChange={handleChange} 
+                  <input type="text" name="status_info" value={formData.status_info} onChange={handleChange}
                     className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" placeholder="e.g. Needs API key updates..." />
                 </div>
               </div>
               <div>
                 <label className="block mb-2 text-sm text-gray-400">Tech Stack (comma separated) *</label>
-                <input required type="text" name="tech_stack" value={formData.tech_stack} onChange={handleChange} 
+                <input required type="text" name="tech_stack" value={formData.tech_stack} onChange={handleChange}
                   className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" placeholder="React, Node.js, Tailwind, PostgreSQL" />
               </div>
             </div>
@@ -399,20 +363,55 @@ const AdminDashboard = () => {
             <div className="space-y-6">
               <div>
                 <label className="block mb-2 text-sm text-gray-400">Concise Description * <span className="text-xs text-gray-500">(For the grid card)</span></label>
-                <textarea required name="desc_concise" value={formData.desc_concise} onChange={handleChange} rows="2" 
-                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]"></textarea>
+                <textarea required name="desc_concise" value={formData.desc_concise} onChange={handleChange} rows="2"
+                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue focus:bg-[#0B1221]" />
               </div>
+
+              {/* ── Markdown Editor ── */}
               <div>
-                <label className="block mb-2 text-sm text-gray-400">Detailed Description <span className="text-xs text-gray-500">(Supports Markdown)</span></label>
-                <textarea name="desc_detailed" value={formData.desc_detailed} onChange={handleChange} rows="8" 
-                  className="w-full px-4 py-2 text-white transition-colors bg-transparent border rounded-lg outline-none border-blue/20 focus:border-blue font-mono text-sm focus:bg-[#0B1221]" placeholder="## Features&#10;- User Auth&#10;- Realtime DB"></textarea>
+                <label className="block mb-2 text-sm text-gray-400">
+                  Detailed Description
+                  <span className="ml-2 text-xs text-gray-500">(Markdown supported — live preview)</span>
+                </label>
+
+                {/* Wrapper forces the editor to inherit our dark theme */}
+                <div
+                  className="overflow-hidden border rounded-xl border-blue/20"
+                  style={{ '--color-canvas-default': '#0b1221', '--color-border-default': 'rgba(59,130,246,0.2)' }}
+                >
+                  <MDEditor
+                    value={formData.desc_detailed}
+                    onChange={(val) => setFormData(prev => ({ ...prev, desc_detailed: val || '' }))}
+                    height={380}
+                    data-color-mode="dark"
+                    preview="live"
+                    visibleDragbar={false}
+                    style={{
+                      background: '#0a1628',
+                      borderRadius: 0,
+                      border: 'none',
+                      fontSize: '14px',
+                    }}
+                    textareaProps={{
+                      placeholder: '## Features\n- User Auth\n- Realtime DB\n\n## Tech Details\n...',
+                      style: { background: '#0a1628', color: '#e2e8f0', fontFamily: 'monospace' }
+                    }}
+                  />
+                </div>
+
+                {/* Quick-reference cheatsheet */}
+                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 px-1 text-[11px] text-gray-500 font-mono">
+                  {[['**bold**','bold'], ['*italic*','italic'], ['# H1','heading'], ['- item','list'], ['`code`','inline code'], ['```js','code block'], ['[text](url)','link']].map(([syntax, label]) => (
+                    <span key={label}><span className="text-blue/60">{syntax}</span> → {label}</span>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* SECTION 4: Links & Contributors */}
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               <div className="space-y-4">
-                 <h3 className="pb-2 text-sm font-bold tracking-wider uppercase border-b text-blue border-blue/10">External Links</h3>
+                <h3 className="pb-2 text-sm font-bold tracking-wider uppercase border-b text-blue border-blue/10">External Links</h3>
                 <div>
                   <label className="block mb-2 text-sm text-gray-400">GitHub Repo</label>
                   <input type="url" name="git_link" value={formData.git_link} onChange={handleChange} className="w-full px-4 py-2 text-white bg-transparent border rounded-lg border-blue/20 focus:border-blue" />
@@ -422,7 +421,7 @@ const AdminDashboard = () => {
                   <input type="url" name="live_link" value={formData.live_link} onChange={handleChange} className="w-full px-4 py-2 text-white bg-transparent border rounded-lg border-blue/20 focus:border-blue" />
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm text-gray-400">Demo/Video URL</label>
+                  <label className="block mb-2 text-sm text-gray-400">Demo / Video URL</label>
                   <input type="url" name="demo_link" value={formData.demo_link} onChange={handleChange} className="w-full px-4 py-2 text-white bg-transparent border rounded-lg border-blue/20 focus:border-blue" />
                 </div>
               </div>
@@ -430,18 +429,22 @@ const AdminDashboard = () => {
               <div className="space-y-4">
                 <div className="flex items-end justify-between pb-2 border-b border-blue/10">
                   <h3 className="text-sm font-bold tracking-wider uppercase text-blue">Contributors</h3>
-                  <button type="button" onClick={addContributor} className="flex items-center gap-1 text-xs transition-colors text-blue hover:text-white"><UserPlus size={14}/> Add</button>
+                  <button type="button" onClick={addContributor} className="flex items-center gap-1 text-xs transition-colors text-blue hover:text-white">
+                    <UserPlus size={14} /> Add
+                  </button>
                 </div>
-                
                 {contributors.length === 0 && <p className="text-sm italic text-gray-500">No contributors added.</p>}
-                
                 {contributors.map((contrib, index) => (
                   <div key={index} className="flex items-center gap-2 p-2 border rounded-lg bg-dark border-blue/10">
                     <div className="flex-1 space-y-2">
-                      <input type="text" placeholder="Name" value={contrib.name} onChange={(e) => updateContributor(index, 'name', e.target.value)} className="w-full px-3 py-1 text-sm text-white bg-transparent border rounded outline-none border-blue/20 focus:border-blue" />
-                      <input type="url" placeholder="GitHub URL (Optional)" value={contrib.github} onChange={(e) => updateContributor(index, 'github', e.target.value)} className="w-full px-3 py-1 text-sm text-white bg-transparent border rounded outline-none border-blue/20 focus:border-blue" />
+                      <input type="text" placeholder="Name" value={contrib.name} onChange={(e) => updateContributor(index, 'name', e.target.value)}
+                        className="w-full px-3 py-1 text-sm text-white bg-transparent border rounded outline-none border-blue/20 focus:border-blue" />
+                      <input type="url" placeholder="GitHub URL (Optional)" value={contrib.github} onChange={(e) => updateContributor(index, 'github', e.target.value)}
+                        className="w-full px-3 py-1 text-sm text-white bg-transparent border rounded outline-none border-blue/20 focus:border-blue" />
                     </div>
-                    <button type="button" onClick={() => removeContributor(index)} className="p-2 text-red-400 transition-colors rounded-lg hover:bg-red-500/10"><Trash size={16}/></button>
+                    <button type="button" onClick={() => removeContributor(index)} className="p-2 text-red-400 transition-colors rounded-lg hover:bg-red-500/10">
+                      <Trash size={16} />
+                    </button>
                   </div>
                 ))}
               </div>
@@ -453,17 +456,20 @@ const AdminDashboard = () => {
               <p className="mb-2 text-sm font-medium text-gray-300">
                 {editingId ? "Upload new images to overwrite existing ones (or leave blank to keep current)" : "Select project images"}
               </p>
-              <input type="file" multiple accept="image/*" onChange={handleImageChange} className="block w-full text-sm text-gray-400 cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue/10 file:text-blue hover:file:bg-blue/20" />
+              <input type="file" multiple accept="image/*" onChange={handleImageChange}
+                className="block w-full text-sm text-gray-400 cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue/10 file:text-blue hover:file:bg-blue/20" />
               {imageFiles.length > 0 && <p className="mt-3 text-xs text-green-400">{imageFiles.length} file(s) selected</p>}
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <div className="flex gap-4 pt-6 border-t border-blue/10">
-              <button disabled={loading} type="submit" className="flex items-center justify-center flex-1 gap-2 px-6 py-4 text-lg font-bold transition-colors rounded-lg bg-blue text-dark hover:bg-blue/80 disabled:opacity-50">
+              <button disabled={loading} type="submit"
+                className="flex items-center justify-center flex-1 gap-2 px-6 py-4 text-lg font-bold transition-colors rounded-lg bg-blue text-dark hover:bg-blue/80 disabled:opacity-50">
                 {loading ? <><Loader2 className="animate-spin" size={24} /> Saving securely...</> : (editingId ? 'Update Project' : 'Publish Project')}
               </button>
               {editingId && (
-                <button type="button" onClick={resetForm} className="px-8 py-4 text-gray-300 transition-colors bg-transparent border border-gray-600 rounded-lg hover:bg-gray-800">
+                <button type="button" onClick={resetForm}
+                  className="px-8 py-4 text-gray-300 transition-colors bg-transparent border border-gray-600 rounded-lg hover:bg-gray-800">
                   Cancel
                 </button>
               )}
