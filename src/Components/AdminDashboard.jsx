@@ -40,7 +40,7 @@ function CodeBlock({ children }) {
   };
 
   return (
-    <div className="relative my-6 overflow-hidden border rounded-xl border-blue-500/20 bg-gray-950">
+    <div className="relative max-w-full my-6 overflow-hidden border rounded-xl border-blue-500/20 bg-gray-950">
       <div className="flex items-center justify-between px-4 py-2 border-b bg-blue-500/5 border-blue-500/10">
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full bg-red-500/80" />
@@ -54,7 +54,7 @@ function CodeBlock({ children }) {
           {copied ? "✓ Copied" : "Copy"}
         </button>
       </div>
-      <pre className="p-5 overflow-x-auto font-mono text-sm leading-relaxed">
+      <pre className="max-w-full p-5 overflow-x-auto font-mono text-sm leading-relaxed">
         <code dangerouslySetInnerHTML={{ __html: colorizeCode(raw) }} />
       </pre>
     </div>
@@ -63,13 +63,13 @@ function CodeBlock({ children }) {
 
 /* ── Markdown renderers ── */
 const md = {
-  h1: ({ children }) => <h1 className="pb-2 mt-8 mb-4 text-3xl font-extrabold leading-tight text-white border-b-2 border-blue-500/20">{children}</h1>,
-  h2: ({ children }) => <h2 className="pl-3 mt-8 mb-3 text-2xl font-bold leading-snug text-gray-200 border-l-4 border-blue-500">{children}</h2>,
-  h3: ({ children }) => <h3 className="mt-6 mb-2 text-xl font-semibold text-blue-300">{children}</h3>,
-  h4: ({ children }) => <h4 className="mt-5 mb-2 text-lg font-semibold text-blue-200">{children}</h4>,
-  p: ({ children }) => <p className="mb-4 leading-relaxed text-gray-400">{children}</p>,
+  h1: ({ children }) => <h1 className="pb-2 mt-8 mb-4 text-3xl font-extrabold leading-tight text-white break-words border-b-2 border-blue-500/20">{children}</h1>,
+  h2: ({ children }) => <h2 className="pl-3 mt-8 mb-3 text-2xl font-bold leading-snug text-gray-200 break-words border-l-4 border-blue-500">{children}</h2>,
+  h3: ({ children }) => <h3 className="mt-6 mb-2 text-xl font-semibold text-blue-300 break-words">{children}</h3>,
+  h4: ({ children }) => <h4 className="mt-5 mb-2 text-lg font-semibold text-blue-200 break-words">{children}</h4>,
+  p: ({ children }) => <p className="mb-4 leading-relaxed text-gray-400 break-words">{children}</p>,
   a: ({ href, children }) => (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 no-underline transition-colors border-b border-blue-400/50 hover:text-blue-300 hover:border-blue-300">
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 no-underline break-words transition-colors border-b border-blue-400/50 hover:text-blue-300 hover:border-blue-300">
       {children}
     </a>
   ),
@@ -78,31 +78,31 @@ const md = {
   ul: ({ children }) => <ul className="pl-0 mb-4 space-y-2 list-none">{children}</ul>,
   ol: ({ children }) => <ol className="pl-6 mb-4 space-y-2 text-gray-400 list-decimal">{children}</ol>,
   li: ({ children }) => (
-    <li className="flex items-start gap-2.5 text-gray-400 leading-relaxed">
+    <li className="flex items-start gap-2.5 text-gray-400 leading-relaxed break-words">
       <span className="text-blue-500 text-[10px] mt-2 flex-shrink-0">◆</span>
-      <span>{children}</span>
+      <span className="min-w-0">{children}</span>
     </li>
   ),
   code: ({ inline, children }) =>
     inline ? (
-      <code className="text-blue-300 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded text-sm font-mono">{children}</code>
+      <code className="text-blue-300 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded text-sm font-mono break-words">{children}</code>
     ) : (
       <code>{children}</code>
     ),
   pre: ({ children }) => <CodeBlock>{children?.props?.children}</CodeBlock>,
   blockquote: ({ children }) => (
-    <blockquote className="p-4 mb-5 italic text-gray-400 border-l-4 border-blue-500 bg-blue-500/5 rounded-r-xl">{children}</blockquote>
+    <blockquote className="p-4 mb-5 italic text-gray-400 break-words border-l-4 border-blue-500 bg-blue-500/5 rounded-r-xl">{children}</blockquote>
   ),
   hr: () => <div className="h-px my-8 bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />,
   table: ({ children }) => (
-    <div className="mb-6 overflow-x-auto border rounded-xl border-blue-500/20">
-      <table className="w-full text-sm border-collapse">{children}</table>
+    <div className="max-w-full mb-6 overflow-x-auto border rounded-xl border-blue-500/20">
+      <table className="w-full min-w-full text-sm border-collapse">{children}</table>
     </div>
   ),
   thead: ({ children }) => <thead className="bg-blue-500/10">{children}</thead>,
-  th: ({ children }) => <th className="p-3 font-semibold tracking-wide text-left text-gray-200 border-b border-blue-500/20">{children}</th>,
-  td: ({ children }) => <td className="p-3 text-gray-400 border-b border-blue-500/10">{children}</td>,
-  img: ({ src, alt }) => <img src={src} alt={alt} className="block max-w-full my-5 border rounded-xl border-blue-500/20" />,
+  th: ({ children }) => <th className="p-3 font-semibold tracking-wide text-left text-gray-200 border-b border-blue-500/20 whitespace-nowrap">{children}</th>,
+  td: ({ children }) => <td className="min-w-0 p-3 text-gray-400 break-words border-b border-blue-500/10">{children}</td>,
+  img: ({ src, alt }) => <img src={src} alt={alt} className="block object-contain max-w-full my-5 border rounded-xl border-blue-500/20" />,
 };
 
 const AdminDashboard = () => {
@@ -320,7 +320,7 @@ const AdminDashboard = () => {
   const removeContributor = (index) => setContributors(contributors.filter((_, i) => i !== index));
 
   return (
-    <div className="w-full text-gray-200" data-color-mode="dark">
+    <div className="w-full min-w-0 text-gray-200" data-color-mode="dark">
       <style>{`
         .wmde-markdown { background-color: transparent !important; }
       `}</style>
@@ -360,7 +360,7 @@ const AdminDashboard = () => {
 
       {/* VIEW: LIST */}
       {view === 'list' && (
-        <div className="overflow-hidden bg-gray-900 border shadow-2xl border-blue-500/20 rounded-2xl">
+        <div className="w-full overflow-hidden bg-gray-900 border shadow-2xl border-blue-500/20 rounded-2xl">
           {fetchLoading ? (
             <div className="flex flex-col items-center justify-center p-16 text-center text-gray-400">
               <Loader2 className="mb-4 text-blue-500 animate-spin" size={36} /> 
@@ -371,8 +371,8 @@ const AdminDashboard = () => {
               No projects found. Click "Add New" to build your portfolio!
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+            <div className="w-full overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-[600px]">
                 <thead>
                   <tr className="text-xs tracking-widest text-gray-400 uppercase border-b bg-gray-950 border-blue-500/20">
                     <th className="p-5 font-semibold">Project</th>
@@ -384,12 +384,12 @@ const AdminDashboard = () => {
                 <tbody className="divide-y divide-blue-500/10">
                   {projects.map((proj) => (
                     <tr key={proj.id} className="transition-colors hover:bg-blue-500/5">
-                      <td className="p-5">
-                        <div className="text-base font-bold text-white">{proj.title_disp}</div>
-                        <div className="mt-1 font-mono text-xs text-gray-500">/{proj.slug}</div>
+                      <td className="p-5 max-w-[200px] truncate">
+                        <div className="text-base font-bold text-white truncate">{proj.title_disp}</div>
+                        <div className="mt-1 font-mono text-xs text-gray-500 truncate">/{proj.slug}</div>
                       </td>
                       <td className="p-5">
-                        <span className={`px-3 py-1 text-xs font-medium rounded-full border ${
+                        <span className={`px-3 py-1 text-xs font-medium whitespace-nowrap rounded-full border ${
                           proj.status === 'completed' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 
                           proj.status === 'ongoing' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 
                           'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
@@ -398,8 +398,8 @@ const AdminDashboard = () => {
                         </span>
                       </td>
                       <td className="p-5">
-                        <div className="text-sm font-medium text-gray-300">{proj.category}</div>
-                        <div className="mt-1 text-xs text-gray-500">{proj.type}</div>
+                        <div className="text-sm font-medium text-gray-300 truncate">{proj.category}</div>
+                        <div className="mt-1 text-xs text-gray-500 truncate">{proj.type}</div>
                       </td>
                       <td className="p-5">
                         <div className="flex justify-end gap-2">
@@ -422,7 +422,7 @@ const AdminDashboard = () => {
 
       {/* VIEW: FORM */}
       {view === 'form' && (
-        <div className="max-w-4xl p-6 mx-auto bg-gray-900 border shadow-2xl md:p-10 rounded-2xl border-blue-500/20">
+        <div className="w-full max-w-4xl min-w-0 p-6 mx-auto bg-gray-900 border shadow-2xl md:p-10 rounded-2xl border-blue-500/20">
           <div className="flex items-center justify-between mb-8">
             <h2 className="flex items-center gap-3 text-2xl font-extrabold text-white">
               {editingId ? <Edit3 className="text-blue-500" size={28} /> : <Plus className="text-blue-500" size={28} />}
@@ -436,12 +436,12 @@ const AdminDashboard = () => {
             <div className="space-y-6 border shadow-inner p-7 rounded-xl border-blue-500/10 bg-gray-950/50">
               <h3 className="pb-3 text-sm font-bold tracking-widest text-blue-500 uppercase border-b border-blue-500/10">Core Identity</h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">Display Title *</label>
                   <input required type="text" name="title_disp" value={formData.title_disp} onChange={handleChange}
                     className="w-full px-4 py-2.5 text-white transition-all bg-gray-900 border rounded-lg outline-none border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="e.g. DStrA Learning Platform" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">URL Slug * <span className="text-xs font-normal text-gray-500">(Must be unique)</span></label>
                   <input required type="text" name="slug" value={formData.slug} onChange={handleChange}
                     className="w-full px-4 py-2.5 font-mono text-sm text-white transition-all bg-gray-900 border rounded-lg outline-none border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="e.g. dstra-platform" />
@@ -450,7 +450,7 @@ const AdminDashboard = () => {
 
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 {/* Category Dropdown */}
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">Category</label>
                   {showCustomCategory ? (
                     <div className="relative">
@@ -476,7 +476,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Type Dropdown */}
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">Project Type</label>
                   {showCustomType ? (
                     <div className="relative">
@@ -501,7 +501,7 @@ const AdminDashboard = () => {
                   )}
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">Date Completed</label>
                   <input type="date" name="date" value={formData.date} onChange={handleChange}
                     className="w-full px-4 py-2.5 text-gray-300 transition-all bg-gray-900 border rounded-lg outline-none border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
@@ -515,7 +515,7 @@ const AdminDashboard = () => {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 
                 {/* Status Dropdown */}
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">Current Status</label>
                   {showCustomStatus ? (
                     <div className="relative">
@@ -540,35 +540,35 @@ const AdminDashboard = () => {
                   )}
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">Status Info <span className="text-xs font-normal text-gray-500">(Optional Context)</span></label>
                   <input type="text" name="status_info" value={formData.status_info} onChange={handleChange}
                     className="w-full px-4 py-2.5 text-white transition-all bg-gray-900 border rounded-lg outline-none border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="e.g. Needs API key updates..." />
                 </div>
               </div>
-              <div>
+              <div className="min-w-0">
                 <label className="block mb-2 text-sm font-medium text-gray-400">Tech Stack <span className="text-xs font-normal text-gray-500">(comma separated) *</span></label>
                 <input required type="text" name="tech_stack" value={formData.tech_stack} onChange={handleChange}
-                  className="w-full px-4 py-2.5 text-white transition-all bg-gray-900 border rounded-lg outline-none border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="React, Node.js, Tailwind, PostgreSQL" />
+                  className="w-full px-4 py-2.5 text-white transition-all bg-gray-900 border rounded-lg outline-none border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 break-words" placeholder="React, Node.js, Tailwind, PostgreSQL" />
               </div>
             </div>
 
             {/* SECTION 3: Descriptions */}
             <div className="space-y-6">
-              <div>
+              <div className="min-w-0">
                 <label className="block mb-2 text-sm font-medium text-gray-400">Concise Description * <span className="text-xs font-normal text-gray-500">(For the grid card)</span></label>
                 <textarea required name="desc_concise" value={formData.desc_concise} onChange={handleChange} rows="2"
-                  className="w-full px-4 py-3 text-white transition-all bg-gray-900 border border-gray-700 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+                  className="w-full px-4 py-3 text-white transition-all bg-gray-900 border border-gray-700 rounded-lg outline-none resize-y focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
               </div>
 
               {/* ── Markdown Editor ── */}
-              <div>
+              <div className="w-full max-w-full min-w-0">
                 <label className="flex items-center justify-between block mb-2 text-sm font-medium text-gray-400">
                   <span>Detailed Description <span className="ml-1 text-xs font-normal text-gray-500">(Markdown supported)</span></span>
                 </label>
 
                 <div
-                  className="overflow-hidden transition-all border border-gray-700 shadow-inner rounded-xl focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
+                  className="w-full overflow-hidden transition-all border border-gray-700 shadow-inner rounded-xl focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
                   style={{ '--color-canvas-default': '#111827', '--color-border-default': 'transparent' }}
                 >
                   <MDEditor
@@ -606,15 +606,15 @@ const AdminDashboard = () => {
             <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
               <div className="space-y-5">
                 <h3 className="pb-3 text-sm font-bold tracking-widest text-blue-500 uppercase border-b border-blue-500/10">External Links</h3>
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">GitHub Repo</label>
                   <input type="url" name="git_link" value={formData.git_link} onChange={handleChange} className="w-full px-4 py-2.5 text-white bg-gray-900 border border-gray-700 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none" placeholder="[https://github.com/](https://github.com/)..." />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">Live URL</label>
                   <input type="url" name="live_link" value={formData.live_link} onChange={handleChange} className="w-full px-4 py-2.5 text-white bg-gray-900 border border-gray-700 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none" placeholder="https://..." />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block mb-2 text-sm font-medium text-gray-400">Demo / Video URL</label>
                   <input type="url" name="demo_link" value={formData.demo_link} onChange={handleChange} className="w-full px-4 py-2.5 text-white bg-gray-900 border border-gray-700 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none" placeholder="[https://youtube.com/](https://youtube.com/)..." />
                 </div>
@@ -624,7 +624,7 @@ const AdminDashboard = () => {
                 <div className="flex items-end justify-between pb-3 border-b border-blue-500/10">
                   <h3 className="text-sm font-bold tracking-widest text-blue-500 uppercase">Contributors</h3>
                   <button type="button" onClick={addContributor} className="flex items-center gap-1.5 text-xs font-medium transition-colors text-blue-400 hover:text-blue-300">
-                    <UserPlus size="{14}"/> Add Member
+                    <UserPlus size={14} /> Add Member
                   </button>
                 </div>
                 {contributors.length === 0 && <p className="py-2 text-sm italic text-gray-500">No contributors added.</p>}
@@ -632,14 +632,14 @@ const AdminDashboard = () => {
                 <div className="space-y-3">
                   {contributors.map((contrib, index) => (
                     <div key={index} className="flex items-center gap-3 p-3 border border-gray-800 shadow-sm rounded-xl bg-gray-950">
-                      <div className="flex-1 space-y-3">
+                      <div className="flex-1 min-w-0 space-y-3">
                         <input type="text" placeholder="Member Name" value={contrib.name} onChange={(e) => updateContributor(index, 'name', e.target.value)}
                           className="w-full px-3 py-2 text-sm text-white bg-gray-900 border border-gray-700 rounded-md outline-none focus:border-blue-500" />
                         <input type="url" placeholder="GitHub URL (Optional)" value={contrib.github} onChange={(e) => updateContributor(index, 'github', e.target.value)}
                           className="w-full px-3 py-2 text-sm text-white bg-gray-900 border border-gray-700 rounded-md outline-none focus:border-blue-500" />
                       </div>
-                      <button type="button" onClick={() => removeContributor(index)} className="p-2.5 text-red-400 transition-colors rounded-lg hover:bg-red-500/10 hover:text-red-300">
-                        <Trash size="{16}"/>
+                      <button type="button" onClick={() => removeContributor(index)} className="p-2.5 text-red-400 transition-colors rounded-lg hover:bg-red-500/10 hover:text-red-300 flex-shrink-0">
+                        <Trash size={16} />
                       </button>
                     </div>
                   ))}
@@ -667,7 +667,7 @@ const AdminDashboard = () => {
                           className="absolute p-2 text-white transition-all -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-lg shadow-lg opacity-0 top-1/2 left-1/2 hover:bg-red-600 hover:scale-110 group-hover:opacity-100"
                           title="Remove image"
                         >
-                          <Trash2 size="{16}"/>
+                          <Trash2 size={16} />
                         </button>
                       </div>
                     ))}
@@ -694,7 +694,7 @@ const AdminDashboard = () => {
                             className="absolute p-2 text-white transition-all -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-lg shadow-lg opacity-0 top-1/2 left-1/2 hover:bg-red-600 hover:scale-110 group-hover:opacity-100"
                             title="Remove pending image"
                           >
-                            <Trash2 size="{16}"/>
+                            <Trash2 size={16} />
                           </button>
                         </div>
                       );
@@ -705,7 +705,7 @@ const AdminDashboard = () => {
 
               <div className="mt-2 text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 mb-4 text-blue-500 rounded-full bg-blue-500/10">
-                  <UploadCloud size="{32}"/>
+                  <UploadCloud size={32} />
                 </div>
                 <p className="mb-2 text-base font-medium text-gray-300">
                   Select images to append to the gallery
@@ -720,7 +720,7 @@ const AdminDashboard = () => {
             <div className="flex flex-col gap-4 pt-8 border-t border-gray-800 sm:flex-row">
               <button disabled={loading} type="submit"
                 className="flex items-center justify-center flex-1 gap-2 px-8 py-4 text-lg font-bold text-white transition-all bg-blue-600 rounded-xl hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/20 disabled:opacity-50 disabled:cursor-not-allowed">
-                {loading ? <><Loader2 className="animate-spin" size="{24}"/> Saving Securely...</> : (editingId ? 'Update Project' : 'Publish Project')}
+                {loading ? <><Loader2 className="animate-spin" size={24} /> Saving Securely...</> : (editingId ? 'Update Project' : 'Publish Project')}
               </button>
               {editingId && (
                 <button type="button" onClick={resetForm}
