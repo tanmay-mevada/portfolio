@@ -13,3 +13,23 @@ body {
     margin: 0;
     padding: 0;
   }
+
+  /* Add to your global CSS (index.css or App.css) */
+
+.project-swiper .swiper-pagination-bullet {
+  background: rgba(148, 163, 184, 0.4);
+  opacity: 1;
+  width: 5px;
+  height: 5px;
+}
+
+.project-swiper .swiper-pagination-bullet-active {
+  background: rgba(59, 130, 246, 0.9);
+  width: 16px;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.project-swiper .swiper-pagination {
+  bottom: 6px;
+}

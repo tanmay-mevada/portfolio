@@ -6,6 +6,7 @@ import {
   Navigate
 } from "react-router-dom";
 
+import ProjectDetail from "./Pages/ProjectDetail";
 import Home from "./Pages/Home";
 import Projects from "./Pages/Projects";
 import Layout from "./Components/Layout";
@@ -35,6 +36,7 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/projects/:slug" element={<ProjectDetail />} />
           </Route>
 
           {/* ADMIN ROUTE */}

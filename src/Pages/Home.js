@@ -31,12 +31,10 @@ function Home() {
 
     const helloTimeout = setTimeout(() => {
       setShowHelloWorld(false);
-
       const typewriterTimeout = setTimeout(() => {
         setShowTypewriter(true);
         setShowProfileImage(true);
       }, 600);
-
       return () => clearTimeout(typewriterTimeout);
     }, matrixDuration + 1000);
 
@@ -49,8 +47,17 @@ function Home() {
   return (
     <section
       id="home"
-      className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6 bg-gradient-to-br from-dark1 via-black-900 to-dark2"
+      className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6 bg-dark"
     >
+      {/* subtle radial glow behind content */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(30,144,255,0.08) 0%, transparent 70%)",
+        }}
+      />
+
       {/* Matrix BG */}
       <MatrixBackground
         fadeOut={fadeMatrix}
@@ -63,14 +70,21 @@ function Home() {
       {/* Main Content */}
       <div className="z-10 flex flex-col items-center justify-center w-full max-w-screen-sm space-y-6">
         {showProfileImage && (
-          <motion.img
-            src={myPic}
-            alt="Tanmay Mevada"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            className="object-cover w-32 h-32 mb-4 border-2 rounded-full xs:w-40 xs:h-40 sm:w-60 sm:h-60 border-blue animate-glow"
-          />
+          <div className="relative mb-4">
+            {/* glow ring behind image */}
+            <div
+              className="absolute inset-0 scale-110 rounded-full pointer-events-none blur-2xl"
+              style={{ background: "rgba(30,144,255,0.2)" }}
+            />
+            <motion.img
+              src={myPic}
+              alt="Tanmay Mevada"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
+              className="relative z-10 object-cover w-32 h-32 border-2 rounded-full xs:w-40 xs:h-40 sm:w-60 sm:h-60 border-blue animate-glow"
+            />
+          </div>
         )}
 
         <AnimatePresence mode="wait">
@@ -114,9 +128,7 @@ function Home() {
             className="text-sm xs:text-base sm:text-xl text-gray-300 max-w-[90%] sm:max-w-2xl min-h-[2.5rem]"
           >
             <Typewriter
-              words={[
-                "A CS major with some minimal and basic skills.",
-              ]}
+              words={["A CS major with some minimal and basic skills."]}
               cursor
               cursorStyle="▌"
               typeSpeed={70}
