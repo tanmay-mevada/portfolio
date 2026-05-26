@@ -114,16 +114,16 @@ function Projects() {
 
   return (
     <PageLayout>
-      {/* Page heading */}
+      {/* Page heading
       <div className="pt-8 mb-8 sm:pt-10 sm:mb-10">
         <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
           Projects
         </h1>
         <p className="mt-1 text-sm text-gray-500">Things I've built</p>
-      </div>
+      </div> */}
 
       {/* Search and Filters */}
-      <div className="mb-8 sm:mb-10">
+      <div className="mb-8 pt-14 sm:mb-10">
         <div className="flex flex-col gap-3 mb-4 md:flex-row md:gap-4">
           {/* Search */}
           <div className="relative flex-1">
