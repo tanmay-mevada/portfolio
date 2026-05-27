@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ProjectCard from "../Components/ProjectCard";
 import PageLayout from "../Components/PageLayout";
 import { supabase } from "../supabaseClient";
-import { Search, X, ChevronDown, Loader2 } from "lucide-react";
+import { Search, X, ChevronDown} from "lucide-react";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
