@@ -35,40 +35,47 @@ function ProjectCard({
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="flex flex-col h-full overflow-hidden text-left transition-all duration-300 border shadow-lg group bg-dark2 rounded-2xl"
       style={{
-        borderColor: "rgba(59,130,246,0.12)",
+        borderColor: "rgba(30,144,255,0.12)",
         boxShadow: "0 4px 20px rgba(0,0,0,0.35)",
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.borderColor = "rgba(59,130,246,0.4)";
-        e.currentTarget.style.boxShadow = "0 8px 32px rgba(59,130,246,0.12), 0 4px 20px rgba(0,0,0,0.4)";
+        e.currentTarget.style.borderColor = "rgba(30,144,255,0.4)";
+        e.currentTarget.style.boxShadow = "0 8px 32px rgba(30,144,255,0.12), 0 4px 20px rgba(0,0,0,0.4)";
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.borderColor = "rgba(59,130,246,0.12)";
+        e.currentTarget.style.borderColor = "rgba(30,144,255,0.12)";
         e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.35)";
       }}
     >
       {/* Title + Date */}
       <div className="flex items-center justify-between gap-4 p-5 pb-4 sm:p-6 sm:pb-4">
         <Link to={`/projects/${slug}`} className="flex-1 min-w-0">
-          <h3 className="text-lg font-bold tracking-tight text-white transition-colors duration-300 sm:text-xl lg:text-2xl line-clamp-1 group-hover:text-blue-400">
+          <h3
+            className="text-lg font-bold tracking-tight transition-colors duration-300 sm:text-xl lg:text-2xl line-clamp-1"
+            style={{ color: "#94a3b8" }}
+            onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
+            onMouseLeave={e => e.currentTarget.style.color = "#94a3b8"}
+          >
             {title_disp}
           </h3>
         </Link>
-        <span className="text-[10px] sm:text-xs font-semibold tracking-widest text-slate-500 uppercase shrink-0 px-2 py-0.5 rounded-md"
-          style={{ background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.12)" }}
+        <span
+          className="text-[10px] sm:text-xs font-semibold tracking-widest uppercase shrink-0 px-2 py-0.5 rounded-md"
+          style={{ color: "#475569", background: "rgba(30,144,255,0.06)", border: "1px solid rgba(30,144,255,0.12)" }}
         >
           {formattedDate}
         </span>
       </div>
 
       {/* Image Wrapper */}
-      <div className="w-full overflow-hidden h-[200px] sm:h-[240px] lg:h-[280px] relative"
-        style={{ borderTop: "1px solid rgba(59,130,246,0.1)", borderBottom: "1px solid rgba(59,130,246,0.1)", background: "#060d18" }}
+      <div
+        className="w-full overflow-hidden h-[200px] sm:h-[240px] lg:h-[280px] relative"
+        style={{ borderTop: "1px solid rgba(30,144,255,0.1)", borderBottom: "1px solid rgba(30,144,255,0.1)", background: "#060d18" }}
       >
-        <div className="absolute inset-x-0 top-0 z-10 h-px transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100"
-          style={{ background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.6), transparent)" }}
+        <div
+          className="absolute inset-x-0 top-0 z-10 h-px transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100"
+          style={{ background: "linear-gradient(90deg, transparent, rgba(30,144,255,0.6), transparent)" }}
         />
-
         <Swiper
           modules={[Autoplay]}
           spaceBetween={0}
@@ -90,8 +97,9 @@ function ProjectCard({
 
       {/* Content Body */}
       <div className="flex flex-col flex-1 p-5 sm:p-6">
-        <p className="mb-5 text-sm leading-relaxed transition-colors duration-300 sm:text-base sm:mb-6 line-clamp-3 sm:line-clamp-2"
-          style={{ color: "rgba(148,163,184,1)" }}
+        <p
+          className="mb-5 text-sm leading-relaxed sm:text-base sm:mb-6 line-clamp-3 sm:line-clamp-2"
+          style={{ color: "#64748b" }}
         >
           {desc_concise}
         </p>
@@ -108,19 +116,19 @@ function ProjectCard({
               whileHover={{ y: -2, scale: 1.06 }}
               className="px-2.5 py-1 text-[10px] sm:text-xs font-medium rounded-md cursor-default transition-all duration-200"
               style={{
-                background: "rgba(59,130,246,0.07)",
-                border: "1px solid rgba(59,130,246,0.18)",
-                color: "rgba(148,163,184,1)",
+                background: "rgba(30,144,255,0.07)",
+                border: "1px solid rgba(30,144,255,0.18)",
+                color: "#475569",
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.background = "rgba(59,130,246,0.16)";
-                e.currentTarget.style.borderColor = "rgba(59,130,246,0.45)";
-                e.currentTarget.style.color = "rgba(219,234,254,1)";
+                e.currentTarget.style.background = "rgba(30,144,255,0.16)";
+                e.currentTarget.style.borderColor = "rgba(30,144,255,0.45)";
+                e.currentTarget.style.color = "#93c5fd";
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.background = "rgba(59,130,246,0.07)";
-                e.currentTarget.style.borderColor = "rgba(59,130,246,0.18)";
-                e.currentTarget.style.color = "rgba(148,163,184,1)";
+                e.currentTarget.style.background = "rgba(30,144,255,0.07)";
+                e.currentTarget.style.borderColor = "rgba(30,144,255,0.18)";
+                e.currentTarget.style.color = "#475569";
               }}
             >
               {item}
@@ -129,8 +137,9 @@ function ProjectCard({
         </div>
 
         {/* Links Footer */}
-        <div className="flex flex-wrap items-center gap-4 pt-4 mt-auto sm:gap-5"
-          style={{ borderTop: "1px solid rgba(59,130,246,0.08)" }}
+        <div
+          className="flex flex-wrap items-center gap-4 pt-4 mt-auto sm:gap-5"
+          style={{ borderTop: "1px solid rgba(30,144,255,0.08)" }}
         >
           {git_link && (
             <motion.a
@@ -140,9 +149,9 @@ function ProjectCard({
               whileHover={{ x: 2 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition-colors duration-200"
-              style={{ color: "rgba(100,116,139,1)" }}
-              onMouseEnter={e => e.currentTarget.style.color = "rgba(96,165,250,1)"}
-              onMouseLeave={e => e.currentTarget.style.color = "rgba(100,116,139,1)"}
+              style={{ color: "#475569" }}
+              onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
+              onMouseLeave={e => e.currentTarget.style.color = "#475569"}
             >
               <Github size={16} className="sm:w-5 sm:h-5" /> Code
             </motion.a>
@@ -155,9 +164,9 @@ function ProjectCard({
               whileHover={{ x: 2 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition-colors duration-200"
-              style={{ color: "rgba(100,116,139,1)" }}
-              onMouseEnter={e => e.currentTarget.style.color = "rgba(96,165,250,1)"}
-              onMouseLeave={e => e.currentTarget.style.color = "rgba(100,116,139,1)"}
+              style={{ color: "#475569" }}
+              onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
+              onMouseLeave={e => e.currentTarget.style.color = "#475569"}
             >
               <ExternalLink size={16} className="sm:w-5 sm:h-5" /> Live
             </motion.a>
@@ -170,9 +179,9 @@ function ProjectCard({
               whileHover={{ x: 2 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition-colors duration-200"
-              style={{ color: "rgba(100,116,139,1)" }}
-              onMouseEnter={e => e.currentTarget.style.color = "rgba(96,165,250,1)"}
-              onMouseLeave={e => e.currentTarget.style.color = "rgba(100,116,139,1)"}
+              style={{ color: "#475569" }}
+              onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
+              onMouseLeave={e => e.currentTarget.style.color = "#475569"}
             >
               <Youtube size={16} className="sm:w-5 sm:h-5" /> Watch
             </motion.a>
