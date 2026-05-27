@@ -104,25 +104,40 @@ function colorizeCode(raw) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 
-  // A single-pass regex to prevent matching inside already injected HTML tags
-  const tokenRegex = /(\/\/[^\n]*|#[^\n]*)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)|(\b(?:import|export|from|default|const|let|var|function|return|if|else|else if|for|while|do|switch|case|break|continue|class|extends|new|this|super|async|await|try|catch|finally|throw|typeof|instanceof|void|null|undefined|true|false|int|char|float|double|long|short|bool|include|define|printf|scanf|cout|cin|main|public|private|protected|static)\b)|(\b\d+\.?\d*[fFuUlL]*\b)|(\b[A-Z][a-zA-Z0-9_]*\b)|(\b[a-zA-Z_]\w*(?=\s*\())/g;
-
   return escaped
     .split("\n")
     .map(line => {
-      // Replace tokens in one sweep using capturing groups
-      return line.replace(tokenRegex, (match, comment, str, keyword, number, type, func) => {
-        if (comment) return `<span style="color:#6A9955;font-style:italic">${comment}</span>`;
-        if (str) return `<span style="color:#CE9178">${str}</span>`;
-        if (keyword) return `<span style="color:#569CD6;font-weight:600">${keyword}</span>`;
-        if (number) return `<span style="color:#B5CEA8">${number}</span>`;
-        if (type) return `<span style="color:#4EC9B0">${type}</span>`;
-        if (func) return `<span style="color:#DCDCAA">${func}</span>`;
-        return match;
-      });
+      let out = line;
+
+      // single-line comments  (do this first before string replacement eats //)
+      out = out.replace(/(\/\/[^\n]*|#[^\n]*)/g,
+        '<span style="color:#6A9955;font-style:italic">$1</span>');
+
+      // strings (avoid replacing inside already-injected spans)
+      out = out.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)/g,
+        '<span style="color:#CE9178">$1</span>');
+
+      // keywords
+      out = out.replace(/\b(import|export|from|default|const|let|var|function|return|if|else|else if|for|while|do|switch|case|break|continue|class|extends|new|this|super|async|await|try|catch|finally|throw|typeof|instanceof|void|null|undefined|true|false|int|char|float|double|long|short|bool|include|define|printf|scanf|cout|cin|main|public|private|protected|static|void)\b/g,
+        '<span style="color:#569CD6;font-weight:600">$1</span>');
+
+      // numbers
+      out = out.replace(/\b(\d+\.?\d*[fFuUlL]*)\b/g,
+        '<span style="color:#B5CEA8">$1</span>');
+
+      // function calls
+      out = out.replace(/\b([a-zA-Z_]\w*)(?=\s*\()/g,
+        '<span style="color:#DCDCAA">$1</span>');
+
+      // types / custom identifiers starting uppercase
+      out = out.replace(/\b([A-Z][a-zA-Z0-9_]*)\b/g,
+        '<span style="color:#4EC9B0">$1</span>');
+
+      return out;
     })
     .join("\n");
 }
+
 function CodeBlock({ children }) {
   const [copied, setCopied] = useState(false);
   const raw = String(children).replace(/\n$/, "");
@@ -170,10 +185,10 @@ function CodeBlock({ children }) {
 /* ── Markdown renderers ── */
 const md = {
   h1: ({ children }) => (
-    <h1 style={{ color: "#f8fafc", fontSize: "1.9rem", fontWeight: 800, marginTop: "2.5rem", marginBottom: "1rem", letterSpacing: "-0.025em", lineHeight: 1.2, borderBottom: "2px solid rgba(30,144,255,0.2)", paddingBottom: "0.5rem" }}>{children}</h1>
+    <h1 style={{ color: "#e2e8f0", fontSize: "1.9rem", fontWeight: 800, marginTop: "2.5rem", marginBottom: "1rem", letterSpacing: "-0.025em", lineHeight: 1.2, borderBottom: "2px solid rgba(30,144,255,0.2)", paddingBottom: "0.5rem" }}>{children}</h1>
   ),
   h2: ({ children }) => (
-    <h2 style={{ color: "#e2e8f0", fontSize: "1.35rem", fontWeight: 700, marginTop: "2.25rem", marginBottom: "0.75rem", letterSpacing: "-0.015em", lineHeight: 1.3, paddingLeft: "0.85rem", borderLeft: "3px solid #1E90FF" }}>{children}</h2>
+    <h2 style={{ color: "#cbd5e1", fontSize: "1.35rem", fontWeight: 700, marginTop: "2.25rem", marginBottom: "0.75rem", letterSpacing: "-0.015em", lineHeight: 1.3, paddingLeft: "0.85rem", borderLeft: "3px solid #1E90FF" }}>{children}</h2>
   ),
   h3: ({ children }) => (
     <h3 style={{ color: "#7dd3fc", fontSize: "1.08rem", fontWeight: 600, marginTop: "1.75rem", marginBottom: "0.5rem", letterSpacing: "-0.01em" }}>{children}</h3>
@@ -192,7 +207,7 @@ const md = {
       {children}
     </a>
   ),
-  strong: ({ children }) => <strong style={{ color: "#e2e8f0", fontWeight: 700 }}>{children}</strong>,
+  strong: ({ children }) => <strong style={{ color: "#cbd5e1", fontWeight: 700 }}>{children}</strong>,
   em: ({ children }) => <em style={{ color: "#cbd5e1", fontStyle: "italic" }}>{children}</em>,
   ul: ({ children }) => <ul style={{ paddingLeft: 0, marginBottom: "1.1rem", listStyle: "none" }}>{children}</ul>,
   ol: ({ children }) => <ol style={{ color: "#94a3b8", paddingLeft: "1.5rem", marginBottom: "1.1rem", listStyleType: "decimal" }}>{children}</ol>,
@@ -221,7 +236,7 @@ const md = {
     </div>
   ),
   thead: ({ children }) => <thead style={{ background: "rgba(30,144,255,0.08)" }}>{children}</thead>,
-  th: ({ children }) => <th style={{ color: "#e2e8f0", padding: "0.75rem 1rem", textAlign: "left", fontWeight: 600, borderBottom: "1px solid rgba(30,144,255,0.2)", fontSize: "0.85rem", letterSpacing: "0.05em" }}>{children}</th>,
+  th: ({ children }) => <th style={{ color: "#94a3b8", padding: "0.75rem 1rem", textAlign: "left", fontWeight: 600, borderBottom: "1px solid rgba(30,144,255,0.2)", fontSize: "0.85rem", letterSpacing: "0.05em" }}>{children}</th>,
   td: ({ children }) => <td style={{ color: "#94a3b8", padding: "0.65rem 1rem", borderBottom: "1px solid rgba(30,144,255,0.07)" }}>{children}</td>,
   img: ({ src, alt }) => <img src={src} alt={alt} style={{ maxWidth: "100%", borderRadius: "0.85rem", border: "1px solid rgba(30,144,255,0.15)", margin: "1.25rem 0", display: "block" }} />,
 };
@@ -263,11 +278,11 @@ function ProjectDetail() {
     <PageLayout className="flex items-center justify-center min-h-screen">
       <div className="flex flex-col items-center gap-5 text-center">
         <AlertCircle className="w-14 h-14" style={{ color: "rgba(239,68,68,0.7)" }} />
-        <h2 className="text-2xl font-bold text-white">Project not found</h2>
+        <h2 className="text-2xl font-bold" style={{ color: "#94a3b8" }}>Project not found</h2>
         <p style={{ color: "#64748b" }}>Nothing lives at <span style={{ color: "#1E90FF", fontFamily: "monospace" }}>/projects/{slug}</span></p>
         <Link to="/projects"
-          className="flex items-center gap-2 px-5 py-2.5 mt-1 text-sm font-semibold text-white rounded-xl transition-all"
-          style={{ border: "1px solid rgba(30,144,255,0.3)" }}
+          className="flex items-center gap-2 px-5 py-2.5 mt-1 text-sm font-semibold rounded-xl transition-all"
+          style={{ border: "1px solid rgba(30,144,255,0.3)", color: "#94a3b8" }}
           onMouseEnter={e => e.currentTarget.style.background = "rgba(30,144,255,0.1)"}
           onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
           <ArrowLeft size={15} /> Back to Projects
@@ -317,7 +332,7 @@ function ProjectDetail() {
             <div className="absolute -left-4 top-1 bottom-1 w-0.5 rounded-full hidden sm:block"
               style={{ background: "linear-gradient(180deg, #1E90FF 0%, rgba(30,144,255,0) 100%)" }} />
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
-              style={{ color: "#f8fafc", lineHeight: 1.1 }}>
+              style={{ color: "#e2e8f0", lineHeight: 1.1 }}>
               {project.title_disp}
             </h1>
           </div>
