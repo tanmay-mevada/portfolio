@@ -94,7 +94,7 @@ const steps = [
       withIcon("Listening to music -let it happen"), <br />,
       withIcon("Youtubing -fav: slayypoint"), <br />,
       withIcon("Watching Movies -fav: GotG Vol-3"), <br />,
-      withIcon("Storing Memes -weird isn't it?")
+      withIcon("Storing Memes -weird isn't it??")
     ]
   },
   {
