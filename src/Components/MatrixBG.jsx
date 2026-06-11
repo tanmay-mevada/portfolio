@@ -20,7 +20,7 @@ function MatrixBackground({ fadeOut = false }) {
     const draw = () => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#00FF00";
+      ctx.fillStyle = "#1E90FF";
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -44,7 +44,7 @@ function MatrixBackground({ fadeOut = false }) {
   return (
     <motion.canvas
   ref={canvasRef}
-  className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none mix-blend-screen"
+  className="fixed top-0 left-0 z-0 w-full h-full pointer-events-none mix-blend-screen"
   initial={{ opacity: 1 }}
   animate={{ opacity: fadeOut ? 0 : 1 }}
   transition={{ duration: 1.5 }}

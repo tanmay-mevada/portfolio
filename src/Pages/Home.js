@@ -97,7 +97,7 @@ function Home() {
               transition={{ duration: 0.8 }}
               className="mb-3 font-mono text-2xl xs:text-3xl sm:text-6xl"
             >
-              <span className="text-gr">
+              <span className="text-blue">
                 <Typewriter
                   words={["'hello world!!'"]}
                   cursor
