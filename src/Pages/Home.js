@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import myPic from "../Assets/myPic.png";
 import { Typewriter } from "react-simple-typewriter";
 // 1. Import the new interactive hover background
-import GraphMatrixBG from "../Components/GraphMatrixBG"; 
+import HoverMatrixBackground from "../Components/HoverMatrixBG"; 
 import Navbar from "../Components/Navbar";
 
 function Home() {
@@ -61,7 +61,7 @@ function Home() {
       />
 
       {/* 3. Replaced falling rain with the Hover Grid and removed the fadeOut prop so it stays interactive forever */}
-      <GraphMatrixBG/>
+      <HoverMatrixBackground />
 
       {/* Navbar */}
       <Navbar delay={true} />
