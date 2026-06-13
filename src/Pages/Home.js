@@ -47,8 +47,7 @@ function Home() {
   return (
     <section
       id="home"
-      // FIX: Removed 'bg-dark' from here so the background is transparent
-      className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6"
+      className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6 bg-dark"
     >
       {/* subtle radial glow behind content */}
       <div
@@ -59,8 +58,11 @@ function Home() {
         }}
       />
 
-      {/* Matrix BG - Removed the extra className since the component handles it */}
-      <MatrixBackground fadeOut={fadeMatrix} />
+      {/* Matrix BG */}
+      <MatrixBackground
+        fadeOut={fadeMatrix}
+        className="absolute inset-0 z-0 pointer-events-none"
+      />
 
       {/* Navbar */}
       <Navbar delay={true} />

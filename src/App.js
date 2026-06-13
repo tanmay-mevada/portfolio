@@ -3,8 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
-  useLocation // 1. Import useLocation to track the current page
+  Navigate
 } from "react-router-dom";
 
 import ProjectDetail from "./Pages/ProjectDetail";
@@ -14,20 +13,6 @@ import Layout from "./Components/Layout";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import AdminLogin from "./Pages/AdminLogin"; 
-import HoverMatrixBackground from "./Components/HoverMatrixBG";
-
-// 2. Create a small helper component to handle the background logic
-function GlobalBackground() {
-  const location = useLocation();
-  
-  // If the user is on the Home page, render nothing (let Home handle its own falling rain)
-  if (location.pathname === "/" || location.pathname === "/home") {
-    return null;
-  }
-
-  // Otherwise, render the interactive hover grid
-  return <HoverMatrixBackground />;
-}
 
 function App() {
   useEffect(() => {
@@ -40,10 +25,9 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen font-sans text-white">
+    // THE FIX: This wrapper forces the entire app to be dark, 100% of the time.
+    <div className="min-h-screen font-sans text-white bg-dark">
       <Router>
-        <GlobalBackground />
-        
         <Routes>
           {/* PUBLIC ROUTES */}
           <Route element={<Layout />}>
