@@ -13,7 +13,7 @@ import Layout from "./Components/Layout";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import AdminLogin from "./Pages/AdminLogin"; 
-
+import NotFound from "./Pages/404";
 function App() {
   useEffect(() => {
     const hasVisited = sessionStorage.getItem("hasVisited");
@@ -42,8 +42,7 @@ function App() {
           {/* ADMIN ROUTE */}
           <Route path="/admin" element={<AdminLogin />} />
 
-          {/* CATCH-ALL */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>

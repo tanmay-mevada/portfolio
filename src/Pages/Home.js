@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import myPic from "../Assets/myPic.png";
 import { Typewriter } from "react-simple-typewriter";
-import MatrixBackground from "../Components/MatrixBG";
+// 1. Import the new interactive hover background
+import GraphMatrixBG from "../Components/GraphMatrixBG"; 
 import Navbar from "../Components/Navbar";
 
 function Home() {
@@ -47,7 +48,8 @@ function Home() {
   return (
     <section
       id="home"
-      className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6 bg-dark"
+      // 2. Removed 'bg-dark' from the class list so the canvas can be seen
+      className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6"
     >
       {/* subtle radial glow behind content */}
       <div
@@ -58,11 +60,8 @@ function Home() {
         }}
       />
 
-      {/* Matrix BG */}
-      <MatrixBackground
-        fadeOut={fadeMatrix}
-        className="absolute inset-0 z-0 pointer-events-none"
-      />
+      {/* 3. Replaced falling rain with the Hover Grid and removed the fadeOut prop so it stays interactive forever */}
+      <GraphMatrixBG/>
 
       {/* Navbar */}
       <Navbar delay={true} />
