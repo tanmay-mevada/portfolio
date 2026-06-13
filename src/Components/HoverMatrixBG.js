@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 function HoverMatrixBackground({ 
   color = "30, 144, 255", // Dodger Blue RGB
   bgColor = "#021526",    // Your dark background
-  fontSize = 20, 
-  hoverRadius = 60     
+  fontSize = 16, 
+  hoverRadius = 60      
 }) {
   const canvasRef = useRef(null);
 
@@ -170,16 +170,20 @@ function HoverMatrixBackground({
     draw();
 
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseleave", handleMouseLeave);
     window.addEventListener("mousedown", handleMouseDown); 
     window.addEventListener("resize", handleResize);
+    
+    // FIX: Attach mouseleave to 'document' instead of 'window'
+    document.addEventListener("mouseleave", handleMouseLeave); 
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("resize", handleResize);
+      
+      // FIX: Clean up the document listener
+      document.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [color, bgColor, fontSize, hoverRadius]);
 

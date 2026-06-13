@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import myPic from "../Assets/myPic.png";
 import { Typewriter } from "react-simple-typewriter";
-// 1. Import the new interactive hover background
+// Import the new interactive hover background
 import HoverMatrixBackground from "../Components/HoverMatrixBG"; 
+// I've re-added this import to fix the intro issue
+import MatrixRainintro from "../Components/MatrixBG"; 
 import Navbar from "../Components/Navbar";
 
 function Home() {
-  const [fadeMatrix, setFadeMatrix] = useState(false);
+  const [fadeMatrixRainintro, setfadeMatrixRainintro] = useState(false);
   const [showHelloWorld, setShowHelloWorld] = useState(true);
   const [showTypewriter, setShowTypewriter] = useState(false);
   const [showProfileImage, setShowProfileImage] = useState(false);
@@ -17,17 +19,19 @@ function Home() {
       performance.getEntriesByType("navigation")[0].type === "reload";
 
     if (!isInitialLoad) {
-      setFadeMatrix(true);
+      // not a reload, skip the intro
+      setfadeMatrixRainintro(true);
       setShowHelloWorld(false);
       setShowTypewriter(true);
       setShowProfileImage(true);
       return;
     }
 
+    // intro sequence
     const matrixDuration = 5000;
 
     const fadeTimeout = setTimeout(() => {
-      setFadeMatrix(true);
+      setfadeMatrixRainintro(true);
     }, matrixDuration);
 
     const helloTimeout = setTimeout(() => {
@@ -48,7 +52,6 @@ function Home() {
   return (
     <section
       id="home"
-      // 2. Removed 'bg-dark' from the class list so the canvas can be seen
       className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6"
     >
       {/* subtle radial glow behind content */}
@@ -60,8 +63,14 @@ function Home() {
         }}
       />
 
-      {/* 3. Replaced falling rain with the Hover Grid and removed the fadeOut prop so it stays interactive forever */}
-      <HoverMatrixBackground />
+      {/* Background canvases */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* permanence interactive background, lowest z-index */}
+        <HoverMatrixBackground />
+
+        {/* permanence falling rain background, higher z-index, which fades out */}
+        <MatrixRainintro fadeOut={fadeMatrixRainintro} />
+      </div>
 
       {/* Navbar */}
       <Navbar delay={true} />
