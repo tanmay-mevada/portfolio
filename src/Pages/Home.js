@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import myPic from "../Assets/myPic.png";
-import { Typewriter } from "react-simple-typewriter";
-// Import the new interactive hover background
+import CryptoText from "../Components/CryptoText"; 
 import HoverMatrixBackground from "../Components/HoverMatrixBG"; 
-// I've re-added this import to fix the intro issue
 import MatrixRainintro from "../Components/MatrixBG"; 
 import Navbar from "../Components/Navbar";
 
@@ -19,7 +17,6 @@ function Home() {
       performance.getEntriesByType("navigation")[0].type === "reload";
 
     if (!isInitialLoad) {
-      // not a reload, skip the intro
       setfadeMatrixRainintro(true);
       setShowHelloWorld(false);
       setShowTypewriter(true);
@@ -27,7 +24,6 @@ function Home() {
       return;
     }
 
-    // intro sequence
     const matrixDuration = 5000;
 
     const fadeTimeout = setTimeout(() => {
@@ -54,7 +50,6 @@ function Home() {
       id="home"
       className="relative flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden text-center text-white sm:px-6"
     >
-      {/* subtle radial glow behind content */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
@@ -63,23 +58,16 @@ function Home() {
         }}
       />
 
-      {/* Background canvases */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* permanence interactive background, lowest z-index */}
         <HoverMatrixBackground />
-
-        {/* permanence falling rain background, higher z-index, which fades out */}
         <MatrixRainintro fadeOut={fadeMatrixRainintro} />
       </div>
 
-      {/* Navbar */}
       <Navbar delay={true} />
 
-      {/* Main Content */}
       <div className="z-10 flex flex-col items-center justify-center w-full max-w-screen-sm space-y-6">
         {showProfileImage && (
           <div className="relative mb-4">
-            {/* glow ring behind image */}
             <div
               className="absolute inset-0 scale-110 rounded-full pointer-events-none blur-2xl"
               style={{ background: "rgba(30,144,255,0.2)" }}
@@ -106,13 +94,8 @@ function Home() {
               className="mb-3 font-mono text-2xl xs:text-3xl sm:text-6xl"
             >
               <span className="text-blue">
-                <Typewriter
-                  words={["'hello world!!'"]}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={100}
-                  delaySpeed={3000}
-                />
+                {/* 2. Replaced Typewriter with CryptoText for the intro sequence */}
+                <CryptoText text="'hello world!!'" />
               </span>
             </motion.h1>
           ) : (
@@ -135,13 +118,8 @@ function Home() {
             transition={{ duration: 0.6 }}
             className="text-sm xs:text-base sm:text-xl text-gray-300 max-w-[90%] sm:max-w-2xl min-h-[2.5rem]"
           >
-            <Typewriter
-              words={["A CS major with some minimal and basic skills."]}
-              cursor
-              cursorStyle="▌"
-              typeSpeed={70}
-              delaySpeed={5000}
-            />
+            {/* 3. Replaced Typewriter with CryptoText for the subtitle */}
+            <CryptoText text="A CS major with some minimal and basic skills." />
           </motion.p>
         )}
       </div>
