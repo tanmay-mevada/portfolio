@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../Components/Navbar";
 import { University, Code2, Gamepad2, ChevronRight, Disc2 } from "lucide-react";
+import HoverMatrixBackground from "../Components/HoverMatrixBG";
 
 const withIcon = (text) => (
   <div className="flex items-start gap-2 mb-2">
@@ -14,13 +15,13 @@ const steps = [
   {
     title: "Yo! fellas, I'm Tanmay & here's a lil intro about me –",
     content: [
-      <br />,
-      withIcon("Birth Date: 24-06-2007"), <br />,
-      withIcon("From: Mehsana, Gujarat"), <br />,
-      withIcon("Diploma in Computer Engineering, just completed it!"), <br />,
-      withIcon("Into web dev, UI/UX stuff, and building cool projects"), <br />,
-      withIcon("If you come over you might find me gaming, listening to music, chillin, exploring stuff, or maybe just sleeping"), <br />,
-      withIcon("Still learning, building, figuring things out as I go"), <br />,
+      <br key="1" />,
+      withIcon("Birth Date: 24-06-2007"), <br key="2" />,
+      withIcon("From: Mehsana, Gujarat"), <br key="3" />,
+      withIcon("Diploma in Computer Engineering, just completed it!"), <br key="4" />,
+      withIcon("Into web dev, UI/UX stuff, and building cool projects"), <br key="5" />,
+      withIcon("If you come over you might find me gaming, listening to music, chillin, exploring stuff, or maybe just sleeping"), <br key="6" />,
+      withIcon("Still learning, building, figuring things out as I go"), <br key="7" />,
       withIcon("Outside of the tech zone, I’m just average at everything.")
     ]
   },
@@ -32,9 +33,9 @@ const steps = [
       </span>
     ),
     content: [
-      <br />,
-      withIcon("I have completed nursery and primary school with A+ grade, "), <br />,
-      withIcon("Obv I have completed 10th; from JMC Highschool, Mehsana with umm idk maybe ~90 percentile in GSEB exam."), <br />,
+      <br key="1" />,
+      withIcon("I have completed nursery and primary school with A+ grade, "), <br key="2" />,
+      withIcon("Obv I have completed 10th; from JMC Highschool, Mehsana with umm idk maybe ~90 percentile in GSEB exam."), <br key="3" />,
       withIcon(
         <>
           I have completed Diploma In Computer Engineering from{" "}
@@ -48,7 +49,7 @@ const steps = [
           </a>{" "}
           Vallabh Vidhyangar with 9.42 CGPA
         </>
-      ), <br />,
+      ), <br key="4" />,
       withIcon(
         <>
         Currently pursuing BE/BTech. in CSE at{" "}
@@ -71,13 +72,12 @@ const steps = [
       </span>
     ),
     content: [
-      <br />,
-      withIcon("Languages: C, C++, Java, HTML, CSS, TailwindCSS, JavaScript, Python, PHP"), <br />,
-      withIcon("Databases: MySQL, Oracle, MongoDB, FireBase, SQLite"), <br />,
-      withIcon("Frameworks: NextJS, React Hooks, Angular, Node JS, Tailwind CSS, Bootstrap, Flask, Scikit-learn","Auth"), <br />,
-      withIcon("Version Control: Git & GitHub"), <br />,
+      <br key="1" />,
+      withIcon("Languages: C, C++, Java, HTML, CSS, TailwindCSS, JavaScript, Python, PHP"), <br key="2" />,
+      withIcon("Databases: MySQL, Oracle, MongoDB, FireBase, SQLite"), <br key="3" />,
+      withIcon("Frameworks: NextJS, React Hooks, Angular, Node JS, Tailwind CSS, Bootstrap, Flask, Scikit-learn","Auth"), <br key="4" />,
+      withIcon("Version Control: Git & GitHub"), <br key="5" />,
       withIcon("Tools: VS Code, Android Studio, Eclipse IDE, Eclipse EE, XAMPP, Arduino IDE, Unity Engine")
-
     ]
   },
   {
@@ -87,13 +87,13 @@ const steps = [
       </span>
     ),
     content: [
-      <br />,
-      withIcon("Gaming -scroll down"), <br />,
-      withIcon("Chess –to watch and play ,1000elo btw"), <br />,
-      withIcon("Badminton, Cricket"), <br />,
-      withIcon("Listening to music -let it happen"), <br />,
-      withIcon("Youtubing -fav: slayypoint"), <br />,
-      withIcon("Watching Movies -fav: GotG Vol-3"), <br />,
+      <br key="1" />,
+      withIcon("Gaming -scroll down"), <br key="2" />,
+      withIcon("Chess –to watch and play ,1000elo btw"), <br key="3" />,
+      withIcon("Badminton, Cricket"), <br key="4" />,
+      withIcon("Listening to music -let it happen"), <br key="5" />,
+      withIcon("Youtubing -fav: slayypoint"), <br key="6" />,
+      withIcon("Watching Movies -fav: GotG Vol-3"), <br key="7" />,
       withIcon("Storing Memes -weird isn't it??")
     ]
   },
@@ -104,17 +104,17 @@ const steps = [
       </span>
     ),
     content: [
-      <br />,
-      withIcon("from GTA VC to GTA V -we all grew up"), <br />,
-      withIcon("Tekken 3, IGI, Angry Birds, Pocket Tanks -the PC nostalgia"), <br />,
-      withIcon("SF2, Bad Piggies, BOC2, WCC-2, PvZ -the mobile nostalgia"), <br />,
-      withIcon("Clash Of Clans -taught me time management like nothing else"), <br />,
-      withIcon("Mini Militia -was awesome to play in private server"), <br />,
-      withIcon("Clash Royale -the combo of COC and CR was so tuff"), <br />,
-      withIcon("FreeFire -everyone makes mistakes, however it wasn't that bad back then"), <br />,
-      withIcon("SFA/SF4 -bursting out the frustation"), <br />,
-      withIcon("BGMI ~ PUBG"), <br />,
-      withIcon("Amoung Us -sus"), <br />,
+      <br key="1" />,
+      withIcon("from GTA VC to GTA V -we all grew up"), <br key="2" />,
+      withIcon("Tekken 3, IGI, Angry Birds, Pocket Tanks -the PC nostalgia"), <br key="3" />,
+      withIcon("SF2, Bad Piggies, BOC2, WCC-2, PvZ -the mobile nostalgia"), <br key="4" />,
+      withIcon("Clash Of Clans -taught me time management like nothing else"), <br key="5" />,
+      withIcon("Mini Militia -was awesome to play in private server"), <br key="6" />,
+      withIcon("Clash Royale -the combo of COC and CR was so tuff"), <br key="7" />,
+      withIcon("FreeFire -everyone makes mistakes, however it wasn't that bad back then"), <br key="8" />,
+      withIcon("SFA/SF4 -bursting out the frustation"), <br key="9" />,
+      withIcon("BGMI ~ PUBG"), <br key="10" />,
+      withIcon("Amoung Us -sus"), <br key="11" />,
       withIcon("Minecraft -that two week phase")
     ]
   }
@@ -151,13 +151,17 @@ function About() {
 
   return (
     <section
-      className="relative min-h-screen px-4 py-20 overflow-hidden text-white bg-dark sm:px-8 md:px-16 lg:px-40"
+      // REMOVED 'bg-dark' so the matrix background is visible
+      className="relative min-h-screen px-4 py-20 overflow-hidden text-white sm:px-8 md:px-16 lg:px-40"
       ref={containerRef}
     >
+      {/* ADDED: Hover Matrix Background Component */}
+      <HoverMatrixBackground />
+
       <Navbar />
 
       <svg
-        className="absolute top-0 left-0 w-full h-full pointer-events-none"
+        className="absolute top-0 left-0 z-0 w-full h-full pointer-events-none"
         viewBox={`0 0 ${window.innerWidth} ${document.body.scrollHeight}`}
         preserveAspectRatio="none"
       >
@@ -195,7 +199,7 @@ function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.3 }}
             >
-              <div className="w-full p-6 border shadow bg-dark2/20 backdrop-blur-md sm:p-8 md:p-10 sm:w-11/12 md:w-4/5 lg:w-1/2 rounded-3xl border-blue/30 shadow-blue/20">
+              <div className="w-full p-6 border shadow bg-[#021526]/40 backdrop-blur-md sm:p-8 md:p-10 sm:w-11/12 md:w-4/5 lg:w-1/2 rounded-3xl border-blue/30 shadow-blue/20">
                 <h2 className="flex items-center justify-center mb-4 text-2xl font-bold text-center text-blue">
                   {step.title}
                 </h2>
