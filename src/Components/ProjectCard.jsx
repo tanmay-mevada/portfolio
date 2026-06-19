@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Github, ExternalLink, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,6 +7,38 @@ import { motion } from "framer-motion";
 
 import "swiper/css";
 import "swiper/css/pagination";
+
+// --- Magnetic Wrapper Component ---
+function MagneticWrapper({ children }) {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - (left + width / 2);
+    const y = e.clientY - (top + height / 2);
+    setPosition({ x: x * 0.2, y: y * 0.2 });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative flex items-center justify-center cursor-pointer"
+    >
+      <motion.div
+        animate={{ x: position.x, y: position.y }}
+        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+}
 
 function ProjectCard({ 
   title_disp,
@@ -33,10 +65,11 @@ function ProjectCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="flex flex-col h-full overflow-hidden text-left transition-all duration-300 border shadow-lg group bg-dark2 rounded-2xl"
+      // UPGRADE: Frosted glass background applied here!
+      className="flex flex-col h-full overflow-hidden text-left transition-all duration-300 border shadow-lg group bg-[#021526]/30 backdrop-blur-xl rounded-2xl"
       style={{
         borderColor: "rgba(30,144,255,0.12)",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.35)",
+        boxShadow: "0 4px 30px rgba(0,0,0,0.1)", 
       }}
       onMouseEnter={e => {
         e.currentTarget.style.borderColor = "rgba(30,144,255,0.4)";
@@ -44,7 +77,7 @@ function ProjectCard({
       }}
       onMouseLeave={e => {
         e.currentTarget.style.borderColor = "rgba(30,144,255,0.12)";
-        e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.35)";
+        e.currentTarget.style.boxShadow = "0 4px 30px rgba(0,0,0,0.1)";
       }}
     >
       {/* Title + Date */}
@@ -70,7 +103,7 @@ function ProjectCard({
       {/* Image Wrapper */}
       <div
         className="w-full overflow-hidden h-[200px] sm:h-[240px] lg:h-[280px] relative"
-        style={{ borderTop: "1px solid rgba(30,144,255,0.1)", borderBottom: "1px solid rgba(30,144,255,0.1)", background: "#060d18" }}
+        style={{ borderTop: "1px solid rgba(30,144,255,0.1)", borderBottom: "1px solid rgba(30,144,255,0.1)", background: "rgba(6,13,24,0.5)" }}
       >
         <div
           className="absolute inset-x-0 top-0 z-10 h-px transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100"
@@ -118,17 +151,17 @@ function ProjectCard({
               style={{
                 background: "rgba(30,144,255,0.07)",
                 border: "1px solid rgba(30,144,255,0.18)",
-                color: "#475569",
+                color: "#cbd5e1", // Brighter text color
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.background = "rgba(30,144,255,0.16)";
                 e.currentTarget.style.borderColor = "rgba(30,144,255,0.45)";
-                e.currentTarget.style.color = "#93c5fd";
+                e.currentTarget.style.color = "#ffffff";
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.background = "rgba(30,144,255,0.07)";
                 e.currentTarget.style.borderColor = "rgba(30,144,255,0.18)";
-                e.currentTarget.style.color = "#475569";
+                e.currentTarget.style.color = "#cbd5e1";
               }}
             >
               {item}
@@ -136,55 +169,55 @@ function ProjectCard({
           ))}
         </div>
 
-        {/* Links Footer */}
+        {/* Links Footer - UPGRADED: Magnetic Wrapper Applied */}
         <div
-          className="flex flex-wrap items-center gap-4 pt-4 mt-auto sm:gap-5"
+          className="flex flex-wrap items-center gap-4 pt-4 mt-auto sm:gap-6"
           style={{ borderTop: "1px solid rgba(30,144,255,0.08)" }}
         >
           {git_link && (
-            <motion.a
-              href={git_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ x: 2 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition-colors duration-200"
-              style={{ color: "#475569" }}
-              onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
-              onMouseLeave={e => e.currentTarget.style.color = "#475569"}
-            >
-              <Github size={16} className="sm:w-5 sm:h-5" /> Code
-            </motion.a>
+            <MagneticWrapper>
+              <a
+                href={git_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-2 py-1 -ml-2 text-xs sm:text-sm font-semibold transition-colors duration-200"
+                style={{ color: "#94a3b8" }}
+                onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
+                onMouseLeave={e => e.currentTarget.style.color = "#94a3b8"}
+              >
+                <Github size={16} className="sm:w-5 sm:h-5" /> Code
+              </a>
+            </MagneticWrapper>
           )}
           {live_link && (
-            <motion.a
-              href={live_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ x: 2 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition-colors duration-200"
-              style={{ color: "#475569" }}
-              onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
-              onMouseLeave={e => e.currentTarget.style.color = "#475569"}
-            >
-              <ExternalLink size={16} className="sm:w-5 sm:h-5" /> Live
-            </motion.a>
+            <MagneticWrapper>
+              <a
+                href={live_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-2 py-1 -ml-2 text-xs sm:text-sm font-semibold transition-colors duration-200"
+                style={{ color: "#94a3b8" }}
+                onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
+                onMouseLeave={e => e.currentTarget.style.color = "#94a3b8"}
+              >
+                <ExternalLink size={16} className="sm:w-5 sm:h-5" /> Live
+              </a>
+            </MagneticWrapper>
           )}
           {demo_link && (
-            <motion.a
-              href={demo_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ x: 2 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition-colors duration-200"
-              style={{ color: "#475569" }}
-              onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
-              onMouseLeave={e => e.currentTarget.style.color = "#475569"}
-            >
-              <Youtube size={16} className="sm:w-5 sm:h-5" /> Watch
-            </motion.a>
+            <MagneticWrapper>
+              <a
+                href={demo_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-2 py-1 -ml-2 text-xs sm:text-sm font-semibold transition-colors duration-200"
+                style={{ color: "#94a3b8" }}
+                onMouseEnter={e => e.currentTarget.style.color = "#1E90FF"}
+                onMouseLeave={e => e.currentTarget.style.color = "#94a3b8"}
+              >
+                <Youtube size={16} className="sm:w-5 sm:h-5" /> Watch
+              </a>
+            </MagneticWrapper>
           )}
         </div>
       </div>
