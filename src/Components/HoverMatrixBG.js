@@ -5,7 +5,8 @@ function HoverMatrixBackground({
   color = "30, 144, 255", // Dodger Blue RGB
   bgColor = "#021526",    // Your dark background
   fontSize = 16, 
-  hoverRadius = 60      
+  hoverRadius = 60,
+  baseOpacity = 0.02      // The dull visibility of the background
 }) {
   const canvasRef = useRef(null);
 
@@ -41,8 +42,8 @@ function HoverMatrixBackground({
             x: x * fontSize,
             y: y * fontSize,
             char: Math.random() > 0.5 ? "1" : "0",
-            opacity: 0,
-            targetOpacity: 0
+            opacity: baseOpacity,       
+            targetOpacity: baseOpacity
           });
         }
       }
@@ -74,7 +75,9 @@ function HoverMatrixBackground({
         let cell = grid[i];
 
         // --- AMBIENT LIVE DATA EFFECT ---
-        if (Math.random() > 0.99) {
+        // TWEAKED: Changed 0.99 to 0.998. 
+        // If 0.998 is still too fast, make it 0.999. If it's too slow, try 0.995.
+        if (Math.random() > 0.998) {
           cell.char = Math.random() > 0.5 ? "1" : "0";
         }
 
@@ -108,16 +111,19 @@ function HoverMatrixBackground({
           }
         }
 
-        cell.targetOpacity = Math.max(hoverOpacity, rippleOpacity);
+        // Ensure the target never drops below the base dull visibility
+        cell.targetOpacity = Math.max(baseOpacity, hoverOpacity, rippleOpacity);
 
         // Smoothly approach the target opacity
         if (cell.targetOpacity > cell.opacity) {
           cell.opacity += (cell.targetOpacity - cell.opacity) * 0.2; 
         } else {
           cell.opacity -= 0.03; 
+          // Stop fading out once it hits the dull baseline
+          if (cell.opacity < baseOpacity) {
+            cell.opacity = baseOpacity; 
+          }
         }
-
-        cell.opacity = Math.max(0, Math.min(1, cell.opacity));
 
         // --- THE PINPOINT CURSOR LOGIC ---
         const cellCol = Math.floor(cell.x / fontSize);
@@ -132,7 +138,7 @@ function HoverMatrixBackground({
           ctx.fillText(cell.char, cell.x, cell.y);
         } 
         // Draw the rest of the grid in blue based on opacity
-        else if (cell.opacity > 0.01) {
+        else {
           ctx.fillStyle = `rgba(${color}, ${cell.opacity})`; 
           ctx.fillText(cell.char, cell.x, cell.y);
         }
@@ -173,7 +179,6 @@ function HoverMatrixBackground({
     window.addEventListener("mousedown", handleMouseDown); 
     window.addEventListener("resize", handleResize);
     
-    // FIX: Attach mouseleave to 'document' instead of 'window'
     document.addEventListener("mouseleave", handleMouseLeave); 
 
     return () => {
@@ -182,10 +187,9 @@ function HoverMatrixBackground({
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("resize", handleResize);
       
-      // FIX: Clean up the document listener
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [color, bgColor, fontSize, hoverRadius]);
+  }, [color, bgColor, fontSize, hoverRadius, baseOpacity]);
 
   return (
     <motion.canvas
