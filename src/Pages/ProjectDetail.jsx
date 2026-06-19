@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import {
   ArrowLeft, Github, ExternalLink, Youtube,
-  Calendar, Tag, Users, AlertCircle,
+  Calendar, Tag, Users, 
   GitBranch, Layers, CheckCircle2, Clock, Archive, Wrench, Info
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
