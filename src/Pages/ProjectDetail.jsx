@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import PageLayout from "../Components/PageLayout";
-// 1. IMPORT BACKGROUND
+import NotFound from "./404"; 
 import HoverMatrixBackground from "../Components/HoverMatrixBG";
 
 const fadeUp = (delay = 0) => ({
@@ -250,26 +250,9 @@ function ProjectDetail() {
     </>
   );
 
-  if (notFound) return (
-    <>
-      <HoverMatrixBackground />
-      <PageLayout className="relative z-10 flex items-center justify-center min-h-screen">
-        <div className="flex flex-col items-center gap-5 p-10 text-center rounded-2xl backdrop-blur-md" 
-             style={{ background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.12)" }}>
-          <AlertCircle className="w-14 h-14" style={{ color: "rgba(239,68,68,0.7)" }} />
-          <h2 className="text-2xl font-bold" style={{ color: "#94a3b8" }}>Project not found</h2>
-          <p style={{ color: "#64748b" }}>Nothing lives at <span style={{ color: "#1E90FF", fontFamily: "monospace" }}>/projects/{slug}</span></p>
-          <Link to="/projects"
-            className="flex items-center gap-2 px-5 py-2.5 mt-1 text-sm font-semibold rounded-xl transition-all"
-            style={{ border: "1px solid rgba(30,144,255,0.3)", color: "#94a3b8" }}
-            onMouseEnter={e => e.currentTarget.style.background = "rgba(30,144,255,0.1)"}
-            onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-            <ArrowLeft size={15} /> Back to Projects
-          </Link>
-        </div>
-      </PageLayout>
-    </>
-  );
+  if (notFound) {
+    return <NotFound />;
+  }
 
   const formattedDate = project.date
     ? new Date(project.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })

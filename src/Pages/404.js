@@ -6,10 +6,8 @@ import InteractiveNetworkBG from "../Components/InteractiveNetworkBG";
 function NotFound() {
   return (
     <section className="relative flex flex-col items-center justify-center min-h-screen px-4 overflow-hidden text-center">
-      {/* The Interactive Network Background */}
       <InteractiveNetworkBG />
 
-      {/* 404 Content */}
       <div className="z-10 flex flex-col items-center justify-center max-w-2xl space-y-6 pointer-events-none">
         <motion.h1
           initial={{ opacity: 0, scale: 0.8 }}
@@ -34,7 +32,6 @@ function NotFound() {
           </p>
         </motion.div>
 
-        {/* Button wrapper needs pointer-events-auto so it can be clicked */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
