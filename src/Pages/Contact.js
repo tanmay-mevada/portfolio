@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Mail, Phone, Github, Linkedin, Instagram, Send, CheckCircle, XCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import HoverMatrixBackground from "../Components/HoverMatrixBG";
+import Navbar from "../Components/Navbar";
 
 export default function Contact() {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,7 +13,7 @@ export default function Contact() {
     subject: "",
     message: ""
   });
-  const [status, setStatus] = useState(null); // 'success', 'error', or null
+  const [status, setStatus] = useState(null); 
 
   const handleChange = (e) => {
     setFormData({
@@ -73,12 +75,19 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen px-4 py-20 text-white bg-dark sm:px-8 md:px-12 lg:px-20">
+    // REMOVED: solid bg-dark. ADDED: relative and overflow-hidden for the background.
+    <div className="relative min-h-screen px-4 py-20 overflow-hidden text-white sm:px-8 md:px-12 lg:px-20">
+      
+      {/* ADDED: Background and Navbar */}
+      <HoverMatrixBackground />
+      <Navbar />
+
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-6xl mx-auto"
+        // ADDED: relative z-10 so the content sits above the canvas
+        className="relative z-10 max-w-6xl mx-auto"
       >
 
         <div className="flex flex-col gap-8 lg:flex-row">
@@ -89,7 +98,8 @@ export default function Contact() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="w-full lg:w-2/3"
           >
-            <form onSubmit={handleSubmit} className="p-8 border shadow-xl bg-dark2/20 border-blue/20 rounded-2xl">
+            {/* UPGRADE: Glassmorphism background instead of solid dark */}
+            <form onSubmit={handleSubmit} className="p-8 border shadow-xl bg-[#021526]/40 backdrop-blur-xl border-blue/20 rounded-2xl">
               <h2 className="mb-6 text-2xl font-bold text-blue">Send a Message</h2>
               
               <div className="space-y-4">
@@ -102,7 +112,7 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     disabled={isLoading}
-                    className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                    className="w-full px-4 py-3 text-white transition border rounded-lg placeholder-gray-400/70 bg-[#021526]/50 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
                   />
                   <input
                     type="email"
@@ -112,7 +122,7 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     disabled={isLoading}
-                    className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                    className="w-full px-4 py-3 text-white transition border rounded-lg placeholder-gray-400/70 bg-[#021526]/50 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
                   />
                 </div>
 
@@ -124,7 +134,7 @@ export default function Contact() {
                     value={formData.phone}
                     onChange={handleChange}
                     disabled={isLoading}
-                    className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                    className="w-full px-4 py-3 text-white transition border rounded-lg placeholder-gray-400/70 bg-[#021526]/50 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
                   />
                   <input
                     type="text"
@@ -134,7 +144,7 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     disabled={isLoading}
-                    className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                    className="w-full px-4 py-3 text-white transition border rounded-lg placeholder-gray-400/70 bg-[#021526]/50 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
                   />
                 </div>
 
@@ -146,7 +156,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   disabled={isLoading}
-                  className="w-full px-4 py-3 text-white placeholder-gray-400 transition border rounded-lg resize-none bg-dark2 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
+                  className="w-full px-4 py-3 text-white transition border rounded-lg resize-none placeholder-gray-400/70 bg-[#021526]/50 border-blue/20 focus:border-blue/50 focus:outline-none disabled:opacity-50"
                 ></textarea>
 
                 {/* Status Messages */}
@@ -201,7 +211,8 @@ export default function Contact() {
             className="w-full space-y-6 lg:w-1/3"
           >
             {/* Contact Details */}
-            <div className="p-6 border shadow-lg bg-dark2 border-blue/20 rounded-2xl">
+            {/* UPGRADE: Glassmorphism added here too */}
+            <div className="p-6 border shadow-lg bg-[#021526]/40 backdrop-blur-xl border-blue/20 rounded-2xl">
               <h2 className="mb-6 text-2xl font-bold text-blue">Contact Info</h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -224,7 +235,7 @@ export default function Contact() {
             </div>
 
             {/* Social Links */}
-            <div className="p-6 border shadow-lg bg-dark2 border-blue/20 rounded-2xl">
+            <div className="p-6 border shadow-lg bg-[#021526]/40 backdrop-blur-xl border-blue/20 rounded-2xl">
               <h2 className="mb-6 text-2xl font-bold text-blue">Connect</h2>
               <div className="space-y-3">
                 {socialLinks.map((social, idx) => (
@@ -234,7 +245,7 @@ export default function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ x: 5 }}
-                    className={`flex items-center gap-3 p-3 transition border rounded-lg border-blue/20 hover:border-blue/40 ${social.color} group`}
+                    className={`flex items-center gap-3 p-3 transition border rounded-lg bg-[#021526]/30 border-blue/20 hover:border-blue/40 ${social.color} group`}
                   >
                     <social.icon size={20} className="transition-transform text-blue group-hover:scale-110" />
                     <span className="font-medium">{social.label}</span>
