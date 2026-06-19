@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import PageLayout from "../Components/PageLayout";
+// 1. IMPORT BACKGROUND
+import HoverMatrixBackground from "../Components/HoverMatrixBG";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 22 },
@@ -63,9 +65,9 @@ function StatusBadge({ status, statusInfo }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 4, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute bottom-full left-0 mb-2 z-50 w-52 text-xs rounded-xl px-3 py-2.5 pointer-events-none"
+            className="absolute bottom-full left-0 mb-2 z-50 w-52 text-xs rounded-xl px-3 py-2.5 pointer-events-none backdrop-blur-xl"
             style={{
-              background: "rgba(2,21,38,0.97)",
+              background: "rgba(2,21,38,0.85)", // Slight transparency for tooltip
               border: `1px solid ${cfg.border}`,
               color: "#94a3b8",
               boxShadow: `0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px ${cfg.border}`,
@@ -84,8 +86,9 @@ function StatusBadge({ status, statusInfo }) {
 /* ── Sidebar card ── */
 function SideCard({ label, children }) {
   return (
-    <div className="overflow-hidden rounded-2xl"
-      style={{ background: "rgba(2,21,38,0.8)", border: "1px solid rgba(30,144,255,0.14)" }}>
+    // UPGRADED: Frosted glass applied to side cards
+    <div className="overflow-hidden rounded-2xl backdrop-blur-xl"
+      style={{ background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.14)" }}>
       <div className="flex items-center gap-2 px-5 py-3 border-b"
         style={{ borderColor: "rgba(30,144,255,0.1)", background: "rgba(30,144,255,0.04)" }}>
         <div className="w-1 h-3 rounded-full" style={{ background: "#1E90FF", opacity: 0.7 }} />
@@ -98,7 +101,6 @@ function SideCard({ label, children }) {
 
 /* ── Syntax highlighter ── */
 function colorizeCode(raw) {
-  // escape HTML first
   const escaped = raw
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -108,31 +110,12 @@ function colorizeCode(raw) {
     .split("\n")
     .map(line => {
       let out = line;
-
-      // single-line comments  (do this first before string replacement eats //)
-      out = out.replace(/(\/\/[^\n]*|#[^\n]*)/g,
-        '<span style="color:#6A9955;font-style:italic">$1</span>');
-
-      // strings (avoid replacing inside already-injected spans)
-      out = out.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)/g,
-        '<span style="color:#CE9178">$1</span>');
-
-      // keywords
-      out = out.replace(/\b(import|export|from|default|const|let|var|function|return|if|else|else if|for|while|do|switch|case|break|continue|class|extends|new|this|super|async|await|try|catch|finally|throw|typeof|instanceof|void|null|undefined|true|false|int|char|float|double|long|short|bool|include|define|printf|scanf|cout|cin|main|public|private|protected|static|void)\b/g,
-        '<span style="color:#569CD6;font-weight:600">$1</span>');
-
-      // numbers
-      out = out.replace(/\b(\d+\.?\d*[fFuUlL]*)\b/g,
-        '<span style="color:#B5CEA8">$1</span>');
-
-      // function calls
-      out = out.replace(/\b([a-zA-Z_]\w*)(?=\s*\()/g,
-        '<span style="color:#DCDCAA">$1</span>');
-
-      // types / custom identifiers starting uppercase
-      out = out.replace(/\b([A-Z][a-zA-Z0-9_]*)\b/g,
-        '<span style="color:#4EC9B0">$1</span>');
-
+      out = out.replace(/(\/\/[^\n]*|#[^\n]*)/g, '<span style="color:#6A9955;font-style:italic">$1</span>');
+      out = out.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)/g, '<span style="color:#CE9178">$1</span>');
+      out = out.replace(/\b(import|export|from|default|const|let|var|function|return|if|else|else if|for|while|do|switch|case|break|continue|class|extends|new|this|super|async|await|try|catch|finally|throw|typeof|instanceof|void|null|undefined|true|false|int|char|float|double|long|short|bool|include|define|printf|scanf|cout|cin|main|public|private|protected|static|void)\b/g, '<span style="color:#569CD6;font-weight:600">$1</span>');
+      out = out.replace(/\b(\d+\.?\d*[fFuUlL]*)\b/g, '<span style="color:#B5CEA8">$1</span>');
+      out = out.replace(/\b([a-zA-Z_]\w*)(?=\s*\()/g, '<span style="color:#DCDCAA">$1</span>');
+      out = out.replace(/\b([A-Z][a-zA-Z0-9_]*)\b/g, '<span style="color:#4EC9B0">$1</span>');
       return out;
     })
     .join("\n");
@@ -149,8 +132,8 @@ function CodeBlock({ children }) {
   };
 
   return (
-    <div className="relative my-6 overflow-hidden rounded-2xl"
-      style={{ border: "1px solid rgba(30,144,255,0.18)" }}>
+    <div className="relative my-6 overflow-hidden rounded-2xl backdrop-blur-md"
+      style={{ border: "1px solid rgba(30,144,255,0.18)", background: "rgba(4,12,23,0.5)" }}>
       {/* titlebar */}
       <div className="flex items-center justify-between px-4 py-2.5"
         style={{ background: "rgba(30,144,255,0.06)", borderBottom: "1px solid rgba(30,144,255,0.12)" }}>
@@ -171,7 +154,7 @@ function CodeBlock({ children }) {
       </div>
       {/* code */}
       <pre style={{
-        background: "#040c17", margin: 0,
+        background: "transparent", margin: 0,
         padding: "1.25rem 1.5rem", overflowX: "auto",
         fontSize: "0.84rem", lineHeight: 1.85,
         fontFamily: "'Fira Code', 'Cascadia Code', 'Courier New', monospace",
@@ -184,21 +167,11 @@ function CodeBlock({ children }) {
 
 /* ── Markdown renderers ── */
 const md = {
-  h1: ({ children }) => (
-    <h1 style={{ color: "#e2e8f0", fontSize: "1.9rem", fontWeight: 800, marginTop: "2.5rem", marginBottom: "1rem", letterSpacing: "-0.025em", lineHeight: 1.2, borderBottom: "2px solid rgba(30,144,255,0.2)", paddingBottom: "0.5rem" }}>{children}</h1>
-  ),
-  h2: ({ children }) => (
-    <h2 style={{ color: "#cbd5e1", fontSize: "1.35rem", fontWeight: 700, marginTop: "2.25rem", marginBottom: "0.75rem", letterSpacing: "-0.015em", lineHeight: 1.3, paddingLeft: "0.85rem", borderLeft: "3px solid #1E90FF" }}>{children}</h2>
-  ),
-  h3: ({ children }) => (
-    <h3 style={{ color: "#7dd3fc", fontSize: "1.08rem", fontWeight: 600, marginTop: "1.75rem", marginBottom: "0.5rem", letterSpacing: "-0.01em" }}>{children}</h3>
-  ),
-  h4: ({ children }) => (
-    <h4 style={{ color: "#bae6fd", fontSize: "0.95rem", fontWeight: 600, marginTop: "1.25rem", marginBottom: "0.4rem" }}>{children}</h4>
-  ),
-  p: ({ children }) => (
-    <p style={{ color: "#94a3b8", lineHeight: 1.85, marginBottom: "1.1rem", fontSize: "0.95rem" }}>{children}</p>
-  ),
+  h1: ({ children }) => <h1 style={{ color: "#e2e8f0", fontSize: "1.9rem", fontWeight: 800, marginTop: "2.5rem", marginBottom: "1rem", letterSpacing: "-0.025em", lineHeight: 1.2, borderBottom: "2px solid rgba(30,144,255,0.2)", paddingBottom: "0.5rem" }}>{children}</h1>,
+  h2: ({ children }) => <h2 style={{ color: "#cbd5e1", fontSize: "1.35rem", fontWeight: 700, marginTop: "2.25rem", marginBottom: "0.75rem", letterSpacing: "-0.015em", lineHeight: 1.3, paddingLeft: "0.85rem", borderLeft: "3px solid #1E90FF" }}>{children}</h2>,
+  h3: ({ children }) => <h3 style={{ color: "#7dd3fc", fontSize: "1.08rem", fontWeight: 600, marginTop: "1.75rem", marginBottom: "0.5rem", letterSpacing: "-0.01em" }}>{children}</h3>,
+  h4: ({ children }) => <h4 style={{ color: "#bae6fd", fontSize: "0.95rem", fontWeight: 600, marginTop: "1.25rem", marginBottom: "0.4rem" }}>{children}</h4>,
+  p: ({ children }) => <p style={{ color: "#94a3b8", lineHeight: 1.85, marginBottom: "1.1rem", fontSize: "0.95rem" }}>{children}</p>,
   a: ({ href, children }) => (
     <a href={href} target="_blank" rel="noopener noreferrer"
       style={{ color: "#1E90FF", textDecoration: "none", borderBottom: "1px solid rgba(30,144,255,0.35)" }}
@@ -262,36 +235,42 @@ function ProjectDetail() {
   }, [slug]);
 
   if (loading) return (
-    <PageLayout className="flex items-center justify-center min-h-screen">
-      <div className="flex flex-col items-center gap-4">
-        <div className="relative w-12 h-12">
-          <div className="absolute inset-0 rounded-full animate-spin"
-            style={{ border: "2px solid rgba(30,144,255,0.15)", borderTopColor: "#1E90FF" }} />
-          <div className="absolute inset-0 rounded-full blur-md" style={{ background: "rgba(30,144,255,0.15)" }} />
+    <>
+      <HoverMatrixBackground />
+      <PageLayout className="relative z-10 flex items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-12 h-12">
+            <div className="absolute inset-0 rounded-full animate-spin"
+              style={{ border: "2px solid rgba(30,144,255,0.15)", borderTopColor: "#1E90FF" }} />
+            <div className="absolute inset-0 rounded-full blur-md" style={{ background: "rgba(30,144,255,0.15)" }} />
+          </div>
+          <p className="text-sm tracking-widest uppercase" style={{ color: "rgba(148,163,184,0.5)" }}>Loading…</p>
         </div>
-        <p className="text-sm tracking-widest uppercase" style={{ color: "rgba(148,163,184,0.5)" }}>Loading…</p>
-      </div>
-    </PageLayout>
+      </PageLayout>
+    </>
   );
 
   if (notFound) return (
-    <PageLayout className="flex items-center justify-center min-h-screen">
-      <div className="flex flex-col items-center gap-5 text-center">
-        <AlertCircle className="w-14 h-14" style={{ color: "rgba(239,68,68,0.7)" }} />
-        <h2 className="text-2xl font-bold" style={{ color: "#94a3b8" }}>Project not found</h2>
-        <p style={{ color: "#64748b" }}>Nothing lives at <span style={{ color: "#1E90FF", fontFamily: "monospace" }}>/projects/{slug}</span></p>
-        <Link to="/projects"
-          className="flex items-center gap-2 px-5 py-2.5 mt-1 text-sm font-semibold rounded-xl transition-all"
-          style={{ border: "1px solid rgba(30,144,255,0.3)", color: "#94a3b8" }}
-          onMouseEnter={e => e.currentTarget.style.background = "rgba(30,144,255,0.1)"}
-          onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-          <ArrowLeft size={15} /> Back to Projects
-        </Link>
-      </div>
-    </PageLayout>
+    <>
+      <HoverMatrixBackground />
+      <PageLayout className="relative z-10 flex items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center gap-5 p-10 text-center rounded-2xl backdrop-blur-md" 
+             style={{ background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.12)" }}>
+          <AlertCircle className="w-14 h-14" style={{ color: "rgba(239,68,68,0.7)" }} />
+          <h2 className="text-2xl font-bold" style={{ color: "#94a3b8" }}>Project not found</h2>
+          <p style={{ color: "#64748b" }}>Nothing lives at <span style={{ color: "#1E90FF", fontFamily: "monospace" }}>/projects/{slug}</span></p>
+          <Link to="/projects"
+            className="flex items-center gap-2 px-5 py-2.5 mt-1 text-sm font-semibold rounded-xl transition-all"
+            style={{ border: "1px solid rgba(30,144,255,0.3)", color: "#94a3b8" }}
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(30,144,255,0.1)"}
+            onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+            <ArrowLeft size={15} /> Back to Projects
+          </Link>
+        </div>
+      </PageLayout>
+    </>
   );
 
-  // ── short date: "Sep 2022"
   const formattedDate = project.date
     ? new Date(project.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })
     : "Ongoing";
@@ -300,278 +279,283 @@ function ProjectDetail() {
   const hasLinks  = project.git_link || project.live_link || project.demo_link;
 
   return (
-    <PageLayout>
-      {/* ambient glow */}
-      <div className="fixed top-0 left-0 z-0 w-full h-full pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 40% at 60% 10%, rgba(30,144,255,0.05) 0%, transparent 70%)" }} />
+    <>
+      <HoverMatrixBackground />
+      <PageLayout>
+        {/* ambient glow */}
+        <div className="fixed top-0 left-0 z-0 w-full h-full pointer-events-none"
+          style={{ background: "radial-gradient(ellipse 60% 40% at 60% 10%, rgba(30,144,255,0.05) 0%, transparent 70%)" }} />
 
-      <div className="relative z-10 pt-6 pb-24 sm:pt-10">
+        <div className="relative z-10 pt-6 pb-24 sm:pt-10">
 
-        {/* Back */}
-        <motion.div {...fadeUp(0)}>
-          <Link to="/projects"
-            className="inline-flex items-center gap-2 mb-10 text-sm font-medium transition-colors group"
-            style={{ color: "rgba(148,163,184,0.55)" }}
-            onMouseEnter={e => e.currentTarget.style.color = "#e2e8f0"}
-            onMouseLeave={e => e.currentTarget.style.color = "rgba(148,163,184,0.55)"}>
-            <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-1" />
-            All Projects
-          </Link>
-        </motion.div>
+          {/* Back */}
+          <motion.div {...fadeUp(0)}>
+            <Link to="/projects"
+              className="inline-flex items-center gap-2 mb-10 text-sm font-medium transition-colors group"
+              style={{ color: "rgba(148,163,184,0.55)" }}
+              onMouseEnter={e => e.currentTarget.style.color = "#e2e8f0"}
+              onMouseLeave={e => e.currentTarget.style.color = "rgba(148,163,184,0.55)"}>
+              <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-1" />
+              All Projects
+            </Link>
+          </motion.div>
 
-        {/* ── HERO ── */}
-        <motion.div {...fadeUp(0.05)} className="mb-12">
+          {/* ── HERO ── */}
+          <motion.div {...fadeUp(0.05)} className="mb-12">
 
-          {/* ── Status badge (prominent, standalone) ── */}
-          <div className="mb-4">
-            <StatusBadge status={project.status} statusInfo={project.status_info} />
-          </div>
+            {/* ── Status badge ── */}
+            <div className="mb-4">
+              <StatusBadge status={project.status} statusInfo={project.status_info} />
+            </div>
 
-          {/* title */}
-          <div className="relative mb-4">
-            <div className="absolute -left-4 top-1 bottom-1 w-0.5 rounded-full hidden sm:block"
-              style={{ background: "linear-gradient(180deg, #1E90FF 0%, rgba(30,144,255,0) 100%)" }} />
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
-              style={{ color: "#e2e8f0", lineHeight: 1.1 }}>
-              {project.title_disp}
-            </h1>
-          </div>
+            {/* title */}
+            <div className="relative mb-4">
+              <div className="absolute -left-4 top-1 bottom-1 w-0.5 rounded-full hidden sm:block"
+                style={{ background: "linear-gradient(180deg, #1E90FF 0%, rgba(30,144,255,0) 100%)" }} />
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
+                style={{ color: "#e2e8f0", lineHeight: 1.1 }}>
+                {project.title_disp}
+              </h1>
+            </div>
 
-          {/* concise desc */}
-          <p className="max-w-3xl mb-5 text-base leading-relaxed sm:text-lg" style={{ color: "#64748b" }}>
-            {project.desc_concise}
-          </p>
+            {/* concise desc */}
+            <p className="max-w-3xl mb-5 text-base leading-relaxed sm:text-lg" style={{ color: "#cbd5e1" }}>
+              {project.desc_concise}
+            </p>
 
-          {/* meta strip — category, type, date all here as small pills */}
-          <div className="flex flex-wrap items-center gap-2">
-            {/* date */}
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
-              style={{ color: "#64748b", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <Calendar size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
-              {formattedDate}
-            </span>
-
-            {/* category */}
-            {project.category && (
+            {/* meta strip */}
+            <div className="flex flex-wrap items-center gap-2">
+              {/* date */}
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
-                style={{ color: "#64748b", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <Tag size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
-                {project.category}
+                style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
+                <Calendar size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
+                {formattedDate}
               </span>
-            )}
 
-            {/* type */}
-            {project.type && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
-                style={{ color: "#64748b", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <Layers size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
-                {project.type}
-              </span>
-            )}
+              {/* category */}
+              {project.category && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
+                  style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
+                  <Tag size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
+                  {project.category}
+                </span>
+              )}
 
-            {/* tech count */}
-            {project.tech_stack?.length > 0 && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
-                style={{ color: "#64748b", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <GitBranch size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
-                {project.tech_stack.length} technologies
-              </span>
-            )}
+              {/* type */}
+              {project.type && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
+                  style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
+                  <Layers size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
+                  {project.type}
+                </span>
+              )}
 
-            {/* contributors count */}
-            {project.contributors?.length > 0 && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
-                style={{ color: "#64748b", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <Users size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
-                {project.contributors.length} contributor{project.contributors.length > 1 ? "s" : ""}
-              </span>
-            )}
-          </div>
-        </motion.div>
+              {/* tech count */}
+              {project.tech_stack?.length > 0 && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
+                  style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
+                  <GitBranch size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
+                  {project.tech_stack.length} technologies
+                </span>
+              )}
 
-        {/* divider */}
-        <div className="w-full h-px mb-12"
-          style={{ background: "linear-gradient(90deg, rgba(30,144,255,0.4), rgba(30,144,255,0.05) 70%, transparent)" }} />
+              {/* contributors count */}
+              {project.contributors?.length > 0 && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
+                  style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
+                  <Users size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
+                  {project.contributors.length} contributor{project.contributors.length > 1 ? "s" : ""}
+                </span>
+              )}
+            </div>
+          </motion.div>
 
-        {/* ── IMAGES + SIDEBAR ── */}
-        <div className="flex flex-col gap-8 mb-14 lg:flex-row lg:gap-10 lg:items-start">
+          {/* divider */}
+          <div className="w-full h-px mb-12"
+            style={{ background: "linear-gradient(90deg, rgba(30,144,255,0.4), rgba(30,144,255,0.05) 70%, transparent)" }} />
 
-          {/* images */}
-          {hasImages && (
-            <motion.div {...fadeUp(0.1)} className="flex-1 min-w-0">
-              <div className="relative flex items-center justify-center w-full mb-3 overflow-hidden rounded-2xl"
-                style={{
-                  background: "linear-gradient(145deg, #040c17, #021526)",
-                  border: "1px solid rgba(30,144,255,0.18)",
-                  minHeight: "260px", maxHeight: "520px",
-                  boxShadow: "0 0 40px rgba(30,144,255,0.05) inset",
-                }}>
-                <div className="absolute inset-x-0 top-0 h-px pointer-events-none"
-                  style={{ background: "linear-gradient(90deg, transparent, rgba(30,144,255,0.5), transparent)" }} />
-                <motion.img
-                  key={activeImage}
-                  src={project.images[activeImage]}
-                  alt={`${project.title_disp} screenshot ${activeImage + 1}`}
-                  initial={{ opacity: 0, scale: 0.97 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="object-contain w-full p-4"
-                  style={{ maxHeight: "520px" }}
-                />
+          {/* ── IMAGES + SIDEBAR ── */}
+          <div className="flex flex-col gap-8 mb-14 lg:flex-row lg:gap-10 lg:items-start">
+
+            {/* images */}
+            {hasImages && (
+              <motion.div {...fadeUp(0.1)} className="flex-1 min-w-0">
+                {/* UPGRADED: Image container is now glassmorphic */}
+                <div className="relative flex items-center justify-center w-full mb-3 overflow-hidden rounded-2xl backdrop-blur-xl"
+                  style={{
+                    background: "linear-gradient(145deg, rgba(4,12,23,0.4), rgba(2,21,38,0.4))",
+                    border: "1px solid rgba(30,144,255,0.18)",
+                    minHeight: "260px", maxHeight: "520px",
+                    boxShadow: "0 0 40px rgba(30,144,255,0.05) inset",
+                  }}>
+                  <div className="absolute inset-x-0 top-0 h-px pointer-events-none"
+                    style={{ background: "linear-gradient(90deg, transparent, rgba(30,144,255,0.5), transparent)" }} />
+                  <motion.img
+                    key={activeImage}
+                    src={project.images[activeImage]}
+                    alt={`${project.title_disp} screenshot ${activeImage + 1}`}
+                    initial={{ opacity: 0, scale: 0.97 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="object-contain w-full p-4"
+                    style={{ maxHeight: "520px" }}
+                  />
+                  {project.images.length > 1 && (
+                    <div className="absolute bottom-3 right-3 px-2.5 py-1 text-xs font-mono rounded-lg backdrop-blur-md"
+                      style={{ background: "rgba(4,12,23,0.6)", border: "1px solid rgba(30,144,255,0.2)", color: "rgba(148,163,184,0.8)" }}>
+                      {activeImage + 1} / {project.images.length}
+                    </div>
+                  )}
+                </div>
+
                 {project.images.length > 1 && (
-                  <div className="absolute bottom-3 right-3 px-2.5 py-1 text-xs font-mono rounded-lg"
-                    style={{ background: "rgba(4,12,23,0.9)", border: "1px solid rgba(30,144,255,0.2)", color: "rgba(148,163,184,0.6)" }}>
-                    {activeImage + 1} / {project.images.length}
+                  <div className="flex gap-2 pb-1 mt-2 overflow-x-auto">
+                    {project.images.map((img, i) => (
+                      <button key={i} onClick={() => setActiveImage(i)}
+                        className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden transition-all duration-200 backdrop-blur-md ${activeImage === i ? "opacity-100" : "opacity-35 hover:opacity-65"}`}
+                        style={{
+                          background: "rgba(4,12,23,0.5)",
+                          border: activeImage === i ? "2px solid #1E90FF" : "1px solid rgba(30,144,255,0.12)",
+                          boxShadow: activeImage === i ? "0 0 12px rgba(30,144,255,0.3)" : "none",
+                          outline: "none",
+                        }}>
+                        <img src={img} alt={`thumb ${i + 1}`} className="object-contain w-full h-full p-1" />
+                      </button>
+                    ))}
                   </div>
                 )}
-              </div>
+              </motion.div>
+            )}
 
-              {project.images.length > 1 && (
-                <div className="flex gap-2 pb-1 mt-2 overflow-x-auto">
-                  {project.images.map((img, i) => (
-                    <button key={i} onClick={() => setActiveImage(i)}
-                      className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden transition-all duration-200 ${activeImage === i ? "opacity-100" : "opacity-35 hover:opacity-65"}`}
-                      style={{
-                        background: "#040c17",
-                        border: activeImage === i ? "2px solid #1E90FF" : "1px solid rgba(30,144,255,0.12)",
-                        boxShadow: activeImage === i ? "0 0 12px rgba(30,144,255,0.3)" : "none",
-                        outline: "none",
-                      }}>
-                      <img src={img} alt={`thumb ${i + 1}`} className="object-contain w-full h-full p-1" />
-                    </button>
+            {/* sidebar */}
+            <motion.aside {...fadeUp(0.15)} className="flex flex-col w-full gap-4 lg:w-72 xl:w-80 shrink-0">
+
+              {/* Links */}
+              {hasLinks && (
+                <SideCard label="Links">
+                  <div className="flex flex-col gap-2">
+                    {project.live_link && (
+                      <a href={project.live_link} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200"
+                        style={{ color: "#1E90FF", background: "rgba(30,144,255,0.1)", border: "1px solid rgba(30,144,255,0.3)" }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "rgba(30,144,255,0.18)"; e.currentTarget.style.borderColor = "rgba(30,144,255,0.5)"; e.currentTarget.style.color = "#60a5fa"; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "rgba(30,144,255,0.1)"; e.currentTarget.style.borderColor = "rgba(30,144,255,0.3)"; e.currentTarget.style.color = "#1E90FF"; }}>
+                        <ExternalLink size={15} /> View Live
+                      </a>
+                    )}
+                    {project.git_link && (
+                      <a href={project.git_link} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200"
+                        style={{ color: "#94a3b8", border: "1px solid rgba(255,255,255,0.08)", background: "transparent" }}
+                        onMouseEnter={e => { e.currentTarget.style.color = "#e2e8f0"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}>
+                        <Github size={15} /> Source Code
+                      </a>
+                    )}
+                    {project.demo_link && (
+                      <a href={project.demo_link} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200"
+                        style={{ color: "#94a3b8", border: "1px solid rgba(255,255,255,0.08)", background: "transparent" }}
+                        onMouseEnter={e => { e.currentTarget.style.color = "#fca5a5"; e.currentTarget.style.background = "rgba(239,68,68,0.08)"; e.currentTarget.style.borderColor = "rgba(239,68,68,0.3)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}>
+                        <Youtube size={15} /> Watch Demo
+                      </a>
+                    )}
+                  </div>
+                </SideCard>
+              )}
+
+              {/* Tech Stack */}
+              {project.tech_stack?.length > 0 && (
+                <SideCard label="Tech Stack">
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech_stack.map((tech, i) => (
+                      <span key={i}
+                        className="px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 cursor-default"
+                        style={{ background: "rgba(30,144,255,0.08)", border: "1px solid rgba(30,144,255,0.18)", color: "#cbd5e1" }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "rgba(30,144,255,0.16)"; e.currentTarget.style.borderColor = "rgba(30,144,255,0.4)"; e.currentTarget.style.color = "#ffffff"; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "rgba(30,144,255,0.08)"; e.currentTarget.style.borderColor = "rgba(30,144,255,0.18)"; e.currentTarget.style.color = "#cbd5e1"; }}>
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </SideCard>
+              )}
+
+              {/* Details */}
+              <SideCard label="Details">
+                <div>
+                  {[
+                    { label: "Category", value: project.category },
+                    { label: "Type",     value: project.type     },
+                    { label: "Date",     value: formattedDate    },
+                  ].filter(r => r.value).map(({ label, value }) => (
+                    <div key={label} className="flex items-center justify-between gap-3 py-2.5 border-b last:border-0"
+                      style={{ borderColor: "rgba(30,144,255,0.07)" }}>
+                      <span className="text-xs shrink-0" style={{ color: "rgba(148,163,184,0.8)" }}>{label}</span>
+                      <span className="text-xs font-medium capitalize" style={{ color: "#cbd5e1" }}>{value}</span>
+                    </div>
                   ))}
                 </div>
+              </SideCard>
+
+              {/* Contributors */}
+              {project.contributors?.length > 0 && (
+                <SideCard label="Contributors">
+                  <div className="flex flex-col gap-2">
+                    {project.contributors.map((c, i) => (
+                      <a key={i}
+                        href={c.github || undefined} target="_blank" rel="noopener noreferrer"
+                        className={`flex items-center gap-3 p-2.5 rounded-xl transition-all duration-200 ${c.github ? "cursor-pointer" : "cursor-default"}`}
+                        style={{ border: "1px solid rgba(255,255,255,0.05)" }}
+                        onMouseEnter={e => c.github && (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
+                        onMouseLeave={e => (e.currentTarget.style.background = "transparent")}>
+                        <div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full shrink-0"
+                          style={{ background: "rgba(30,144,255,0.12)", color: "#60a5fa" }}>
+                          {c.name.charAt(0).toUpperCase()}
+                        </div>
+                        <span className="text-sm font-medium" style={{ color: "#cbd5e1" }}>{c.name}</span>
+                        {c.github && <Github size={13} className="ml-auto" style={{ color: "rgba(148,163,184,0.5)" }} />}
+                      </a>
+                    ))}
+                  </div>
+                </SideCard>
               )}
+
+            </motion.aside>
+          </div>
+
+          {/* ── FULL-WIDTH MARKDOWN ── */}
+          {project.desc_detailed && (
+            <motion.div {...fadeUp(0.2)}>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="flex items-center gap-2 shrink-0">
+                  <div className="w-1 h-4 rounded-full" style={{ background: "#1E90FF" }} />
+                  <span className="text-[10px] font-bold tracking-[0.18em] uppercase" style={{ color: "#1E90FF" }}>
+                    About this project
+                  </span>
+                </div>
+                <div className="flex-1 h-px"
+                  style={{ background: "linear-gradient(90deg, rgba(30,144,255,0.25), transparent)" }} />
+              </div>
+
+              {/* UPGRADED: Markdown container is now frosted glass */}
+              <div className="w-full p-6 rounded-2xl sm:p-10 backdrop-blur-xl"
+                style={{
+                  background: "rgba(2,21,38,0.4)",
+                  border: "1px solid rgba(30,144,255,0.12)",
+                  boxShadow: "0 0 60px rgba(30,144,255,0.03) inset",
+                }}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={md}>
+                  {project.desc_detailed}
+                </ReactMarkdown>
+              </div>
             </motion.div>
           )}
 
-          {/* sidebar */}
-          <motion.aside {...fadeUp(0.15)} className="flex flex-col w-full gap-4 lg:w-72 xl:w-80 shrink-0">
-
-            {/* Links */}
-            {hasLinks && (
-              <SideCard label="Links">
-                <div className="flex flex-col gap-2">
-                  {project.live_link && (
-                    <a href={project.live_link} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200"
-                      style={{ color: "#1E90FF", background: "rgba(30,144,255,0.1)", border: "1px solid rgba(30,144,255,0.3)" }}
-                      onMouseEnter={e => { e.currentTarget.style.background = "rgba(30,144,255,0.18)"; e.currentTarget.style.borderColor = "rgba(30,144,255,0.5)"; e.currentTarget.style.color = "#60a5fa"; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = "rgba(30,144,255,0.1)"; e.currentTarget.style.borderColor = "rgba(30,144,255,0.3)"; e.currentTarget.style.color = "#1E90FF"; }}>
-                      <ExternalLink size={15} /> View Live
-                    </a>
-                  )}
-                  {project.git_link && (
-                    <a href={project.git_link} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200"
-                      style={{ color: "#94a3b8", border: "1px solid rgba(255,255,255,0.08)", background: "transparent" }}
-                      onMouseEnter={e => { e.currentTarget.style.color = "#e2e8f0"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}
-                      onMouseLeave={e => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}>
-                      <Github size={15} /> Source Code
-                    </a>
-                  )}
-                  {project.demo_link && (
-                    <a href={project.demo_link} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200"
-                      style={{ color: "#94a3b8", border: "1px solid rgba(255,255,255,0.08)", background: "transparent" }}
-                      onMouseEnter={e => { e.currentTarget.style.color = "#fca5a5"; e.currentTarget.style.background = "rgba(239,68,68,0.08)"; e.currentTarget.style.borderColor = "rgba(239,68,68,0.3)"; }}
-                      onMouseLeave={e => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}>
-                      <Youtube size={15} /> Watch Demo
-                    </a>
-                  )}
-                </div>
-              </SideCard>
-            )}
-
-            {/* Tech Stack */}
-            {project.tech_stack?.length > 0 && (
-              <SideCard label="Tech Stack">
-                <div className="flex flex-wrap gap-2">
-                  {project.tech_stack.map((tech, i) => (
-                    <span key={i}
-                      className="px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 cursor-default"
-                      style={{ background: "rgba(30,144,255,0.08)", border: "1px solid rgba(30,144,255,0.18)", color: "#64748b" }}
-                      onMouseEnter={e => { e.currentTarget.style.background = "rgba(30,144,255,0.16)"; e.currentTarget.style.borderColor = "rgba(30,144,255,0.4)"; e.currentTarget.style.color = "#93c5fd"; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = "rgba(30,144,255,0.08)"; e.currentTarget.style.borderColor = "rgba(30,144,255,0.18)"; e.currentTarget.style.color = "#64748b"; }}>
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </SideCard>
-            )}
-
-            {/* Details — status removed from here, lives in hero now */}
-            <SideCard label="Details">
-              <div>
-                {[
-                  { label: "Category", value: project.category },
-                  { label: "Type",     value: project.type     },
-                  { label: "Date",     value: formattedDate    },
-                ].filter(r => r.value).map(({ label, value }) => (
-                  <div key={label} className="flex items-center justify-between gap-3 py-2.5 border-b last:border-0"
-                    style={{ borderColor: "rgba(30,144,255,0.07)" }}>
-                    <span className="text-xs shrink-0" style={{ color: "rgba(100,116,139,0.7)" }}>{label}</span>
-                    <span className="text-xs font-medium capitalize" style={{ color: "#94a3b8" }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-            </SideCard>
-
-            {/* Contributors */}
-            {project.contributors?.length > 0 && (
-              <SideCard label="Contributors">
-                <div className="flex flex-col gap-2">
-                  {project.contributors.map((c, i) => (
-                    <a key={i}
-                      href={c.github || undefined} target="_blank" rel="noopener noreferrer"
-                      className={`flex items-center gap-3 p-2.5 rounded-xl transition-all duration-200 ${c.github ? "cursor-pointer" : "cursor-default"}`}
-                      style={{ border: "1px solid rgba(255,255,255,0.05)" }}
-                      onMouseEnter={e => c.github && (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
-                      onMouseLeave={e => (e.currentTarget.style.background = "transparent")}>
-                      <div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full shrink-0"
-                        style={{ background: "rgba(30,144,255,0.12)", color: "#60a5fa" }}>
-                        {c.name.charAt(0).toUpperCase()}
-                      </div>
-                      <span className="text-sm font-medium" style={{ color: "#94a3b8" }}>{c.name}</span>
-                      {c.github && <Github size={13} className="ml-auto" style={{ color: "rgba(148,163,184,0.25)" }} />}
-                    </a>
-                  ))}
-                </div>
-              </SideCard>
-            )}
-
-          </motion.aside>
         </div>
-
-        {/* ── FULL-WIDTH MARKDOWN ── */}
-        {project.desc_detailed && (
-          <motion.div {...fadeUp(0.2)}>
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex items-center gap-2 shrink-0">
-                <div className="w-1 h-4 rounded-full" style={{ background: "#1E90FF" }} />
-                <span className="text-[10px] font-bold tracking-[0.18em] uppercase" style={{ color: "#1E90FF" }}>
-                  About this project
-                </span>
-              </div>
-              <div className="flex-1 h-px"
-                style={{ background: "linear-gradient(90deg, rgba(30,144,255,0.25), transparent)" }} />
-            </div>
-
-            <div className="w-full p-6 rounded-2xl sm:p-10"
-              style={{
-                background: "rgba(2,21,38,0.7)",
-                border: "1px solid rgba(30,144,255,0.12)",
-                boxShadow: "0 0 60px rgba(30,144,255,0.03) inset",
-              }}>
-              <ReactMarkdown remarkPlugins={[remarkGfm]} components={md}>
-                {project.desc_detailed}
-              </ReactMarkdown>
-            </div>
-          </motion.div>
-        )}
-
-      </div>
-    </PageLayout>
+      </PageLayout>
+    </>
   );
 }
 
