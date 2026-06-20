@@ -68,17 +68,31 @@ function Home() {
       <div className="z-10 flex flex-col items-center justify-center w-full max-w-screen-sm space-y-6">
         {showProfileImage && (
           <div className="relative mb-4">
+            {/* Outer glow */}
             <div
-              className="absolute inset-0 scale-110 rounded-full pointer-events-none blur-2xl"
+              className="absolute inset-0 z-0 scale-110 rounded-full pointer-events-none blur-2xl"
               style={{ background: "rgba(30,144,255,0.2)" }}
             />
+
+            {/* Circular frame — this is what blurs whatever sits behind/around it */}
+            <div
+              className="absolute inset-0 z-[3] rounded-full pointer-events-none border-blue animate-glow"
+              style={{
+                border: "2px solid",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                background: "rgba(70,160,255,0.08)",
+              }}
+            />
+
+            {/* Sharp photo on top, no blur */}
             <motion.img
               src={myPic}
               alt="Tanmay Mevada"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1 }}
-              className="relative z-10 object-cover w-32 h-32 border-2 rounded-full xs:w-40 xs:h-40 sm:w-60 sm:h-60 border-blue animate-glow"
+              className="relative z-[5] object-cover w-32 h-32 rounded-full xs:w-40 xs:h-40 sm:w-60 sm:h-60"
             />
           </div>
         )}
