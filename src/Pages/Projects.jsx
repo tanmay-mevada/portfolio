@@ -5,6 +5,7 @@ import { supabase } from "../supabaseClient";
 import { Search, X, ChevronDown} from "lucide-react";
 // 1. Import the Matrix Background
 import HoverMatrixBackground from "../Components/HoverMatrixBG";
+import MatrixRingLoader from "../Components/MatrixRingLoader";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
@@ -100,15 +101,7 @@ function Projects() {
   const inputFocusOff = e => { e.currentTarget.style.borderColor = "rgba(30,144,255,0.18)"; e.currentTarget.style.color = "#cbd5e1"; };
 
   if (loading) {
-    return (
-      <PageLayout className="flex flex-col items-center justify-center min-h-screen">
-        <div className="relative w-10 h-10 mb-4">
-          <div className="absolute inset-0 rounded-full animate-spin"
-            style={{ border: "2px solid rgba(30,144,255,0.15)", borderTopColor: "#1E90FF" }} />
-        </div>
-        <p style={{ color: "#475569" }} className="text-sm tracking-wide">Loading projects…</p>
-      </PageLayout>
-    );
+    return <MatrixRingLoader />;
   }
 
   return (

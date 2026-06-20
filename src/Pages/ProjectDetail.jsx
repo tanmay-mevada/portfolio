@@ -12,6 +12,7 @@ import remarkGfm from "remark-gfm";
 import PageLayout from "../Components/PageLayout";
 import NotFound from "./404"; 
 import HoverMatrixBackground from "../Components/HoverMatrixBG";
+import MatrixRingLoader from "../Components/MatrixRingLoader";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 22 },
@@ -67,7 +68,7 @@ function StatusBadge({ status, statusInfo }) {
             transition={{ duration: 0.15 }}
             className="absolute bottom-full left-0 mb-2 z-50 w-52 text-xs rounded-xl px-3 py-2.5 pointer-events-none backdrop-blur-xl"
             style={{
-              background: "rgba(2,21,38,0.85)", // Slight transparency for tooltip
+              background: "rgba(2,21,38,0.85)",
               border: `1px solid ${cfg.border}`,
               color: "#94a3b8",
               boxShadow: `0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px ${cfg.border}`,
@@ -86,7 +87,6 @@ function StatusBadge({ status, statusInfo }) {
 /* ── Sidebar card ── */
 function SideCard({ label, children }) {
   return (
-    // UPGRADED: Frosted glass applied to side cards
     <div className="overflow-hidden rounded-2xl backdrop-blur-xl"
       style={{ background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.14)" }}>
       <div className="flex items-center gap-2 px-5 py-3 border-b"
@@ -134,7 +134,6 @@ function CodeBlock({ children }) {
   return (
     <div className="relative my-6 overflow-hidden rounded-2xl backdrop-blur-md"
       style={{ border: "1px solid rgba(30,144,255,0.18)", background: "rgba(4,12,23,0.5)" }}>
-      {/* titlebar */}
       <div className="flex items-center justify-between px-4 py-2.5"
         style={{ background: "rgba(30,144,255,0.06)", borderBottom: "1px solid rgba(30,144,255,0.12)" }}>
         <div className="flex items-center gap-1.5">
@@ -152,7 +151,6 @@ function CodeBlock({ children }) {
           {copied ? "✓ Copied" : "Copy"}
         </button>
       </div>
-      {/* code */}
       <pre style={{
         background: "transparent", margin: 0,
         padding: "1.25rem 1.5rem", overflowX: "auto",
@@ -234,21 +232,7 @@ function ProjectDetail() {
     fetchData();
   }, [slug]);
 
-  if (loading) return (
-    <>
-      <HoverMatrixBackground />
-      <PageLayout className="relative z-10 flex items-center justify-center min-h-screen">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative w-12 h-12">
-            <div className="absolute inset-0 rounded-full animate-spin"
-              style={{ border: "2px solid rgba(30,144,255,0.15)", borderTopColor: "#1E90FF" }} />
-            <div className="absolute inset-0 rounded-full blur-md" style={{ background: "rgba(30,144,255,0.15)" }} />
-          </div>
-          <p className="text-sm tracking-widest uppercase" style={{ color: "rgba(148,163,184,0.5)" }}>Loading…</p>
-        </div>
-      </PageLayout>
-    </>
-  );
+  if (loading) return <MatrixRingLoader />;
 
   if (notFound) {
     return <NotFound />;
@@ -308,14 +292,12 @@ function ProjectDetail() {
 
             {/* meta strip */}
             <div className="flex flex-wrap items-center gap-2">
-              {/* date */}
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
                 style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
                 <Calendar size={10} style={{ color: "#1E90FF", opacity: 0.7 }} />
                 {formattedDate}
               </span>
 
-              {/* category */}
               {project.category && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
                   style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
@@ -324,7 +306,6 @@ function ProjectDetail() {
                 </span>
               )}
 
-              {/* type */}
               {project.type && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
                   style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
@@ -333,7 +314,6 @@ function ProjectDetail() {
                 </span>
               )}
 
-              {/* tech count */}
               {project.tech_stack?.length > 0 && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
                   style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
@@ -342,7 +322,6 @@ function ProjectDetail() {
                 </span>
               )}
 
-              {/* contributors count */}
               {project.contributors?.length > 0 && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full"
                   style={{ color: "#94a3b8", background: "rgba(2,21,38,0.4)", border: "1px solid rgba(30,144,255,0.2)", backdropFilter: "blur(4px)" }}>
@@ -360,10 +339,8 @@ function ProjectDetail() {
           {/* ── IMAGES + SIDEBAR ── */}
           <div className="flex flex-col gap-8 mb-14 lg:flex-row lg:gap-10 lg:items-start">
 
-            {/* images */}
             {hasImages && (
               <motion.div {...fadeUp(0.1)} className="flex-1 min-w-0">
-                {/* UPGRADED: Image container is now glassmorphic */}
                 <div className="relative flex items-center justify-center w-full mb-3 overflow-hidden rounded-2xl backdrop-blur-xl"
                   style={{
                     background: "linear-gradient(145deg, rgba(4,12,23,0.4), rgba(2,21,38,0.4))",
@@ -410,10 +387,8 @@ function ProjectDetail() {
               </motion.div>
             )}
 
-            {/* sidebar */}
             <motion.aside {...fadeUp(0.15)} className="flex flex-col w-full gap-4 lg:w-72 xl:w-80 shrink-0">
 
-              {/* Links */}
               {hasLinks && (
                 <SideCard label="Links">
                   <div className="flex flex-col gap-2">
@@ -448,7 +423,6 @@ function ProjectDetail() {
                 </SideCard>
               )}
 
-              {/* Tech Stack */}
               {project.tech_stack?.length > 0 && (
                 <SideCard label="Tech Stack">
                   <div className="flex flex-wrap gap-2">
@@ -465,7 +439,6 @@ function ProjectDetail() {
                 </SideCard>
               )}
 
-              {/* Details */}
               <SideCard label="Details">
                 <div>
                   {[
@@ -482,7 +455,6 @@ function ProjectDetail() {
                 </div>
               </SideCard>
 
-              {/* Contributors */}
               {project.contributors?.length > 0 && (
                 <SideCard label="Contributors">
                   <div className="flex flex-col gap-2">
@@ -522,7 +494,6 @@ function ProjectDetail() {
                   style={{ background: "linear-gradient(90deg, rgba(30,144,255,0.25), transparent)" }} />
               </div>
 
-              {/* UPGRADED: Markdown container is now frosted glass */}
               <div className="w-full p-6 rounded-2xl sm:p-10 backdrop-blur-xl"
                 style={{
                   background: "rgba(2,21,38,0.4)",
