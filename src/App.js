@@ -13,6 +13,8 @@ import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import AdminLogin from "./Pages/AdminLogin"; 
 import NotFound from "./Pages/404";
+import Socials from "./Pages/Socials";
+
 function App() {
   useEffect(() => {
     const hasVisited = sessionStorage.getItem("hasVisited");
@@ -36,6 +38,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/projects/:slug" element={<ProjectDetail />} />
+            <Route path="/socials" element={<Socials />} />
           </Route>
 
           {/* ADMIN ROUTE */}
