@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Home, Code, Info, Mail, Github, Instagram, Linkedin } from "lucide-react";
+import { Home, Code, Info, Mail, FileText, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 
-// 1. ADDED: Simple, glitch-free magnetic wrapper
 function MagneticWrapper({ children }) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -14,9 +13,7 @@ function MagneticWrapper({ children }) {
     setPosition({ x: x * 0.25, y: y * 0.25 });
   };
 
-  const handleMouseLeave = () => {
-    setPosition({ x: 0, y: 0 });
-  };
+  const handleMouseLeave = () => setPosition({ x: 0, y: 0 });
 
   return (
     <div
@@ -40,6 +37,7 @@ function Navbar() {
   const isHome = location.pathname === "/" || location.pathname === "/home";
   const [showSidebar, setShowSidebar] = useState(!isHome);
   const [showMobileNav, setShowMobileNav] = useState(true);
+  const [showResume, setShowResume] = useState(true);
   const isInitialLoad =
     performance.getEntriesByType("navigation")[0].type === "reload";
 
@@ -52,30 +50,27 @@ function Navbar() {
       setShowSidebar(true);
     }
   }, [isHome, isInitialLoad]);
-  
+
   useEffect(() => {
     let lastScrollY = window.scrollY;
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      setShowMobileNav(currentScrollY < lastScrollY || currentScrollY < 10);
+      const scrollingDown = currentScrollY > lastScrollY && currentScrollY > 10;
+      setShowMobileNav(!scrollingDown);
+      setShowResume(!scrollingDown);
       lastScrollY = currentScrollY;
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const isActive = (path) => {
-    if (path === "/home") {
-      return location.pathname === "/" || location.pathname === "/home";
-    }
+    if (path === "/home") return location.pathname === "/" || location.pathname === "/home";
     return location.pathname === path;
   };
 
-  // 2. TWEAKED: Removed 'hover:scale-110' so it doesn't fight the magnetic physics
   const iconWrapper = (path) =>
-    `w-12 h-12 flex items-center justify-center group relative rounded-full transition-colors duration-300 hover:shadow-sm hover:shadow-blue ${
+    `w-14 h-14 flex items-center justify-center group relative rounded-full transition-colors duration-300 hover:shadow-sm hover:shadow-blue ${
       isActive(path)
         ? "bg-blue text-black shadow-sm shadow-blue"
         : "text-blue hover:bg-blue hover:text-black"
@@ -91,8 +86,11 @@ function Navbar() {
   const label =
     "absolute left-14 top-1/2 -translate-y-1/2 px-2 py-1 text-sm rounded-md whitespace-nowrap z-50 shadow backdrop-blur-md backdrop-saturate-150 bg-blue/10 border border-blue/20 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300";
 
+  const RESUME_URL = "/resume.pdf";
+
   return (
     <>
+      {/* ── Desktop sidebar ── */}
       <AnimatePresence>
         {showSidebar && (
           <motion.nav
@@ -100,83 +98,74 @@ function Navbar() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -100, opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            // 3. TWEAKED: Replaced bg-dark with bg-[#021526]/20 backdrop-blur-md
-            // Change this line:
-className="fixed top-20 left-6 h-[600px] w-[68px] bg-[#021526]/20 backdrop-blur-[2px] text-white flex-col items-center py-8 shadow-lg z-50 rounded-xl border border-blue/30 transition-all duration-500 hover:shadow-blue/50 hidden sm:flex"
+            className="fixed top-[45%] -translate-y-1/2 left-6 w-[76px] bg-[#021526]/20 backdrop-blur-[2px] text-white flex-col items-center py-12 shadow-lg z-50 rounded-2xl border border-blue/30 transition-all duration-500 hover:shadow-blue/50 hidden sm:flex"
           >
-            <div className="flex flex-col items-center gap-y-6">
+            {/* Primary nav */}
+            <div className="flex flex-col items-center gap-y-10">
               <MagneticWrapper>
                 <a href="/home" className={iconWrapper("/home")}>
-                  <Home size={28} />
+                  <Home size={30} />
                   <span className={label}>Home</span>
                 </a>
               </MagneticWrapper>
 
               <MagneticWrapper>
                 <Link to="/projects" className={iconWrapper("/projects")}>
-                  <Code size={28} />
+                  <Code size={30} />
                   <span className={label}>Projects</span>
                 </Link>
               </MagneticWrapper>
 
               <MagneticWrapper>
                 <a href="/about" className={iconWrapper("/about")}>
-                  <Info size={28} />
+                  <Info size={30} />
                   <span className={label}>About Me</span>
                 </a>
               </MagneticWrapper>
 
               <MagneticWrapper>
-                <a href="/contact" className={iconWrapper("/contact")}>
-                  <Mail size={28} />
+                <Link to="/socials" className={iconWrapper("/socials")}>
+                  <Share2 size={28} />
+                  <span className={label}>Socials</span>
+                </Link>
+              </MagneticWrapper>
+
+              <MagneticWrapper>
+                <Link to="/contact" className={iconWrapper("/contact")}>
+                  <Mail size={30} />
                   <span className={label}>Contact</span>
-                </a>
+                </Link>
               </MagneticWrapper>
             </div>
 
-            <div className="flex-grow" />
 
-            <div className="flex flex-col items-center gap-y-5">
-              <MagneticWrapper>
-                <a
-                  href="https://github.com/tanmay-mevada"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative flex items-center justify-center w-12 h-12 transition-colors duration-300 rounded-full group text-blue hover:shadow-sm hover:shadow-blue hover:bg-blue hover:text-black"
-                >
-                  <Github size={26} />
-                  <span className={label}>GitHub</span>
-                </a>
-              </MagneticWrapper>
-
-              <MagneticWrapper>
-                <a
-                  href="https://www.linkedin.com/in/tanmay-mevada/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative flex items-center justify-center w-12 h-12 transition-colors duration-300 rounded-full group text-blue hover:shadow-sm hover:shadow-blue hover:bg-blue hover:text-black"
-                >
-                  <Linkedin size={24} />
-                  <span className={label}>LinkedIn</span>
-                </a>
-              </MagneticWrapper>
-
-              <MagneticWrapper>
-                <a
-                  href="https://instagram.com/tanmay.mevada"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative flex items-center justify-center w-12 h-12 transition-colors duration-300 rounded-full group text-blue hover:shadow-sm hover:shadow-blue hover:bg-blue hover:text-black"
-                >
-                  <Instagram size={26} />
-                  <span className={label}>Instagram</span>
-                </a>
-              </MagneticWrapper>
-            </div>
           </motion.nav>
         )}
       </AnimatePresence>
 
+      {/* ── Floating Resume button — bottom right ── */}
+      <AnimatePresence>
+        {showSidebar && showResume && (
+          <motion.a
+            href={RESUME_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="fixed bottom-8 right-6 z-50 hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue/10 border border-blue/30 text-blue backdrop-blur-md hover:bg-blue hover:text-black hover:border-transparent hover:shadow-md hover:shadow-blue/40 transition-colors duration-300"
+          >
+            <FileText size={18} />
+            <span className="text-sm font-semibold">Resume</span>
+          </motion.a>
+        )}
+      </AnimatePresence>
+
+      {/* ── Mobile bottom bar ── */}
       <AnimatePresence>
         {showMobileNav && (
           <motion.div
@@ -184,31 +173,36 @@ className="fixed top-20 left-6 h-[600px] w-[68px] bg-[#021526]/20 backdrop-blur-
             animate={{ y: 0 }}
             exit={{ y: 100 }}
             transition={{ duration: 0.3 }}
-            // 4. TWEAKED: Replaced bg-dark with bg-[#021526]/20 backdrop-blur-md
             className="fixed inset-x-0 bottom-4 mx-auto sm:hidden z-50 bg-[#021526]/20 backdrop-blur-md text-white w-[95%] max-w-md rounded-full shadow-lg border border-blue/30 px-4 py-2 flex justify-around items-center"
           >
             <MagneticWrapper>
               <a href="/home" className={mobileIconWrapper("/home")}>
-                <Home size={24} />
+                <Home size={26} />
               </a>
             </MagneticWrapper>
 
             <MagneticWrapper>
               <Link to="/projects" className={mobileIconWrapper("/projects")}>
-                <Code size={24} />
+                <Code size={26} />
               </Link>
             </MagneticWrapper>
 
             <MagneticWrapper>
               <a href="/about" className={mobileIconWrapper("/about")}>
-                <Info size={24} />
+                <Info size={26} />
               </a>
             </MagneticWrapper>
 
             <MagneticWrapper>
-              <a href="/contact" className={mobileIconWrapper("/contact")}>
-                <Mail size={24} />
-              </a>
+              <Link to="/socials" className={mobileIconWrapper("/socials")}>
+                <Share2 size={24} />
+              </Link>
+            </MagneticWrapper>
+
+            <MagneticWrapper>
+              <Link to="/contact" className={mobileIconWrapper("/contact")}>
+                <Mail size={26} />
+              </Link>
             </MagneticWrapper>
           </motion.div>
         )}
