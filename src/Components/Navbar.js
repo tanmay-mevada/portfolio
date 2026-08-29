@@ -48,6 +48,20 @@ function Navbar() {
   const isHome = location.pathname === "/" || location.pathname === "/home";
   
   const [showMobileNav, setShowMobileNav] = useState(true);
+  const [showNavbar, setShowNavbar] = useState(false);
+
+  const isInitialLoad =
+    performance.getEntriesByType("navigation")[0]?.type === "reload";
+
+  useEffect(() => {
+    if (isHome && isInitialLoad) {
+      setShowNavbar(false);
+      const timer = setTimeout(() => setShowNavbar(true), 6000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowNavbar(true);
+    }
+  }, [isHome, isInitialLoad]);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -81,15 +95,16 @@ function Navbar() {
   return (
     <>
       <AnimatePresence mode="wait">
-        {isHome ? (
-          <motion.nav
-            key="bottom-dock"
-            initial={{ y: 100, opacity: 0, x: "-50%" }}
-            animate={{ y: 0, opacity: 1, x: "-50%" }}
-            exit={{ y: 100, opacity: 0, x: "-50%" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="fixed bottom-[20px] left-1/2 -translate-x-1/2 z-50 flex items-center justify-center gap-[14px] px-4 py-3 rounded-[18px] bg-[rgba(15,30,48,0.92)] backdrop-blur-md border border-blue/30 shadow-lg shadow-blue/10"
-          >
+        {showNavbar && (
+          isHome ? (
+            <motion.nav
+              key="bottom-dock"
+              initial={{ y: 100, opacity: 0, x: "-50%" }}
+              animate={{ y: 0, opacity: 1, x: "-50%" }}
+              exit={{ y: 100, opacity: 0, x: "-50%" }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="fixed bottom-[20px] left-1/2 -translate-x-1/2 z-50 flex items-center justify-center gap-[14px] px-4 py-3 rounded-[18px] bg-[rgba(15,30,48,0.92)] backdrop-blur-md border border-blue/30 shadow-lg shadow-blue/10"
+            >
             {NAV_ITEMS.map(({ path, altPath, label, Icon }) => {
               const active = isActive(path, altPath);
               return (
@@ -170,6 +185,7 @@ function Navbar() {
               </a>
             </MagneticWrapper>
           </motion.nav>
+          )
         )}
       </AnimatePresence>
       
