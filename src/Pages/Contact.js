@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Mail, Phone, Github, Linkedin, Instagram, Send, CheckCircle, XCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import HoverMatrixBackground from "../Components/HoverMatrixBG";
-import Navbar from "../Components/Navbar";
 
 export default function Contact() {
   const [isLoading, setIsLoading] = useState(false);
@@ -78,9 +77,8 @@ export default function Contact() {
     // REMOVED: solid bg-dark. ADDED: relative and overflow-hidden for the background.
     <div className="relative min-h-screen px-4 py-20 overflow-hidden text-white sm:px-8 md:px-12 lg:px-20">
       
-      {/* ADDED: Background and Navbar */}
+      {/* ADDED: Background */}
       <HoverMatrixBackground />
-      <Navbar />
 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}

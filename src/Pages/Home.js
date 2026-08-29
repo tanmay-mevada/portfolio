@@ -4,23 +4,19 @@ import myPic from "../Assets/myPic.png";
 import CryptoText from "../Components/CryptoText"; 
 import HoverMatrixBackground from "../Components/HoverMatrixBG"; 
 import MatrixRainintro from "../Components/MatrixBG"; 
-import Navbar from "../Components/Navbar";
 
 function Home() {
-  const [fadeMatrixRainintro, setfadeMatrixRainintro] = useState(false);
-  const [showHelloWorld, setShowHelloWorld] = useState(true);
-  const [showTypewriter, setShowTypewriter] = useState(false);
-  const [showProfileImage, setShowProfileImage] = useState(false);
+  const isInitialLoad =
+    performance.getEntriesByType("navigation")[0]?.type === "reload";
+
+  const [fadeMatrixRainintro, setfadeMatrixRainintro] = useState(!isInitialLoad);
+  const [showHelloWorld, setShowHelloWorld] = useState(isInitialLoad);
+  const [showTypewriter, setShowTypewriter] = useState(!isInitialLoad);
+  const [showProfileImage, setShowProfileImage] = useState(!isInitialLoad);
+  const [showSkipHint, setShowSkipHint] = useState(isInitialLoad);
 
   useEffect(() => {
-    const isInitialLoad =
-      performance.getEntriesByType("navigation")[0].type === "reload";
-
     if (!isInitialLoad) {
-      setfadeMatrixRainintro(true);
-      setShowHelloWorld(false);
-      setShowTypewriter(true);
-      setShowProfileImage(true);
       return;
     }
 
@@ -36,14 +32,51 @@ function Home() {
         setShowTypewriter(true);
         setShowProfileImage(true);
       }, 600);
-      return () => clearTimeout(typewriterTimeout);
+      // Store timeout so we can clear it if needed
+      window.typewriterTimeout = typewriterTimeout;
     }, matrixDuration + 1000);
+
+    const handleSkip = () => {
+      clearTimeout(fadeTimeout);
+      clearTimeout(helloTimeout);
+      if (window.typewriterTimeout) clearTimeout(window.typewriterTimeout);
+      
+      setfadeMatrixRainintro(true);
+      setShowHelloWorld(false);
+      setShowTypewriter(true);
+      setShowProfileImage(true);
+      setShowSkipHint(false);
+      
+      // Notify other components (like Navbar) to also skip their intro delay
+      window.dispatchEvent(new Event("skipIntroAnimation"));
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("click", handleKeyDown);
+    };
+
+    function handleKeyDown(e) {
+      // allow pressing any key or clicking the screen
+      handleSkip();
+    }
+    
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("click", handleKeyDown);
+
+    // If animation naturally finishes, we should also remove listeners
+    const cleanupTimeout = setTimeout(() => {
+      setShowSkipHint(false);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("click", handleKeyDown);
+    }, matrixDuration + 2000);
 
     return () => {
       clearTimeout(fadeTimeout);
       clearTimeout(helloTimeout);
+      clearTimeout(cleanupTimeout);
+      if (window.typewriterTimeout) clearTimeout(window.typewriterTimeout);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("click", handleKeyDown);
     };
-  }, []);
+  }, [isInitialLoad]);
 
   return (
     <section
@@ -63,7 +96,18 @@ function Home() {
         <MatrixRainintro fadeOut={fadeMatrixRainintro} />
       </div>
 
-      <Navbar delay={true} />
+      <AnimatePresence>
+        {showSkipHint && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute z-50 bottom-6 left-6 text-xs text-white/40 tracking-wider font-mono pointer-events-none"
+          >
+            [ press any key to skip ]
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="z-10 flex flex-col items-center justify-center w-full max-w-screen-sm space-y-6">
         {showProfileImage && (
