@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Home, Code, Info, Mail, FileText } from "lucide-react";
+import { Home, Code, Info, Mail, Github, Linkedin, Instagram } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 
@@ -35,12 +35,17 @@ function MagneticWrapper({ children }) {
   );
 }
 
-// Shared nav configuration
 const NAV_ITEMS = [
   { path: "/home", altPath: "/", label: "Home", Icon: Home },
   { path: "/projects", label: "Projects", Icon: Code },
   { path: "/about", label: "About", Icon: Info },
   { path: "/contact", label: "Contact", Icon: Mail },
+];
+
+const SOCIAL_ITEMS = [
+  { path: "https://github.com/tanmay-mevada", label: "GitHub", Icon: Github },
+  { path: "https://www.linkedin.com/in/tanmay-mevada/", label: "LinkedIn", Icon: Linkedin },
+  { path: "https://instagram.com/tanmay.mevada", label: "Instagram", Icon: Instagram },
 ];
 
 function Navbar() {
@@ -54,13 +59,24 @@ function Navbar() {
     performance.getEntriesByType("navigation")[0]?.type === "reload";
 
   useEffect(() => {
+    let timer;
     if (isHome && isInitialLoad) {
       setShowNavbar(false);
-      const timer = setTimeout(() => setShowNavbar(true), 6000);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => setShowNavbar(true), 6000);
     } else {
       setShowNavbar(true);
     }
+    
+    const handleSkip = () => {
+      setShowNavbar(true);
+      if (timer) clearTimeout(timer);
+    };
+    window.addEventListener("skipIntroAnimation", handleSkip);
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener("skipIntroAnimation", handleSkip);
+    };
   }, [isHome, isInitialLoad]);
 
   useEffect(() => {
@@ -92,6 +108,24 @@ function Navbar() {
     </span>
   );
 
+  const bgClasses = "bg-[#021526]/20 backdrop-blur-[2px] border border-blue/30 shadow-lg transition-shadow duration-500 hover:shadow-blue/50 text-white";
+
+  const getIconClasses = (active, isDock) => {
+    const base = "flex items-center justify-center group relative rounded-full transition-colors duration-300 hover:shadow-sm hover:shadow-blue";
+    const size = isDock ? "w-10 h-10 sm:w-12 sm:h-12" : "w-12 h-12";
+    const activeState = active
+      ? "bg-blue text-black shadow-sm shadow-blue"
+      : "text-blue hover:bg-blue hover:text-black";
+    return `${base} ${size} ${activeState}`;
+  };
+
+  const mobileIconWrapper = (path) =>
+    `flex flex-col items-center p-2 transition-colors duration-300 rounded-full group ${
+      isActive(path)
+        ? "bg-blue text-black"
+        : "text-blue hover:text-black hover:bg-blue"
+    }`;
+
   return (
     <>
       <AnimatePresence mode="wait">
@@ -103,7 +137,7 @@ function Navbar() {
               animate={{ y: 0, opacity: 1, x: "-50%" }}
               exit={{ y: 100, opacity: 0, x: "-50%" }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="fixed bottom-[20px] left-1/2 -translate-x-1/2 z-50 flex items-center justify-center gap-[14px] px-4 py-3 rounded-[18px] bg-[rgba(15,30,48,0.92)] backdrop-blur-md border border-blue/30 shadow-lg shadow-blue/10"
+              className={`fixed bottom-[20px] left-1/2 -translate-x-1/2 z-50 hidden sm:flex items-center justify-center gap-4 px-6 py-4 rounded-3xl ${bgClasses}`}
             >
             {NAV_ITEMS.map(({ path, altPath, label, Icon }) => {
               const active = isActive(path, altPath);
@@ -112,11 +146,7 @@ function Navbar() {
                   <Link
                     to={path}
                     aria-label={label}
-                    className={`group relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full transition-colors duration-300 ${
-                      active
-                        ? "bg-blue/20 text-blue"
-                        : "text-white/70 hover:text-blue hover:bg-blue/10"
-                    }`}
+                    className={getIconClasses(active, true)}
                   >
                     <Icon size={22} className="sm:w-6 sm:h-6" />
                     <Tooltip label={label} isDock={true} />
@@ -125,22 +155,27 @@ function Navbar() {
               );
             })}
             
-            {/* Vertical Divider */}
             <div className="w-[1px] h-8 bg-blue/30 mx-1"></div>
-            
-            {/* Resume Pill Button */}
-            <MagneticWrapper>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Resume"
-                className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-blue hover:bg-blue/90 text-dark font-medium rounded-full transition-colors"
-              >
-                <FileText size={18} />
-                <span className="hidden sm:inline">Resume</span>
-              </a>
-            </MagneticWrapper>
+
+            {SOCIAL_ITEMS.map(({ path, label, Icon }) => {
+              const isExternal = path.startsWith("http");
+              const active = !isExternal && isActive(path);
+              const Comp = isExternal ? "a" : Link;
+              const props = isExternal ? { href: path, target: "_blank", rel: "noopener noreferrer" } : { to: path };
+              
+              return (
+                <MagneticWrapper key={path}>
+                  <Comp
+                    {...props}
+                    aria-label={label}
+                    className={getIconClasses(active, true)}
+                  >
+                    <Icon size={22} className="sm:w-6 sm:h-6" />
+                    <Tooltip label={label} isDock={true} />
+                  </Comp>
+                </MagneticWrapper>
+              );
+            })}
           </motion.nav>
         ) : (
           <motion.nav
@@ -149,7 +184,7 @@ function Navbar() {
             animate={{ x: 0, opacity: 1, y: "-50%" }}
             exit={{ x: -100, opacity: 0, y: "-50%" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="fixed left-[18px] top-1/2 -translate-y-1/2 z-50 hidden sm:flex flex-col items-center gap-4 py-5 px-3 rounded-[24px] bg-[rgba(15,30,48,0.92)] backdrop-blur-md border border-blue/30 shadow-lg shadow-blue/10"
+            className={`fixed left-[18px] top-1/2 -translate-y-1/2 z-50 hidden sm:flex flex-col items-center gap-8 py-8 px-4 rounded-[32px] ${bgClasses}`}
           >
             {NAV_ITEMS.map(({ path, altPath, label, Icon }) => {
               const active = isActive(path, altPath);
@@ -158,11 +193,7 @@ function Navbar() {
                   <Link
                     to={path}
                     aria-label={label}
-                    className={`group relative flex items-center justify-center w-12 h-12 rounded-full transition-colors duration-300 ${
-                      active
-                        ? "bg-blue text-dark"
-                        : "text-white/70 hover:text-blue hover:bg-blue/10"
-                    }`}
+                    className={getIconClasses(active, false)}
                   >
                     <Icon size={24} />
                     <Tooltip label={label} isDock={false} />
@@ -170,54 +201,43 @@ function Navbar() {
                 </MagneticWrapper>
               );
             })}
-            
-            {/* Resume Button in Rail */}
-            <MagneticWrapper>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Resume"
-                className="group relative flex items-center justify-center w-10 h-10 mt-2 bg-blue hover:bg-blue/90 text-dark rounded-xl transition-colors"
-              >
-                <FileText size={20} />
-                <Tooltip label="Resume" isDock={false} />
-              </a>
-            </MagneticWrapper>
           </motion.nav>
           )
         )}
       </AnimatePresence>
       
-      {/* Mobile Nav for non-home pages (since side rail is hidden on mobile) */}
       <AnimatePresence>
-        {!isHome && showMobileNav && (
+        {showMobileNav && (
           <motion.div
-            key="mobile-rail"
             initial={{ y: 100 }}
             animate={{ y: 0 }}
             exit={{ y: 100 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-x-0 bottom-4 mx-auto sm:hidden z-50 bg-[rgba(15,30,48,0.92)] backdrop-blur-md text-white w-[95%] max-w-md rounded-full shadow-lg border border-blue/30 px-4 py-2 flex justify-around items-center"
+            className="fixed inset-x-0 bottom-4 mx-auto sm:hidden z-50 bg-[#021526]/20 backdrop-blur-md text-white w-[95%] max-w-md rounded-full shadow-lg border border-blue/30 px-4 py-2 flex justify-around items-center"
           >
-            {NAV_ITEMS.map(({ path, altPath, label, Icon }) => {
-              const active = isActive(path, altPath);
-              return (
-                <MagneticWrapper key={path}>
-                  <Link
-                    to={path}
-                    aria-label={label}
-                    className={`flex flex-col items-center p-2 transition-colors duration-300 rounded-full ${
-                      active
-                        ? "text-blue bg-blue/10"
-                        : "text-white/70 hover:text-blue hover:bg-blue/10"
-                    }`}
-                  >
-                    <Icon size={22} />
-                  </Link>
-                </MagneticWrapper>
-              );
-            })}
+            <MagneticWrapper>
+              <a href="/home" className={mobileIconWrapper("/home")}>
+                <Home size={24} />
+              </a>
+            </MagneticWrapper>
+
+            <MagneticWrapper>
+              <Link to="/projects" className={mobileIconWrapper("/projects")}>
+                <Code size={24} />
+              </Link>
+            </MagneticWrapper>
+
+            <MagneticWrapper>
+              <a href="/about" className={mobileIconWrapper("/about")}>
+                <Info size={24} />
+              </a>
+            </MagneticWrapper>
+
+            <MagneticWrapper>
+              <a href="/contact" className={mobileIconWrapper("/contact")}>
+                <Mail size={24} />
+              </a>
+            </MagneticWrapper>
           </motion.div>
         )}
       </AnimatePresence>
