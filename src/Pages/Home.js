@@ -4,7 +4,6 @@ import myPic from "../Assets/myPic.png";
 import CryptoText from "../Components/CryptoText"; 
 import HoverMatrixBackground from "../Components/HoverMatrixBG"; 
 import MatrixRainintro from "../Components/MatrixBG"; 
-import Navbar from "../Components/Navbar";
 
 function Home() {
   const [fadeMatrixRainintro, setfadeMatrixRainintro] = useState(false);
@@ -62,8 +61,6 @@ function Home() {
         <HoverMatrixBackground />
         <MatrixRainintro fadeOut={fadeMatrixRainintro} />
       </div>
-
-      <Navbar delay={true} />
 
       <div className="z-10 flex flex-col items-center justify-center w-full max-w-screen-sm space-y-6">
         {showProfileImage && (

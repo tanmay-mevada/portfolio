@@ -1,6 +1,5 @@
 import React, { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Navbar from "../Components/Navbar";
 import { University, Code2, Gamepad2, ChevronRight, Disc2 } from "lucide-react";
 import HoverMatrixBackground from "../Components/HoverMatrixBG";
 
@@ -157,8 +156,6 @@ function About() {
     >
       {/* ADDED: Hover Matrix Background Component */}
       <HoverMatrixBackground />
-
-      <Navbar />
 
       <svg
         className="absolute top-0 left-0 z-0 w-full h-full pointer-events-none"
