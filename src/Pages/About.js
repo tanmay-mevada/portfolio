@@ -1,7 +1,278 @@
 import React, { useRef, useLayoutEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { University, Code2, Gamepad2, ChevronRight, Disc2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  University,
+  Code2,
+  Gamepad2,
+  ChevronRight,
+  Disc2,
+  ArrowRightLeft,
+} from "lucide-react";
 import HoverMatrixBackground from "../Components/HoverMatrixBG";
+
+/* ═══════════════════════════════════════════════════════════
+   SESSION PERSISTENCE
+   ═══════════════════════════════════════════════════════════ */
+
+const STORAGE_KEY = "about-is-recruiter";
+
+function readSaved() {
+  try {
+    const v = sessionStorage.getItem(STORAGE_KEY);
+    if (v === "yes") return true;
+    if (v === "no") return false;
+  } catch {}
+  return null;
+}
+
+function writeSaved(val) {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, val ? "yes" : "no");
+  } catch {}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RECRUITER GATE — dialog overlay
+   ═══════════════════════════════════════════════════════════ */
+
+function RecruiterGate({ onAnswer }) {
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-md"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.div
+        className="w-full max-w-md p-8 border shadow-xl rounded-3xl border-blue-400/30 shadow-blue-500/20 bg-[#021526]/90 backdrop-blur-xl"
+        initial={{ y: 30, opacity: 0, scale: 0.95 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: 20, opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        <h2 className="mb-2 text-xl font-bold text-center text-blue sm:text-2xl">
+          Are you a recruiter?
+        </h2>
+        <p className="mb-6 text-sm leading-relaxed text-center text-gray-400">
+          Just asking so I can show you the right version of this page.
+        </p>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <button
+            onClick={() => onAnswer(true)}
+            className="flex-1 px-5 py-3 text-sm font-semibold text-white transition rounded-2xl bg-blue hover:bg-blue/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+          >
+            Yes, I'm a recruiter
+          </button>
+          <button
+            onClick={() => onAnswer(false)}
+            className="flex-1 px-5 py-3 text-sm font-semibold transition border text-blue-200 rounded-2xl border-blue-400/30 hover:bg-blue-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+          >
+            Nope, just looking around
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROFESSIONAL / RECRUITER VIEW
+   ═══════════════════════════════════════════════════════════ */
+
+const ExtLink = ({ href, children }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="font-semibold text-blue underline decoration-blue/30 underline-offset-2 transition-colors hover:text-blue-300 hover:decoration-blue/60"
+  >
+    {children}
+  </a>
+);
+
+function RecruiterView() {
+  const techStack = [
+    {
+      category: "Languages",
+      items: ["C", "C++", "Java", "JavaScript", "Python", "PHP"],
+    },
+    {
+      category: "Frontend",
+      items: ["React", "Next.js", "Angular", "Tailwind CSS", "Bootstrap", "HTML/CSS"],
+    },
+    {
+      category: "Backend",
+      items: ["Node.js", "Flask"],
+    },
+    {
+      category: "Databases",
+      items: ["MySQL", "Oracle", "MongoDB", "Firebase", "SQLite"],
+    },
+    {
+      category: "ML",
+      items: ["Scikit-learn"],
+    },
+    {
+      category: "Tools",
+      items: ["Git", "VS Code", "Android Studio", "Eclipse IDE", "XAMPP", "Arduino IDE", "Unity"],
+    },
+  ];
+
+  return (
+    <section className="relative min-h-screen px-4 py-20 overflow-hidden text-white sm:px-8 md:px-16 lg:px-40">
+      <HoverMatrixBackground />
+
+      <div className="relative z-10 max-w-4xl mx-auto">
+        {/* ── header ── */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-14"
+        >
+          <div className="p-8 sm:p-10 rounded-3xl border border-blue/30 bg-[#021526]/40 backdrop-blur-md shadow shadow-blue/20">
+            <h1 className="text-2xl font-bold sm:text-3xl mb-1">
+              Hi, I'm <span className="text-blue">Tanmay</span>
+            </h1>
+            <p className="text-xs text-gray-500 mb-4">From Mehsana, Gujarat</p>
+            <p className="text-sm leading-relaxed text-gray-300 sm:text-base">
+              Computer Science undergrad at Nirma University with a completed
+              Diploma in Computer Engineering (9.42 CGPA). I build full-stack web
+              applications and care deeply about clean, functional UI. Currently
+              focused on React, Node.js, and expanding into new stacks through
+              hands-on project work.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* ── education ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-14"
+        >
+          <h2 className="flex items-center gap-2 mb-5 text-lg font-bold text-blue sm:text-xl">
+            <University size={20} className="text-blue" />
+            Education
+          </h2>
+          <div className="space-y-3">
+            {[
+              {
+                degree: "B.E. / B.Tech in CSE",
+                where: <><ExtLink href="https://www.nirmauni.ac.in/">Nirma University</ExtLink>, Ahmedabad</>,
+                right: "Ongoing",
+              },
+              {
+                degree: "Diploma in Computer Engineering",
+                where: <><ExtLink href="http://www.bbit.ac.in/">BBIT</ExtLink>, Vallabh Vidyanagar</>,
+                right: "9.42 CGPA",
+              },
+              {
+                degree: "Secondary School (SSC)",
+                where: "JMC High School, Mehsana",
+                right: "~90 %ile GSEB",
+              },
+            ].map((edu, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: i * 0.08 }}
+                className="flex items-start justify-between gap-4 p-4 sm:p-5 rounded-3xl border border-blue/30 bg-[#021526]/40 backdrop-blur-md shadow shadow-blue/20 hover:border-blue/50 transition-colors duration-300"
+              >
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-white sm:text-base">{edu.degree}</p>
+                  <p className="mt-0.5 text-sm text-gray-400">{edu.where}</p>
+                </div>
+                <span className="shrink-0 mt-0.5 text-xs font-medium text-gray-500">{edu.right}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── tech stack ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="mb-14"
+        >
+          <h2 className="flex items-center gap-2 mb-5 text-lg font-bold text-blue sm:text-xl">
+            <Code2 size={20} className="text-blue" />
+            Tech Stack and Skills
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {techStack.map((group, gi) => (
+              <motion.div
+                key={group.category}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: gi * 0.06 }}
+                className="p-4 sm:p-5 rounded-3xl border border-blue/30 bg-[#021526]/40 backdrop-blur-md shadow shadow-blue/20 hover:border-blue/50 transition-colors duration-300"
+              >
+                <p className="mb-3 text-[11px] font-bold tracking-widest uppercase text-blue/60">
+                  {group.category}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {group.items.map((item) => (
+                    <span
+                      key={item}
+                      className="px-2.5 py-1 text-xs font-medium rounded-md border border-blue/20 bg-blue/5 text-gray-300 hover:border-blue/40 hover:text-white transition-colors duration-200"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── beyond code ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <h2 className="flex items-center gap-2 mb-5 text-lg font-bold text-blue sm:text-xl">
+            <Disc2 size={20} className="text-blue" />
+            Beyond code
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              { label: "Chess", note: "Play and follow regularly, around 1000 Elo" },
+              { label: "Sports", note: "Badminton and cricket" },
+              { label: "Music", note: "Usually on while I work" },
+              { label: "Films", note: "Guardians of the Galaxy Vol. 3 is a favourite" },
+            ].map((item, i) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
+                className="p-4 rounded-3xl border border-blue/30 bg-[#021526]/40 backdrop-blur-md shadow shadow-blue/20 hover:border-blue/50 transition-colors duration-300"
+              >
+                <p className="text-sm font-semibold text-white">{item.label}</p>
+                <p className="mt-1 text-xs leading-relaxed text-gray-500">{item.note}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CASUAL / UNFILTERED VIEW — original zigzag timeline
+   ═══════════════════════════════════════════════════════════ */
 
 const withIcon = (text) => (
   <div className="flex items-start gap-2 mb-2">
@@ -10,7 +281,7 @@ const withIcon = (text) => (
   </div>
 );
 
-const steps = [
+const casualSteps = [
   {
     title: "Yo! fellas, I'm Tanmay & here's a lil intro about me –",
     content: [
@@ -21,7 +292,7 @@ const steps = [
       withIcon("Into web dev, UI/UX stuff, and building cool projects"), <br key="5" />,
       withIcon("If you come over you might find me gaming, listening to music, chillin, exploring stuff, or maybe just sleeping"), <br key="6" />,
       withIcon("Still learning, building, figuring things out as I go"), <br key="7" />,
-      withIcon("Outside of the tech zone, I’m just average at everything.")
+      withIcon("Outside of the tech zone, I'm just average at everything.")
     ]
   },
   {
@@ -74,7 +345,7 @@ const steps = [
       <br key="1" />,
       withIcon("Languages: C, C++, Java, HTML, CSS, TailwindCSS, JavaScript, Python, PHP"), <br key="2" />,
       withIcon("Databases: MySQL, Oracle, MongoDB, FireBase, SQLite"), <br key="3" />,
-      withIcon("Frameworks: NextJS, React Hooks, Angular, Node JS, Tailwind CSS, Bootstrap, Flask, Scikit-learn","Auth"), <br key="4" />,
+      withIcon("Frameworks: NextJS, React Hooks, Angular, Node JS, Tailwind CSS, Bootstrap, Flask, Scikit-learn"), <br key="4" />,
       withIcon("Version Control: Git & GitHub"), <br key="5" />,
       withIcon("Tools: VS Code, Android Studio, Eclipse IDE, Eclipse EE, XAMPP, Arduino IDE, Unity Engine")
     ]
@@ -119,7 +390,7 @@ const steps = [
   }
 ];
 
-function About() {
+function CasualView() {
   const containerRef = useRef(null);
   const cardRefs = useRef([]);
   const [pathD, setPathD] = useState("");
@@ -150,11 +421,9 @@ function About() {
 
   return (
     <section
-      // REMOVED 'bg-dark' so the matrix background is visible
       className="relative min-h-screen px-4 py-20 overflow-hidden text-white sm:px-8 md:px-16 lg:px-40"
       ref={containerRef}
     >
-      {/* ADDED: Hover Matrix Background Component */}
       <HoverMatrixBackground />
 
       <svg
@@ -183,14 +452,15 @@ function About() {
       </svg>
 
       <div className="relative z-10">
-        {steps.map((step, i) => {
+        {casualSteps.map((step, i) => {
           const isLeft = i % 2 === 0;
           return (
             <motion.div
               key={i}
               ref={(el) => (cardRefs.current[i] = el)}
-              className={`relative mb-24 w-full flex ${i === 0 ? "justify-center" : isLeft ? "justify-start" : "justify-end"
-                }`}
+              className={`relative mb-24 w-full flex ${
+                i === 0 ? "justify-center" : isLeft ? "justify-start" : "justify-end"
+              }`}
               initial={{ opacity: 0, y: i === 0 ? -30 : 0, x: i === 0 ? 0 : isLeft ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0, y: 0 }}
               viewport={{ once: true }}
@@ -211,6 +481,77 @@ function About() {
         })}
       </div>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAIN ABOUT PAGE
+   ═══════════════════════════════════════════════════════════ */
+
+function About() {
+  const [isRecruiter, setIsRecruiter] = useState(readSaved);
+
+  const answered = isRecruiter !== null;
+
+  const answer = (val) => {
+    setIsRecruiter(val);
+    writeSaved(val);
+  };
+
+  return (
+    <>
+      {/* ── recruiter gate dialog ── */}
+      <AnimatePresence>
+        {!answered && <RecruiterGate onAnswer={answer} />}
+      </AnimatePresence>
+
+      {/* ── page content ── */}
+      {answered && (
+        <>
+          {/* ── floating switch button ── */}
+          <div className="fixed top-5 right-5 z-40">
+            <motion.button
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              onClick={() => {
+                const next = !isRecruiter;
+                setIsRecruiter(next);
+                writeSaved(next);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-full border border-blue/25 bg-[#021526]/80 backdrop-blur-xl text-gray-300 shadow-lg transition hover:bg-blue/10 hover:text-white hover:border-blue/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+            >
+              <ArrowRightLeft size={14} />
+              {isRecruiter ? "Switch to unfiltered" : "Switch to professional"}
+            </motion.button>
+          </div>
+
+          <AnimatePresence mode="wait">
+            {isRecruiter ? (
+              <motion.div
+                key="recruiter"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <RecruiterView />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="casual"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <CasualView />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      )}
+    </>
   );
 }
 
